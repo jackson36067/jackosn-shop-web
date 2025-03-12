@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { CategoryList } from "@/types/category";
 import { getCategoryListAPI } from "@/apis/category";
 import { cn } from "@/lib/utils";
@@ -24,7 +24,10 @@ export default function Home() {
     setActiveCategoryId(res.data[0].id);
     setActiveCategoryContent(res.data[0]);
   };
+  const hasFetched = useRef(false); // 追踪是否已经发送请求
   useEffect(() => {
+    if (hasFetched.current) return; // 如果已经请求过，则不再执行
+    hasFetched.current = true;
     getCategoryList();
   }, []);
   const handleClickCategory = (id: number) => {

@@ -1,12 +1,7 @@
 "use client";
 
+import { NavBarMenuItem } from "@/types/column";
 import Link from "next/link";
-
-interface NavBarMenuItem {
-  img: string;
-  title: string;
-  path: string;
-}
 
 const NavBar = (props: { NavBarMenuItems: NavBarMenuItem[] }) => {
   return (
@@ -18,8 +13,8 @@ const NavBar = (props: { NavBarMenuItems: NavBarMenuItem[] }) => {
             className="flex flex-col items-center"
             href={item.path}
           >
-            <img src={item.img} className="w-10 h-10" />
-            <div>{item.title}</div>
+            <img src={item.bgPic} className="w-10 h-10" />
+            <div>{item.name}</div>
           </Link>
         );
       })}
