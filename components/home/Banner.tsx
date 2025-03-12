@@ -8,7 +8,6 @@ import "swiper/css/pagination";
 
 interface BannerItem {
   img: string;
-  alt: string;
 }
 
 const Banner = (props: { BannerItems: BannerItem[] }) => {
@@ -25,7 +24,7 @@ const Banner = (props: { BannerItems: BannerItem[] }) => {
       {props.BannerItems.map((item, index) => {
         return (
           <SwiperSlide key={index}>
-            <img className="w-full h-full" src={item.img} alt={item.alt}></img>
+            <img className="w-full h-full" src={item.img}></img>
           </SwiperSlide>
         );
       })}

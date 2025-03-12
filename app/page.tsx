@@ -9,16 +9,34 @@ import { Icon } from "@iconify/react";
 import { useEffect, useState } from "react";
 
 const BannerItems = [
-  { img: "/image/banner1.png", alt: "服装" },
-  { img: "/image/banner2.png", alt: "家具" },
-  { img: "/image/banner3.png", alt: "好货" },
+  { img: "/upload/banner1.webp" },
+  { img: "/upload/banner2.webp" },
+  { img: "/upload/ban3.webp" },
+  { img: "/upload/ban4.webp" },
+  { img: "/upload/ban5.webp" },
 ];
 
 const NavBarMenuItems = [
-  { img: "/image/icon_index_nav_4@2x.png", alt: "分类", path: "/category" },
-  { img: "/image/icon_index_nav_3@2x.png", alt: "秒杀拍", path: "" },
-  { img: "/image/icon_index_nav_2@2x.png", alt: "超市购", path: "" },
-  { img: "/image/icon_index_nav_1@2x.png", alt: "母婴品", path: "" },
+  {
+    img: "/upload/0eb1a5b728c38a2f3c6b77102fd4c219.webp",
+    title: "分类",
+    path: "/",
+  },
+  {
+    img: "/upload/059acb7b0a57ad610b54923cfcc916c0.webp",
+    title: "服装服饰",
+    path: "/",
+  },
+  {
+    img: "/upload/3062fd920f70109cc16d76c9ccd1e0ba.webp",
+    title: "洗发护发",
+    path: "/",
+  },
+  {
+    img: "/upload/7e27e3f34d74fdc7ab7fc1910d5e7e10.webp",
+    title: "功能箱包",
+    path: "/",
+  },
 ];
 
 const categoryItems = [
