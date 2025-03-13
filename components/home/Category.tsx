@@ -1,80 +1,36 @@
 "use client";
+
+import { GoodsMessage } from "@/types/goods";
+import HomeCategoryGoods from "@/components/home/category/goods";
+import { Icon } from "@iconify/react/dist/iconify.js";
+
 interface CategoryItems {
-  titleImg: string;
-  mainImg: string;
-  mediumImg: string[];
-  rightImg: string[];
-  direction: string; //"x" | "y"
+  title: string;
+  prompt: string; // 提示
+  goods: GoodsMessage[];
+  type: number;
 }
-
-// 中间以及右边图片水平排列
-const OtherImgDirectionY = (item: CategoryItems) => {
-  return (
-    <div className="flex flex-2/3 gap-2">
-      <div className="flex flex-1/2 flex-col justify-between">
-        {item.mediumImg.map((item, index) => {
-          return (
-            <div key={index}>
-              <img src={item} className="w-full h-full" />
-            </div>
-          );
-        })}
-      </div>
-      <div className="flex flex-1/2 flex-col justify-between">
-        {item.rightImg.map((item, index) => {
-          return (
-            <div key={index}>
-              <img src={item} className="w-full h-full" />
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
-
-// 中间以及右边图片垂直排列
-const OtherImgDirectionX = (item: CategoryItems) => {
-  return (
-    <div className="flex flex-2/3 flex-col gap-2">
-      <div className="flex flex-1/2 gap-2">
-        {item.mediumImg.map((item, index) => {
-          return (
-            <div key={index}>
-              <img src={item} className="w-full h-full" />
-            </div>
-          );
-        })}
-      </div>
-      <div className="flex flex-1/2 gap-2">
-        {item.rightImg.map((item, index) => {
-          return (
-            <div key={index}>
-              <img src={item} className="w-full h-full" />
-            </div>
-          );
-        })}
-      </div>
-    </div>
-  );
-};
 
 const Category = (props: { categoryItems: CategoryItems[] }) => {
   return (
-    <div className="w-full">
-      {props.categoryItems.map((item, index) => {
+    <div className="w-full px-3">
+      {props.categoryItems.map((item) => {
         return (
-          <div key={index} className="mt-5">
-            <div className="w-full">
-              <img className="w-full h-auto" src={item.titleImg} />
-            </div>
-            <div className="flex gap-2 mt-3 px-3 w-full">
-              <div className="flex-1/3 h-full">
-                <img src={item.mainImg} className="w-full h-full" />
+          <div key={item.type} className="mt-5 first:mt-0">
+            <div className="flex justify-between">
+              <div>{item.title}</div>
+              <div className="flex items-center gap-1">
+                <div className="text-[#77787d]">{item.prompt}</div>
+                <Icon
+                  icon={"iconamoon:arrow-right-2-thin"}
+                  width={24}
+                  height={24}
+                  className="text-[#77787d]"
+                />
               </div>
-              {item.direction === "x"
-                ? OtherImgDirectionX(item)
-                : OtherImgDirectionY(item)}
+            </div>
+            <div>
+              <HomeCategoryGoods type={item.type} isAll={false} />
             </div>
           </div>
         );

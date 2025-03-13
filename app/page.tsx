@@ -20,25 +20,16 @@ const BannerItems = [
 
 const categoryItems = [
   {
-    titleImg: "/image/pic_floor01_title@2x.png",
-    mainImg: "/image/pic_floor01_1@2x.png",
-    mediumImg: ["/image/pic_floor01_2@2x.png", "/image/pic_floor01_3@2x.png"],
-    rightImg: ["/image/pic_floor01_4@2x.png", "/image/pic_floor01_5@2x.png"],
-    direction: "y",
+    title: "新品上线",
+    prompt: "更多新品上线",
+    type: 0,
+    goods: [],
   },
   {
-    titleImg: "/image/pic_floor02_title@2x.png",
-    mainImg: "/image/pic_floor02_1@2x.png",
-    mediumImg: ["/image/pic_floor02_2@2x.png", "/image/pic_floor02_3@2x.png"],
-    rightImg: ["/image/pic_floor02_4@2x.png", "/image/pic_floor02_5@2x.png"],
-    direction: "x",
-  },
-  {
-    titleImg: "/image/pic_floor03_title@2x.png",
-    mainImg: "/image/pic_floor03_1@2x.png",
-    mediumImg: ["/image/pic_floor03_2@2x.png", "/image/pic_floor03_3@2x.png"],
-    rightImg: ["/image/pic_floor03_4@2x.png", "/image/pic_floor03_5@2x.png"],
-    direction: "x",
+    title: "产品热销",
+    prompt: "更多热销商品",
+    type: 1,
+    goods: [],
   },
 ];
 
