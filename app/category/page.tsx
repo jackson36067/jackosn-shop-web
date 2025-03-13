@@ -61,7 +61,7 @@ export default function Home() {
     return (
       <div>
         <div className="w-full">
-          <div className="relative w-95%">
+          <div className="relative w-90%">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="absolute top-0 bottom-0 w-6 h-6 my-auto text-gray-400 left-3"
@@ -84,12 +84,13 @@ export default function Home() {
           </div>
         </div>
         <div className="flex mt-3">
-          <ul className="flex flex-col text-center text-current sm:h-6 h-8 w-20">
+          <ul className="flex flex-col text-center text-current sm:h-6 w-20 bg-[#f6f6f6]">
             {categoryList.map((item) => (
               <li
                 key={item.id}
                 className={cn("p-3 mt-3 first:mt-0 text-xl", {
                   "border-l-4 border-l-[#d4392b]": activeCategoryId === item.id,
+                  "bg-white": activeCategoryId === item.id,
                 })}
                 onClick={() => handleClickCategory(item.id)}
               >

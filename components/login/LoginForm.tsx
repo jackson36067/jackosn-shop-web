@@ -52,7 +52,7 @@ export function LoginForm() {
     resolver: zodResolver(nicknameFormSchema),
     defaultValues: {
       nickname: "jackson",
-      password: "",
+      password: "123456",
     },
   });
 
@@ -97,7 +97,7 @@ export function LoginForm() {
     router.push("/");
   }
   return (
-    <Tabs defaultValue="email" className="w-[400px]">
+    <Tabs defaultValue="nickname" className="w-[400px]">
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="email">邮箱登录</TabsTrigger>
         <TabsTrigger value="nickname">用户名登录</TabsTrigger>

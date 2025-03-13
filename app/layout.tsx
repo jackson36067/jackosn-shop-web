@@ -32,7 +32,7 @@ export default function RootLayout({
         {children}
         {/* 底部栏 */}
         <TabBar></TabBar>
-        <Toaster position="top-center" />
+        <Toaster position="top-center" duration={3000} />
       </body>
     </html>
   );

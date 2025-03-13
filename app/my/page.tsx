@@ -4,6 +4,7 @@ import useMemberStore from "@/stores/MemberStore";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 const myRelaContent = [
   { count: 0, title: "收藏的店铺" },
@@ -36,6 +37,7 @@ const defaultAvatar = "/image/user_avator_default@2x.png";
 
 export default function My() {
   const { memberInfo } = useMemberStore();
+  const router = useRouter();
   return (
     <div className="w-full h-full bg-[#f4f4f4]">
       {/* 信息展示 */}
@@ -45,7 +47,11 @@ export default function My() {
           <div>
             <Icon icon="weui:setting-outlined" className="text-white w-8 h-8" />
           </div>
-          <div>
+          <div
+            onClick={() => {
+              router.push("/myInfo");
+            }}
+          >
             <Image
               src={memberInfo.token ? memberInfo.avatar : defaultAvatar}
               alt=""
