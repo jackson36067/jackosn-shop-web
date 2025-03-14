@@ -40,7 +40,7 @@ export default function Home() {
     const res = await getColumnListAPI();
     const data: NavBarMenuItem[] = res.data;
     data.forEach((item) => {
-      item.path = `/categoryDetail?id=${item.id}`;
+      item.path = `/columnGoods?id=${item.id}`;
     });
     setColumnList(data);
   };

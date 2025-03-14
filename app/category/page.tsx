@@ -5,6 +5,7 @@ import type { CategoryList } from "@/types/category";
 import { getCategoryListAPI } from "@/apis/category";
 import { cn } from "@/lib/utils";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   // 分类集合
@@ -55,6 +56,9 @@ export default function Home() {
       </div>
     );
   };
+
+  // 跳转页面
+  const router = useRouter();
 
   // 主体内容组件
   const contentComponent = () => {
@@ -115,6 +119,11 @@ export default function Home() {
                   <div
                     key={item.id}
                     className="flex flex-col justify-center items-center p-3"
+                    onClick={() => {
+                      router.push(
+                        `/categoryDetail?id=${item.id}&name=${item.name}`
+                      );
+                    }}
                   >
                     <img
                       src={item.iconUrl}
