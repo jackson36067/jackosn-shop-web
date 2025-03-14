@@ -2,12 +2,13 @@ import { GetHotOrNewGoodsAPI } from "@/apis/goods";
 import { GoodsMessage } from "@/types/goods";
 import { useEffect, useRef, useState } from "react";
 
+// type: 获取最新 | 热销商品 isAll: 是否获取所有商品
 const HomeCategoryGoods = (props: { type: number; isAll: boolean }) => {
   const [goodItems, setGoodItems] = useState<GoodsMessage[]>([]);
   const hasFetched = useRef(false); // 追踪是否已经发送请求
   const getHomeGoodsList = async () => {
     const res = await GetHotOrNewGoodsAPI(props.type, props.isAll);
-    setGoodItems(res.data);
+    setGoodItems(res.data.data);
   };
   useEffect(() => {
     if (hasFetched.current) return; // 如果已经请求过，则不再执行

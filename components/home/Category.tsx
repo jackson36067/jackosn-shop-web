@@ -3,6 +3,7 @@
 import { GoodsMessage } from "@/types/goods";
 import HomeCategoryGoods from "@/components/home/category/goods";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useRouter } from "next/navigation";
 
 interface CategoryItems {
   title: string;
@@ -12,6 +13,7 @@ interface CategoryItems {
 }
 
 const Category = (props: { categoryItems: CategoryItems[] }) => {
+  const router = useRouter();
   return (
     <div className="w-full px-3">
       {props.categoryItems.map((item) => {
@@ -19,7 +21,12 @@ const Category = (props: { categoryItems: CategoryItems[] }) => {
           <div key={item.type} className="mt-5 first:mt-0">
             <div className="flex justify-between">
               <div>{item.title}</div>
-              <div className="flex items-center gap-1">
+              <div
+                onClick={() => {
+                  router.push(`/moreCategoryGoods?type=${item.type}`);
+                }}
+                className="flex items-center gap-1"
+              >
                 <div className="text-[#77787d]">{item.prompt}</div>
                 <Icon
                   icon={"iconamoon:arrow-right-2-thin"}

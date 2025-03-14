@@ -53,7 +53,11 @@ export default function My() {
             }}
           >
             <Image
-              src={memberInfo.token ? memberInfo.avatar : defaultAvatar}
+              src={
+                memberInfo.token
+                  ? memberInfo.avatar ?? defaultAvatar
+                  : defaultAvatar
+              }
               alt=""
               className="w-20 h-20 rounded-full border-white border-2"
               width={30}

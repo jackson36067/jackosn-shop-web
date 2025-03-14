@@ -1,12 +1,19 @@
 import httpInstance from "@/utils/http";
 
-export const GetHotOrNewGoodsAPI = (type: number, isAll: boolean) => {
+export const GetHotOrNewGoodsAPI = (
+  type: number,
+  isAll: boolean,
+  page?: number,
+  pageSize?: number
+) => {
   return httpInstance({
     method: "GET",
     url: "/goods",
     params: {
-      type: type,
-      isAll: isAll,
+      type,
+      isAll,
+      page,
+      pageSize,
     },
   });
 };

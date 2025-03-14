@@ -7,7 +7,11 @@ const CategoryGoods = (props: { goodItems: GoodsMessage[] }) => {
         return (
           <div className="flex w-full mt-5 first:mt-3" key={item.id}>
             <div>
-              <img src={item.picUrl} alt="" className="w-30 h-40" />
+              <img
+                src={item.picUrl || "/default-image.png"}
+                alt=""
+                className="w-30 h-40"
+              />
             </div>
             <div className="flex flex-col justify-between flex-1">
               {/* 商品名称以及简称 */}
