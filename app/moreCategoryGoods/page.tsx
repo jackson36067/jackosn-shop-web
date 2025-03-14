@@ -15,6 +15,7 @@ const MoreCategoryGoods = () => {
   const [hotOrNewGoods, setHotOrNewGoods] = useState<GoodsMessage[]>([]);
   const hasFetched = useRef(false); // 追踪是否已经发送请求
   const [page, setPage] = useState(1);
+  // 分页获取商品是否有剩余的商品, 没有-> 则不需要在获取商品
   const [isRemain, setIsRemain] = useState(true);
   const getMoreHotOrNewData = async (pageNumber: number) => {
     try {
@@ -31,6 +32,7 @@ const MoreCategoryGoods = () => {
       console.error("加载失败:", error);
     }
   };
+  // 第一次获取商品数据
   useEffect(() => {
     if (hasFetched.current) return;
     hasFetched.current = true;
@@ -38,6 +40,7 @@ const MoreCategoryGoods = () => {
   }, []);
 
   useEffect(() => {
+    // 监听滚动事件 -> 滚动到底部获取更多商品数据
     const handleScroll = debounce(() => {
       if (
         window.innerHeight + document.documentElement.scrollTop >=
@@ -96,7 +99,7 @@ const MoreCategoryGoods = () => {
         ) : (
           <div className="flex justify-center text-[#999] text-2xl mt-4 items-center">
             <Icon icon="line-md:emoji-smile-wink"></Icon>
-            没有商品了
+            没有更多商品了
           </div>
         )}
       </div>
