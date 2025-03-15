@@ -2,10 +2,13 @@ import { GoodsMessage } from "@/types/goods";
 
 const CategoryGoods = (props: { goodItems: GoodsMessage[] }) => {
   return (
-    <div className="pr-2">
+    <div>
       {props.goodItems.map((item) => {
         return (
-          <div className="flex w-full mt-5 first:mt-3" key={item.id}>
+          <div
+            className="flex w-full mt-3 first:mt-3 p-2 bg-[#fff]"
+            key={item.id}
+          >
             <div>
               <img
                 src={item.picUrl || "/default-image.png"}

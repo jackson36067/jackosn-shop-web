@@ -16,14 +16,14 @@ const HomeCategoryGoods = (props: { type: number; isAll: boolean }) => {
     getHomeGoodsList();
   }, []);
   return (
-    <div className="flex flex-wrap">
+    <div className="flex flex-wrap bg-[#fff]">
       {goodItems.map((item) => {
         return (
           <div key={item.id} className="w-[50%]">
             <div>
               <img src={item.picUrl} width={""} />
             </div>
-            <p>{item.name}</p>
+            <p className="truncate">{item.name}</p>
             {/* 商品价格 */}
             <div className="flex items-end gap-1">
               <div className="text-[#d76e56] text-xl">

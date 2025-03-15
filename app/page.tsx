@@ -68,7 +68,7 @@ export default function Home() {
     };
   }, []);
   return (
-    <div className="w-full">
+    <div className="w-full pb-28">
       <div className="overflow-auto">
         {/* 顶部搜索栏 */}
         <TopSearch />

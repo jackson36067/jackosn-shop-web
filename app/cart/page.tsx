@@ -1,3 +1,9 @@
+import CartTopBar from "@/components/cart/TopBar";
+
 export default function Cart() {
-  return <div>cart</div>;
+  return (
+    <div>
+      <CartTopBar />
+    </div>
+  );
 }

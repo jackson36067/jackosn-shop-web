@@ -156,7 +156,7 @@ const MyInfo = () => {
         </div>
       </div>
       <div className="px-3 mt-4">
-        <div className="border-[1px] border-gray-100">
+        <div className="border-[1px] border-gray-100 bg-white p-4">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <FormField

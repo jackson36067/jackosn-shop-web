@@ -15,7 +15,7 @@ interface CategoryItems {
 const Category = (props: { categoryItems: CategoryItems[] }) => {
   const router = useRouter();
   return (
-    <div className="w-full px-3">
+    <div className="w-full p-3 bg-[#fff]">
       {props.categoryItems.map((item) => {
         return (
           <div key={item.type} className="mt-5 first:mt-0">

@@ -39,7 +39,7 @@ export default function My() {
   const { memberInfo } = useMemberStore();
   const router = useRouter();
   return (
-    <div className="w-full h-full bg-[#f4f4f4]">
+    <div className="w-full h-full bg-[#f4f4f4] pb-28">
       {/* 信息展示 */}
       <div className="pt-10 pb-15 bg-[#ff2d4a]">
         <h1 className="text-white text-3xl text-center mb-15">我的</h1>
@@ -117,6 +117,10 @@ export default function My() {
         </div>
         <div className="flex justify-between items-center py-3 px-4 bg-white my-3">
           <p>收货地址管理</p>
+          <Icon icon="weui:arrow-outlined" className="w-8 h-8"></Icon>
+        </div>
+        <div className="flex justify-between items-center py-3 px-4 bg-white my-3">
+          <p>优惠卷管理</p>
           <Icon icon="weui:arrow-outlined" className="w-8 h-8"></Icon>
         </div>
         <div>

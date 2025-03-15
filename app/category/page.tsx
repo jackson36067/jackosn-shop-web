@@ -63,7 +63,7 @@ export default function Home() {
   // 主体内容组件
   const contentComponent = () => {
     return (
-      <div>
+      <div className="w-full h-full">
         <div className="w-full">
           <div className="relative w-90%">
             <svg
@@ -87,8 +87,8 @@ export default function Home() {
             />
           </div>
         </div>
-        <div className="flex mt-3">
-          <ul className="flex flex-col text-center text-current sm:h-6 w-20 bg-[#f6f6f6]">
+        <div className="flex mt-3 h-full">
+          <ul className="flex flex-col text-center text-current sm:h-6 w-20">
             {categoryList.map((item) => (
               <li
                 key={item.id}
