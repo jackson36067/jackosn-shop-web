@@ -1,5 +1,6 @@
 "use client";
 
+import useSelectedGoodsStore from "@/stores/CartSelectedGoods";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -8,6 +9,7 @@ interface TabBarItem {
   path: string;
   icon: string;
   activeIcon: string;
+  subscript?: boolean;
 }
 
 const TabBarItems: TabBarItem[] = [
@@ -28,6 +30,7 @@ const TabBarItems: TabBarItem[] = [
     path: "/cart",
     icon: "/image/icon_cart@3x.png",
     activeIcon: "/image/icon_cart_active@3x.png",
+    subscript: true,
   },
   {
     title: "我的",
@@ -41,6 +44,7 @@ const TabBarItems: TabBarItem[] = [
 const showTabBarPath = ["/", "/category", "/my", "/cart"];
 
 const TabBar = () => {
+  const { selectedGoods } = useSelectedGoodsStore();
   const pathname = usePathname();
   return (
     showTabBarPath.includes(pathname) && (
@@ -53,7 +57,12 @@ const TabBar = () => {
                 className="flex flex-col items-center"
                 href={item.path}
               >
-                <div>
+                <div className="relative">
+                  {item.subscript && (
+                    <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex justify-center items-center">
+                      {selectedGoods.length}
+                    </div>
+                  )}
                   <img
                     src={pathname === item.path ? item.activeIcon : item.icon}
                     className="w-8 h-8"

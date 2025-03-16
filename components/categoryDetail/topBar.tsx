@@ -1,9 +1,11 @@
 "use client";
 
+import useSelectedGoodsStore from "@/stores/CartSelectedGoods";
 import { Icon } from "@iconify/react/dist/iconify.js";
 
 import { useRouter } from "next/navigation";
 const TopBar = (props: { title: string }) => {
+  const { selectedGoods } = useSelectedGoodsStore();
   const router = useRouter();
   return (
     <div className="w-full px-5">
@@ -19,8 +21,11 @@ const TopBar = (props: { title: string }) => {
         </div>
         {/* 主题 */}
         <div className="text-current">{props.title}</div>
-        <div>
-          <Icon icon={"icon-park-outline:shopping"} className="w-6 h-6" />
+        <div className="relative" onClick={() => router.push("/cart")}>
+          <div className="flex justify-center items-center absolute -top-[3px] -right-[3px] w-5 h-5 rounded-full text-white text-sm bg-[#f8312f]">
+            {selectedGoods.length || "0"}
+          </div>
+          <Icon icon={"icon-park-outline:shopping"} className="w-8 h-8" />
         </div>
       </div>
     </div>

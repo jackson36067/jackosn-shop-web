@@ -21,7 +21,6 @@ import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { RadioGroupDemo } from "@/components/myInfo/Radio";
 import { cn } from "@/lib/utils";
 import { CalendarIcon } from "lucide-react";
 import { Calendar } from "@/components/ui/calendar";
@@ -34,6 +33,8 @@ import {
 import { toast } from "sonner";
 import { formatToLocalDate } from "@/utils/dateFormat";
 import useMemberStore from "@/stores/MemberStore";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { Label } from "@radix-ui/react-label";
 
 // 没有登录时默认的头像j
 const defaultAvatar = "/image/user_avator_default@2x.png";
@@ -48,9 +49,9 @@ const formSchema = z.object({
 });
 
 const MyInfo = () => {
-  const { setMemberInfo } = useMemberStore();
+  const { memberInfo, setMemberInfo } = useMemberStore();
   // 保存个人信息
-  const [memberInfo, setMembersInfo] = useState<MemberUpdateInfo | null>(null);
+  const [membersInfo, setMembersInfo] = useState<MemberUpdateInfo | null>(null);
   // 保存用户头像
   const [avatar, setAvatar] = useState<string>(defaultAvatar);
 
@@ -60,11 +61,11 @@ const MyInfo = () => {
   // 修改信息表单
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    // defaultValues: {
-    //   nickname: memberInfo?.nickname,
-    //   gender: "male",
-    //   birthday: new Date(),
-    // },
+    defaultValues: {
+      nickname: memberInfo?.nickname,
+      gender: "male",
+      birthday: new Date(),
+    },
   });
 
   // 获取个人信息
@@ -106,7 +107,7 @@ const MyInfo = () => {
     const gender = values.gender == "male" ? 0 : 1;
     const birthday = formatToLocalDate(values.birthday);
     const updateMemberInfoParams: UpdateMemberInfo = {
-      id: memberInfo!.id,
+      id: membersInfo!.id,
       nickname: values.nickname,
       avatar: avatar,
       gender: gender,
@@ -119,10 +120,14 @@ const MyInfo = () => {
     toast.success("更新个人数据成功");
     // 更新本地缓存信息
     setMemberInfo({
+      id: memberInfo.id,
       nickname: values.nickname,
       avatar: avatar,
       gender: gender,
       birthday: birthday,
+      token: memberInfo.token,
+      email: memberInfo.email,
+      mobile: memberInfo.mobile,
     });
   }
   // 🚀 在数据加载完成后再渲染组件
@@ -169,7 +174,7 @@ const MyInfo = () => {
                       <Input
                         placeholder={""}
                         {...field}
-                        value={memberInfo?.nickname}
+                        value={membersInfo?.nickname}
                       />
                     </FormControl>
                     <FormMessage />
@@ -183,7 +188,21 @@ const MyInfo = () => {
                   <FormItem>
                     <FormLabel>性别</FormLabel>
                     <FormControl>
-                      <RadioGroupDemo gender={field.value} />
+                      <RadioGroup
+                        className="flex"
+                        defaultValue={field.value}
+                        onValueChange={field.onChange}
+                      >
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="male" id="r1" />
+                          <Label htmlFor="r1">男</Label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <RadioGroupItem value="female" id="r2" />
+                          <Label htmlFor="r2">女</Label>
+                        </div>
+                      </RadioGroup>
+                      {/* <RadioGroupDemo gender={field.value}  /> */}
                     </FormControl>
                     <FormMessage />
                   </FormItem>

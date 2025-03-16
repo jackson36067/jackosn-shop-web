@@ -147,7 +147,7 @@ export function LoginForm() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="mx-auto width-[90%]">
+                <Button type="submit" className="mx-auto w-full">
                   登录
                 </Button>
               </form>
@@ -195,7 +195,7 @@ export function LoginForm() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="mx-auto width-[90%]">
+                <Button type="submit" className="mx-auto w-full">
                   登录
                 </Button>
               </form>
