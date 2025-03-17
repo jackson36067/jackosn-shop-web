@@ -1,6 +1,9 @@
 "use client";
 
+import { useRouter } from "next/navigation";
+
 const TopSearch = () => {
+  const router = useRouter();
   return (
     <div className="w-full bg-[#ff2d46] px-4 pt-6 pb-4 text-center">
       <p className="text-3xl text-white">优购</p>
@@ -21,6 +24,7 @@ const TopSearch = () => {
           />
         </svg>
         <input
+          onFocus={() => router.push("/search")}
           type="text"
           placeholder="搜索"
           className="w-full py-2 pl-12 pr-4 text-gray-500 border rounded-md outline-none bg-white focus:bg-white focus:border-indigo-600"

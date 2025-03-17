@@ -3,7 +3,6 @@
 import useMemberStore from "@/stores/MemberStore";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const myRelaContent = [
@@ -49,7 +48,11 @@ export default function My() {
           </div>
           <div
             onClick={() => {
-              router.push("/myInfo");
+              if (!memberInfo.token) {
+                router.push("/login");
+              } else {
+                router.push("/myInfo");
+              }
             }}
           >
             <Image
@@ -72,9 +75,13 @@ export default function My() {
           </div>
         </div>
         <div className="text-white text-xl text-center mt-5">
-          <Link href="/login">
+          <div
+            onClick={() => {
+              if (!memberInfo.token) router.push("/login");
+            }}
+          >
             {memberInfo.token ? memberInfo.nickname : "点击登录"}
-          </Link>
+          </div>
         </div>
       </div>
       {/* 底部操作区 */}

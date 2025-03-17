@@ -7,11 +7,6 @@ const httpInstance = axios.create({
   timeout: 5000,
 });
 
-// ✅ 封装跳转登录页逻辑
-const redirectToLogin = () => {
-  window.location.href = "/login";
-};
-
 httpInstance.interceptors.request.use(
   (config) => {
     const urls = ["/member/code", "/member/login", "/category/list"];
@@ -19,8 +14,6 @@ httpInstance.interceptors.request.use(
       const token: string = useMemberStore.getState().memberInfo.token || "";
       if (token) {
         config.headers.Authorization = token;
-      } else {
-        redirectToLogin();
       }
     }
     return config;
@@ -37,11 +30,7 @@ httpInstance.interceptors.response.use(
   (error) => {
     if (error.status === 401) {
       useMemberStore.getState().clearMemberInfo();
-      // 这个路径下报401不需要到登录页
-      const urls = ["/cart/list", "/cart/count"];
-      if (!urls.includes(error.config.url)) {
-        redirectToLogin();
-      }
+      return;
     }
     const errorMsg: string = error.response.data.message || "请求失败";
     toast.error(errorMsg);
