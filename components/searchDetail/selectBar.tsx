@@ -1,14 +1,23 @@
 "use client";
 
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Button } from "../ui/button";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerTitle,
+  DrawerTrigger,
+} from "../ui/drawer";
+import { Switch } from "../ui/switch";
 
 type Emit = {
   // 通过该函数向父组件传递排序方式和排序方式
   handleSelectedSortTypeAndOrderType: (
     sortType: string,
-    orderType: number
+    orderType: number,
+    goodsType: number
   ) => void;
 };
 
@@ -22,6 +31,10 @@ export const SearchSelectBar = ({
   const sortType = useRef<"default" | "sales" | "price">("default");
   // 0.升序 1.降序
   const orderType = useRef<0 | 1>(0);
+  // 控制筛选抽屉是否打开
+  const [open, setOpen] = useState(false);
+  // 选择商品类型 0.新品 1.热销 2.全部
+  const type = useRef(2);
   const handleSortType = (seleteSortType: "default" | "sales" | "price") => {
     // 如果点击的排序方式没有变化，改变排序方式
     if (seleteSortType === sortType.current) {
@@ -32,7 +45,28 @@ export const SearchSelectBar = ({
       orderType.current = 0;
     }
     // 通过回调函数向父组件传递排序方式和排序方式
-    handleSelectedSortTypeAndOrderType(sortType.current, orderType.current);
+    handleSelectedSortTypeAndOrderType(
+      sortType.current,
+      orderType.current,
+      type.current
+    );
+  };
+
+  // 改变商品类型
+  const handleChangeGoodsType = (goodsType: number) => {
+    // 如果点击的商品类型没有变化，那么就是取消选择,默认获取全部商品
+    if (goodsType === type.current) {
+      type.current = 2;
+    } else {
+      // 改变商品类型
+      type.current = goodsType;
+    }
+    // 通过回调函数向父组件传递排序方式和排序方式
+    handleSelectedSortTypeAndOrderType(
+      sortType.current,
+      orderType.current,
+      type.current
+    );
   };
   return (
     <div className="flex justify-between border-b p-2 text-gray-600 bg-white text-sm">
@@ -87,9 +121,37 @@ export const SearchSelectBar = ({
       </Button>
 
       {/* 筛选 */}
-      <Button variant="ghost" className="text-gray-600 hover:text-black">
-        筛选
-      </Button>
+      <Drawer direction="top" open={open} onOpenChange={setOpen}>
+        <DrawerTrigger asChild>
+          <Button
+            variant="ghost"
+            className="text-gray-600 hover:text-black"
+            onClick={() => setOpen(true)}
+          >
+            筛选
+          </Button>
+        </DrawerTrigger>
+        <DrawerContent>
+          <DrawerTitle></DrawerTitle>
+          <DrawerDescription></DrawerDescription>
+          <div className="flex justify-between items-center py-4 px-3">
+            <div>新品</div>
+            <Switch
+              id="airplane-mode"
+              checked={type.current === 0}
+              onCheckedChange={() => handleChangeGoodsType(0)}
+            />
+          </div>
+          <div className="flex justify-between items-center py-4 px-3">
+            <div>热品</div>
+            <Switch
+              id="airplane-mode"
+              checked={type.current === 1}
+              onCheckedChange={() => handleChangeGoodsType(1)}
+            />
+          </div>
+        </DrawerContent>
+      </Drawer>
     </div>
   );
 };

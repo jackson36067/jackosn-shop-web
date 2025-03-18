@@ -44,7 +44,8 @@ const SearchDetailPage = () => {
   // 点击子组件传递过来的排序方式
   const handleSelectedSortTypeAndOrderType = (
     sortType: string,
-    orderType: number
+    orderType: number,
+    goodsType: number
   ) => {
     // 出现加载中动画
     setIsLoding(true);
@@ -58,6 +59,8 @@ const SearchDetailPage = () => {
     page.current = 1;
     // 重置是否还有剩余商品
     isRemain.current = true;
+    // 更新商品类型 (新品/热销 0.新品 1.热销 2.全部)
+    type.current = goodsType;
     // 重新获取商品
     getHomeGoodsList(type.current, page.current, sortType, orderType);
     // 500ms后取消加载中动画
