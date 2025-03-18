@@ -1,9 +1,11 @@
 "use client";
 
-import { GoodsMessage } from "@/types/goods";
+import { GoodsMessage, GoodsPageResult } from "@/types/goods";
 import HomeCategoryGoods from "@/components/home/category/goods";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { GetHotOrNewGoodsAPI } from "@/apis/goods";
 
 interface CategoryItems {
   title: string;
@@ -14,6 +16,26 @@ interface CategoryItems {
 
 const Category = (props: { categoryItems: CategoryItems[] }) => {
   const router = useRouter();
+
+  const [newGoodsItems, setNewGoodsItems] = useState<GoodsMessage[]>([]);
+  const [hotGoodsItems, setHotGoodsItems] = useState<GoodsMessage[]>([]);
+
+  const getGoodsItems = async (type: number) => {
+    const res = await GetHotOrNewGoodsAPI(type, false, 1, 4);
+    const data: GoodsPageResult = res.data;
+    if (type === 0) {
+      setNewGoodsItems(data.data);
+    } else if (type === 1) {
+      setHotGoodsItems(data.data);
+    }
+  };
+
+  useEffect(() => {
+    props.categoryItems.forEach((item) => {
+      getGoodsItems(item.type);
+    });
+  }, []);
+
   return (
     <div className="w-full p-3 bg-[#fff]">
       {props.categoryItems.map((item) => {
@@ -37,7 +59,9 @@ const Category = (props: { categoryItems: CategoryItems[] }) => {
               </div>
             </div>
             <div>
-              <HomeCategoryGoods type={item.type} isAll={false} />
+              <HomeCategoryGoods
+                goodItems={item.type === 0 ? newGoodsItems : hotGoodsItems}
+              />
             </div>
           </div>
         );

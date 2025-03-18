@@ -17,6 +17,7 @@ export default function Home() {
     useState<CategoryList | null>(null);
   // 控制遮罩层是否显示
   const [loading, setLoading] = useState(false);
+  // 获取分类列表
   const getCategoryList = async () => {
     handleLoadData();
     const res = await getCategoryListAPI();
@@ -47,12 +48,14 @@ export default function Home() {
   // 加载组件
   const loadingComponent = () => {
     return (
-      <div className="fixed z-99999 inset-0 w-full h-full flex flex-col justify-center items-center bg-[rgba(0,0,0,0.8)]">
-        <Icon
-          icon="line-md:loading-twotone-loop"
-          className="w-16 h-16 text-white"
-        />
-        <p className="text-white text-xl">加载中</p>
+      <div className="fixed z-99999 inset-0 w-full h-full flex justify-center items-center bg-[rgba(0,0,0,0.8)]">
+        <div className="flex flex-col justify-center items-center p-6 bg-[rgba(0,0,0,0.9)] rounded-md">
+          <Icon
+            icon="line-md:loading-twotone-loop"
+            className="w-16 h-16 text-white"
+          />
+          <p className="text-white text-xl">加载中...</p>
+        </div>
       </div>
     );
   };
@@ -142,7 +145,8 @@ export default function Home() {
   };
   return (
     <div className="w-full h-full">
-      {loading ? loadingComponent() : contentComponent()}
+      {loading && loadingComponent()}
+      {contentComponent()}
     </div>
   );
 }
