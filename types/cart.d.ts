@@ -11,4 +11,7 @@ export type CartGoodItem = {
   checked: boolean;
   picUrl: string;
   remark: string;
+  storeId: number;
+  storeName: string;
+  isContainCoupon: boolean;
 };

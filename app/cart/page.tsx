@@ -31,7 +31,7 @@ export default function Cart() {
   });
   return (
     <div>
-      <CartTopBar />
+      <CartTopBar cartGoodsItemsLength={cartGoods.length} />
       <CartGoods CartGoodsItems={cartGoods} />
       {memberInfo.token && (
         <BottomBar
