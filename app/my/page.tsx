@@ -6,10 +6,9 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 const myRelaContent = [
-  { count: 0, title: "收藏的店铺" },
-  { count: 0, title: "收藏的商品" },
-  { count: 0, title: "关注的商品" },
-  { count: 0, title: "我的足迹" },
+  { icon: "mingcute:store-line", title: "收藏" },
+  { icon: "ep:goods", title: "关注店铺" },
+  { icon: "ic:sharp-history", title: "足迹" },
 ];
 
 const myOrderItems = [
@@ -91,9 +90,9 @@ export default function My() {
             return (
               <div
                 key={index}
-                className="flex flex-col justify-center items-center text-[#6a6a6a]"
+                className="flex justify-center items-center gap-2 text-[#6a6a6a]"
               >
-                <div>{item.count}</div>
+                <Icon icon={item.icon} fontSize={24} />
                 <div>{item.title}</div>
               </div>
             );

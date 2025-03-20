@@ -32,7 +32,7 @@ export default function Cart() {
   return (
     <div>
       <CartTopBar cartGoodsItemsLength={cartGoods.length} />
-      <CartGoods CartGoodsItems={cartGoods} />
+      <CartGoods CartGoodsItems={cartGoods} getCartGoodsItems={getCartGoods} />
       {memberInfo.token && (
         <BottomBar
           cartGoodsItems={cartGoods}

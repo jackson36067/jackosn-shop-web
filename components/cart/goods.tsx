@@ -8,23 +8,40 @@ import Link from "next/link";
 import useMemberStore from "@/stores/MemberStore";
 import { useEffect, useState } from "react";
 import useSelectedGoodsStore from "@/stores/CartSelectedGoods";
-import { SetGoodsCheckedAPI } from "@/apis/cart";
+import { removeGoodsFromCartAPI, SetGoodsCheckedAPI } from "@/apis/cart";
 import { IconRight } from "react-day-picker";
 import { DropdownMenu } from "../ui/dropdown-menu";
 import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@radix-ui/react-dropdown-menu";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerTitle,
+  DrawerTrigger,
+} from "../ui/drawer";
+import { getStoreCouponAPI, getUnGetStoreCouponListAPI } from "@/apis/coupon";
+import { SotreCouponItem } from "@/types/coupon";
+import { toast } from "sonner";
 
 // 购物车有数据时
 const CartContent = ({
   items,
   setCartItems,
+  getCartGoodsItems,
 }: {
   items: CartGoodItem[];
   setCartItems: (items: CartGoodItem[]) => void;
+  getCartGoodsItems: () => void;
 }) => {
+  // 用于保存被选中的购物车商品
   const { selectedGoods, setSelectedGoods } = useSelectedGoodsStore();
+  // 记录被点击打开的drawerId,防止打开多个,也可以用于控制drawer的打开与关闭
+  const [openId, setOpenId] = useState<number | null>(null);
+  // 记录通过点击id获取到的优惠卷列表
+  const [storeCouponList, setStoreCouponList] = useState<SotreCouponItem[]>([]);
 
   // 点击选中按钮后执行
   const doCheckGoods = async (item: CartGoodItem) => {
@@ -73,6 +90,44 @@ const CartContent = ({
     // 发送请求修改商品数量
     await SetGoodsCheckedAPI([item.id], undefined, item.number);
   };
+
+  // 从购物车中移除商品
+  const handleRemoveGoodsFromCart = async (id: number) => {
+    await removeGoodsFromCartAPI(id);
+    // 重新获取购物车数据
+    getCartGoodsItems();
+  };
+
+  // 获取商家提供未领取的优惠卷列表
+  const getUnGetCouponList = async (storeId: number) => {
+    // 根据店家id获取优惠卷数据
+    const res = await getUnGetStoreCouponListAPI(storeId);
+    setStoreCouponList(res.data);
+  };
+
+  // 监听优惠卷弹窗的开启事件
+  const handleDrawerOpenChange = (isOpen: boolean, item: CartGoodItem) => {
+    // 判断是关闭还是开启,修改开启drawer的id
+    setOpenId(isOpen ? item.id : null);
+    // 如果是开启弹窗就发送请求获取数据,并且第一次获取后就不需要再发起请求获取了
+    if (isOpen && !storeCouponList.length) {
+      getUnGetCouponList(item.storeId);
+    }
+  };
+
+  // 关注并且领取优惠卷
+  const handleGetStoreCoupon = async (couponId: number, storeId: number) => {
+    await getStoreCouponAPI(storeId, couponId);
+    toast.success("成功领取优惠卷");
+    // 重新获取优惠卷
+    // getUnGetCouponList(storeId);
+    // 或者直接从数据中移除这一个数据
+    setStoreCouponList(
+      storeCouponList.filter((item) => {
+        return item.id !== couponId;
+      })
+    );
+  };
   return (
     <div className="pb-60 overflow-auto">
       {items.map((item) => {
@@ -94,10 +149,65 @@ const CartContent = ({
 
               <div className="flex items-center justify-end gap-4 text-sm text-gray-400">
                 {item.isContainCoupon && (
-                  <div className="flex items-center gap-1">
-                    <div>领卷</div>
-                    <IconRight className="w-3 h-3" />
-                  </div>
+                  <Drawer
+                    direction="bottom"
+                    open={openId === item.id}
+                    onOpenChange={(isOpen) =>
+                      handleDrawerOpenChange(isOpen, item)
+                    }
+                  >
+                    <DrawerTrigger className="flex items-center gap-1">
+                      <div>领卷</div>
+                      <IconRight className="w-3 h-3" />
+                    </DrawerTrigger>
+                    <DrawerContent className="px-5">
+                      <DrawerTitle className="pt-3 text-center">
+                        优惠
+                      </DrawerTitle>
+                      <DrawerDescription className="text-sm text-gray-400 pt-3">
+                        领卷
+                      </DrawerDescription>
+                      <div className="pb-180">
+                        {storeCouponList.map((couponItem) => {
+                          return (
+                            <div
+                              key={couponItem.id}
+                              className="w-[100%] bg-[#ffece5]/90 rounded-lg mt-5 p-2"
+                            >
+                              <div className="flex items-center">
+                                <div className="flex-2/3 flex flex-col gap-1 border-dashed border-r-[1px] border-gray-600 text-sm text-orange-600">
+                                  <div>
+                                    ￥
+                                    <span className="font-bold text-3xl px-1">
+                                      {couponItem.discount}
+                                    </span>
+                                    {couponItem.title}
+                                  </div>
+                                  <div>订单金额满{couponItem.min}元可使用</div>
+                                  <div>
+                                    领取后{couponItem.expireDay}天内可使用
+                                  </div>
+                                </div>
+                                <div className="flex-1/3 flex justify-center pl-2">
+                                  <button
+                                    className="rounded-2xl bg-orange-600 text-white p-2"
+                                    onClick={() =>
+                                      handleGetStoreCoupon(
+                                        couponItem.id,
+                                        item.storeId
+                                      )
+                                    }
+                                  >
+                                    关注并领取
+                                  </button>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </DrawerContent>
+                  </Drawer>
                 )}
                 <DropdownMenu>
                   <DropdownMenuTrigger>
@@ -105,7 +215,12 @@ const CartContent = ({
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="px-6 bg-gray-500 text-white rounded-lg">
                     <div className="py-2 border-b-[1px] border-white">收藏</div>
-                    <div className="py-2">删除</div>
+                    <div
+                      className="py-2"
+                      onClick={() => handleRemoveGoodsFromCart(item.id)}
+                    >
+                      删除
+                    </div>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
@@ -186,7 +301,10 @@ const noTokenContent = () => {
   );
 };
 
-const CartGoods = (props: { CartGoodsItems: CartGoodItem[] }) => {
+const CartGoods = (props: {
+  CartGoodsItems: CartGoodItem[];
+  getCartGoodsItems: () => void;
+}) => {
   const { memberInfo } = useMemberStore();
   // 判断购物车商品是否全部选中
   const [cartItems, setCartItems] = useState(props.CartGoodsItems);
@@ -199,7 +317,11 @@ const CartGoods = (props: { CartGoodsItems: CartGoodItem[] }) => {
       {!memberInfo.token ? (
         noTokenContent()
       ) : props.CartGoodsItems.length ? (
-        <CartContent items={cartItems} setCartItems={setCartItems} />
+        <CartContent
+          items={cartItems}
+          setCartItems={setCartItems}
+          getCartGoodsItems={props.getCartGoodsItems}
+        />
       ) : (
         EmptyCartCategory()
       )}

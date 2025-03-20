@@ -33,3 +33,10 @@ export const SetGoodsCheckedAPI = (
     },
   });
 };
+
+export const removeGoodsFromCartAPI = (id: number) => {
+  return httpInstance({
+    method: "DELETE",
+    url: `/cart/${id}`,
+  });
+};
