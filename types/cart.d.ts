@@ -14,4 +14,5 @@ export type CartGoodItem = {
   storeId: number;
   storeName: string;
   isContainCoupon: boolean;
+  isCollect: boolean;
 };

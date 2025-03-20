@@ -25,6 +25,7 @@ import {
 import { getStoreCouponAPI, getUnGetStoreCouponListAPI } from "@/apis/coupon";
 import { SotreCouponItem } from "@/types/coupon";
 import { toast } from "sonner";
+import { doCollectOrCancelCollectGoodsAPI } from "@/apis/goods";
 
 // 购物车有数据时
 const CartContent = ({
@@ -128,6 +129,17 @@ const CartContent = ({
       })
     );
   };
+
+  // 收藏商品或者取消收藏商品
+  const handleCollectOrCancleCollectGoods = async (
+    goodsId: number,
+    isCollect: boolean
+  ) => {
+    // 发起请求收藏或者取消收藏商品
+    await doCollectOrCancelCollectGoodsAPI(goodsId, isCollect);
+    // 重新获取购物车商品数据
+    getCartGoodsItems();
+  };
   return (
     <div className="pb-60 overflow-auto">
       {items.map((item) => {
@@ -214,7 +226,17 @@ const CartContent = ({
                     <Icon icon={"icon-park:more"} fontSize={28}></Icon>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="px-6 bg-gray-500 text-white rounded-lg">
-                    <div className="py-2 border-b-[1px] border-white">收藏</div>
+                    <div
+                      className="py-2 border-b-[1px] border-white"
+                      onClick={() =>
+                        handleCollectOrCancleCollectGoods(
+                          item.goodsId,
+                          item.isCollect
+                        )
+                      }
+                    >
+                      {item.isCollect ? "取消收藏" : "收藏"}
+                    </div>
                     <div
                       className="py-2"
                       onClick={() => handleRemoveGoodsFromCart(item.id)}

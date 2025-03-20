@@ -56,3 +56,17 @@ export const GetGoodsByCategoryIdAPI = (
     },
   });
 };
+
+export const doCollectOrCancelCollectGoodsAPI = (
+  goodsId: number,
+  isCollect: boolean
+) => {
+  return httpInstance({
+    method: "POST",
+    url: "/goods/collect",
+    data: {
+      goodsId,
+      isCollect,
+    },
+  });
+};
