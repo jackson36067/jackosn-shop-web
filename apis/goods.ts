@@ -18,7 +18,8 @@ export const GetHotOrNewGoodsAPI = (
   pageSize?: number,
   name?: string,
   sortType?: string,
-  orderType?: number
+  orderType?: number,
+  storeId?: number
 ) => {
   return httpInstance({
     method: "GET",
@@ -31,6 +32,7 @@ export const GetHotOrNewGoodsAPI = (
       name,
       sortType,
       orderType,
+      storeId,
     },
   });
 };

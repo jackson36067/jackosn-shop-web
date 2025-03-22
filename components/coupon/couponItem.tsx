@@ -2,6 +2,7 @@ import { UserCouponItem } from "@/types/coupon";
 import { Checkbox } from "../ui/checkbox";
 import { useRef, useState } from "react";
 import Image from "next/image";
+import { IconRight } from "react-day-picker";
 
 const CouponContent = (props: {
   userCouponItems: UserCouponItem[];
@@ -32,7 +33,12 @@ const CouponContent = (props: {
         return (
           <div key={item.storeId}>
             <div className="flex flex-col gap-1">
-              <div className="flex gap-3">
+              <div
+                className="flex gap-2 items-center"
+                onClick={() =>
+                  (window.location.href = `/store?id=${item.storeId}`)
+                }
+              >
                 <Image
                   src={item.avatar}
                   width={30}
@@ -41,6 +47,9 @@ const CouponContent = (props: {
                   className="rounded-full"
                 ></Image>
                 <div>{item.name}</div>
+                <div>
+                  <IconRight className="w-3 h-3" />
+                </div>
               </div>
               <div className="flex flex-col gap-1">
                 {item.memberCouponItemVOList.map((couponItem) => {

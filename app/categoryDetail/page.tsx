@@ -25,7 +25,7 @@ const CategoryDetails = () => {
       }
       const res = await GetGoodsByCategoryIdAPI(Number(id), pageNumber, 4);
       const data: GoodsPageResult = res.data;
-      setIsRemain(data.isRemain);
+      setIsRemain(data.data.length === 4);
       const newData = data.data;
       setHotOrNewGoods((prevDate) => [...prevDate, ...newData]);
       setPage(pageNumber);

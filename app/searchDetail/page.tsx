@@ -41,6 +41,41 @@ const SearchDetailPage = () => {
     }, 600);
   }, []);
 
+  const getHomeGoodsList = async (pageNumber: number) => {
+    try {
+      // 判断是否还有剩余商品
+      if (!isRemain.current) {
+        // 没有,则不需要再获取商品
+        return;
+      }
+      // 首页展示不是获取全部,而且不需要传递name, saleNumSort, priceSort三个参数
+      const res = await GetHotOrNewGoodsAPI(
+        type.current,
+        true,
+        pageNumber,
+        6,
+        name || "",
+        sortTypeRef.current,
+        orderTypeRef.current
+      );
+      const data: GoodsPageResult = res.data;
+      // 设置是否还有剩余商品
+      isRemain.current = data.data.length === 6;
+      // 获取到的商品数据
+      const newData = data.data;
+      setGoodItems((prevDate) => [...prevDate, ...newData]);
+      page.current = pageNumber;
+    } catch (error) {
+      console.error("加载失败:", error);
+    }
+  };
+  // 第一次获取商品数据
+  useEffect(() => {
+    if (hasFetched.current) return;
+    hasFetched.current = true;
+    getHomeGoodsList(page.current);
+  }, []);
+
   // 点击子组件传递过来的排序方式
   const handleSelectedSortTypeAndOrderType = (
     sortType: string,
@@ -62,52 +97,12 @@ const SearchDetailPage = () => {
     // 更新商品类型 (新品/热销 0.新品 1.热销 2.全部)
     type.current = goodsType;
     // 重新获取商品
-    getHomeGoodsList(type.current, page.current, sortType, orderType);
+    getHomeGoodsList(page.current);
     // 500ms后取消加载中动画
     setTimeout(() => {
       setIsLoding(false);
     }, 500);
   };
-
-  const getHomeGoodsList = async (
-    type: number,
-    pageNumber: number,
-    sortType: string,
-    orderType: number
-  ) => {
-    try {
-      // 判断是否还有剩余商品
-      if (!isRemain.current) {
-        // 没有,则不需要再获取商品
-        return;
-      }
-      // 首页展示不是获取全部,而且不需要传递name, saleNumSort, priceSort三个参数
-      const res = await GetHotOrNewGoodsAPI(
-        type,
-        true,
-        pageNumber,
-        6,
-        name || "",
-        sortType,
-        orderType
-      );
-      const data: GoodsPageResult = res.data;
-      // 设置是否还有剩余商品
-      isRemain.current = data.isRemain;
-      // 获取到的商品数据
-      const newData = data.data;
-      setGoodItems((prevDate) => [...prevDate, ...newData]);
-      page.current = pageNumber;
-    } catch (error) {
-      console.error("加载失败:", error);
-    }
-  };
-  // 第一次获取商品数据
-  useEffect(() => {
-    if (hasFetched.current) return;
-    hasFetched.current = true;
-    getHomeGoodsList(type.current, page.current, "default", 0);
-  }, []);
 
   useEffect(() => {
     // 监听滚动事件 -> 滚动到底部获取更多商品数据
@@ -116,15 +111,10 @@ const SearchDetailPage = () => {
         window.innerHeight + document.documentElement.scrollTop >=
         document.documentElement.offsetHeight - 10
       ) {
-        if (isRemain) {
+        if (isRemain.current) {
           // 下滚动到底部,则获取下一页商品数据
           setTimeout(() => {
-            getHomeGoodsList(
-              type.current,
-              page.current + 1,
-              sortTypeRef.current,
-              orderTypeRef.current
-            );
+            getHomeGoodsList(page.current + 1);
           }, 200);
         }
       }

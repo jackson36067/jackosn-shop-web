@@ -16,15 +16,23 @@ const MoreCategoryGoods = () => {
   const hasFetched = useRef(false); // 追踪是否已经发送请求
   const [page, setPage] = useState(1);
   // 分页获取商品是否有剩余的商品, 没有-> 则不需要在获取商品
-  const [isRemain, setIsRemain] = useState(true);
+  const isRemain = useRef<boolean>(true);
+  // 商品名称条件
+  const nameRef = useRef<string>("");
   const getMoreHotOrNewData = async (pageNumber: number) => {
     try {
       if (!isRemain) {
         return;
       }
-      const res = await GetHotOrNewGoodsAPI(Number(type), true, pageNumber, 4);
+      const res = await GetHotOrNewGoodsAPI(
+        Number(type),
+        true,
+        pageNumber,
+        4,
+        nameRef.current || ""
+      );
       const data: GoodsPageResult = res.data;
-      setIsRemain(data.isRemain);
+      isRemain.current = data.data.length === 4;
       const newData = data.data;
       setHotOrNewGoods((prevDate) => [...prevDate, ...newData]);
       setPage(pageNumber);
@@ -38,6 +46,14 @@ const MoreCategoryGoods = () => {
     hasFetched.current = true;
     getMoreHotOrNewData(page);
   }, []);
+
+  // 更改input值改变
+  const handleChangeInputValue = (name: string) => {
+    nameRef.current = name;
+    setHotOrNewGoods([]);
+    isRemain.current = true;
+    getMoreHotOrNewData(1);
+  };
 
   useEffect(() => {
     // 监听滚动事件 -> 滚动到底部获取更多商品数据
@@ -77,6 +93,10 @@ const MoreCategoryGoods = () => {
             />
           </svg>
           <input
+            value={nameRef.current}
+            onInput={(e) =>
+              handleChangeInputValue((e.target as HTMLInputElement).value)
+            }
             type="text"
             placeholder="搜索你想要的商品"
             className="w-[90%] py-2 pl-12 pr-4 border text-gray-500  rounded-md outline-none bg-gray-50 focus:bg-white focus:border-gray-700"
@@ -88,7 +108,7 @@ const MoreCategoryGoods = () => {
       </div>
       <div className="mt-5">
         {/* 判断是否还有商品获取 */}
-        {isRemain ? (
+        {isRemain.current ? (
           <div className="flex justify-center items-center gap-2 mt-5">
             <Icon
               icon="line-md:loading-twotone-loop"

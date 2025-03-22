@@ -149,7 +149,12 @@ const CartContent = ({
             className="flex flex-col gap-3 mt-3 py-4 px-2 border rounded-lg bg-white"
           >
             <div className="flex justify-between items-center pl-10 pr-4">
-              <div className="flex gap-2 items-center">
+              <div
+                className="flex gap-2 items-center"
+                onClick={() =>
+                  (window.location.href = `/store?id=${item.storeId}`)
+                }
+              >
                 <div>
                   <span className="text-[#d4392b] text-xl mr-2 font-mono">
                     jm

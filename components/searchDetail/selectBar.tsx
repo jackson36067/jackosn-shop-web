@@ -11,6 +11,7 @@ import {
   DrawerTrigger,
 } from "../ui/drawer";
 import { Switch } from "../ui/switch";
+import { usePathname } from "next/navigation";
 
 type Emit = {
   // 通过该函数向父组件传递排序方式和排序方式
@@ -24,6 +25,8 @@ type Emit = {
 export const SearchSelectBar = ({
   handleSelectedSortTypeAndOrderType,
 }: Emit) => {
+  // 获取路径
+  const pathname = usePathname();
   // 排序方式
   // default: 综合排序
   // sales: 销量排序
@@ -121,37 +124,39 @@ export const SearchSelectBar = ({
       </Button>
 
       {/* 筛选 */}
-      <Drawer direction="top" open={open} onOpenChange={setOpen}>
-        <DrawerTrigger asChild>
-          <Button
-            variant="ghost"
-            className="text-gray-600 hover:text-black"
-            onClick={() => setOpen(true)}
-          >
-            筛选
-          </Button>
-        </DrawerTrigger>
-        <DrawerContent>
-          <DrawerTitle></DrawerTitle>
-          <DrawerDescription></DrawerDescription>
-          <div className="flex justify-between items-center py-4 px-3">
-            <div>新品</div>
-            <Switch
-              id="airplane-mode"
-              checked={type.current === 0}
-              onCheckedChange={() => handleChangeGoodsType(0)}
-            />
-          </div>
-          <div className="flex justify-between items-center py-4 px-3">
-            <div>热品</div>
-            <Switch
-              id="airplane-mode"
-              checked={type.current === 1}
-              onCheckedChange={() => handleChangeGoodsType(1)}
-            />
-          </div>
-        </DrawerContent>
-      </Drawer>
+      {pathname !== "/store" && (
+        <Drawer direction="top" open={open} onOpenChange={setOpen}>
+          <DrawerTrigger asChild>
+            <Button
+              variant="ghost"
+              className="text-gray-600 hover:text-black"
+              onClick={() => setOpen(true)}
+            >
+              筛选
+            </Button>
+          </DrawerTrigger>
+          <DrawerContent>
+            <DrawerTitle></DrawerTitle>
+            <DrawerDescription></DrawerDescription>
+            <div className="flex justify-between items-center py-4 px-3">
+              <div>新品</div>
+              <Switch
+                id="airplane-mode"
+                checked={type.current === 0}
+                onCheckedChange={() => handleChangeGoodsType(0)}
+              />
+            </div>
+            <div className="flex justify-between items-center py-4 px-3">
+              <div>热品</div>
+              <Switch
+                id="airplane-mode"
+                checked={type.current === 1}
+                onCheckedChange={() => handleChangeGoodsType(1)}
+              />
+            </div>
+          </DrawerContent>
+        </Drawer>
+      )}
     </div>
   );
 };
