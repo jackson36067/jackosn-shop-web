@@ -5,3 +5,18 @@ export type SotreCouponItem = {
   min: number;
   expireDay: number;
 };
+
+export type UserCouponItem = {
+  storeId: number;
+  name: string; // 店铺名称
+  avatar: string; // 店铺头像
+  memberCouponItemVOList: memberCouponItemVOList[];
+};
+
+export type memberCouponItemVOList = {
+  id: number;
+  min: number;
+  expireTime: string;
+  title: string;
+  discount: number;
+};

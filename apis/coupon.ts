@@ -28,3 +28,29 @@ export const getStoreCouponAPI = (storeId: number, couponId: number) => {
     },
   });
 };
+
+/**
+ * 获取用户所有优惠卷
+ * @returns
+ */
+export const getMemberCouponAPI = () => {
+  return httpInstance({
+    method: "GET",
+    url: "/coupon/member",
+  });
+};
+
+/**
+ * 根据用户优惠卷移除用户优惠卷,支持多删
+ * @param idList 用户优惠卷id
+ * @returns
+ */
+export const removeAllMemberCouponByIdsAPI = (idList: number[]) => {
+  return httpInstance({
+    method: "PUT",
+    url: "/coupon/remove",
+    data: {
+      idList,
+    },
+  });
+};

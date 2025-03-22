@@ -10,11 +10,11 @@ import { useEffect, useState } from "react";
 import useSelectedGoodsStore from "@/stores/CartSelectedGoods";
 import { removeGoodsFromCartAPI, SetGoodsCheckedAPI } from "@/apis/cart";
 import { IconRight } from "react-day-picker";
-import { DropdownMenu } from "../ui/dropdown-menu";
 import {
+  DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
-} from "@radix-ui/react-dropdown-menu";
+} from "../ui/dropdown-menu";
 import {
   Drawer,
   DrawerContent,
@@ -225,7 +225,7 @@ const CartContent = ({
                   <DropdownMenuTrigger>
                     <Icon icon={"icon-park:more"} fontSize={28}></Icon>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="px-6 bg-gray-500 text-white rounded-lg">
+                  <DropdownMenuContent className="bg-gray-500 text-white rounded-lg text-center">
                     <div
                       className="py-2 border-b-[1px] border-white"
                       onClick={() =>
