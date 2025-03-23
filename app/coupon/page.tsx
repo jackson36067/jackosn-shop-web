@@ -57,7 +57,7 @@ export default function CouponPage() {
         memberCouponList={memberCouponList}
         setNewDeleteState={changeDeleteState}
       />
-      {memberCouponList.length ? (
+      {memberCouponList.length > 0 ? (
         <CouponContent
           userCouponItems={memberCouponList}
           deleteState={deleteState}

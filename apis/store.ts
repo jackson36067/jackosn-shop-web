@@ -8,7 +8,7 @@ import httpInstance from "@/utils/http";
 export const getStoerInfoAPI = (storeParams: { id: number }) => {
   return httpInstance({
     method: "GET",
-    url: `/store/${storeParams.id}`,
+    url: `/store/info/${storeParams.id}`,
   });
 };
 
@@ -25,6 +25,35 @@ export const followStoreAPI = (id: number, isFollow: boolean) => {
     data: {
       id,
       isFollow,
+    },
+  });
+};
+
+/**
+ * 获取关注店铺列表
+ * @returns
+ */
+export const getFollowStoreListAPI = (name?: string) => {
+  return httpInstance({
+    method: "GET",
+    url: "/store/follow/list",
+    params: {
+      name,
+    },
+  });
+};
+
+/**
+ * 取消关注店铺
+ * @param idList 店铺id数组
+ * @returns
+ */
+export const cancelFollowStoreAPI = (idList: number[]) => {
+  return httpInstance({
+    method: "DELETE",
+    url: "/store/cancel/follow",
+    data: {
+      idList,
     },
   });
 };

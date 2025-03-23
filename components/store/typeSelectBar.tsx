@@ -30,14 +30,14 @@ const StoreGoodsTypeBar = (props: {
   };
   return (
     <div className="p-3">
-      <div className="flex justify-center items-center gap-8 text-[18px] text-gray-500">
+      <div className="flex justify-center items-center gap-8 text-[1rem] text-gray-500">
         {typeBarItems.map((item, index) => {
           return (
             <div
               key={index}
               className={
                 item.type === type
-                  ? "text-orange-600 border-b-[2px] border-orange-600"
+                  ? "text-orange-600 border-b-[0.1rem] border-orange-600"
                   : ""
               }
               onClick={() => handleChangeGoodsType(item.type)}

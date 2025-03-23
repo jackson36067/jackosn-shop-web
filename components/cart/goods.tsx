@@ -192,7 +192,7 @@ const CartContent = ({
                               className="w-[100%] bg-[#ffece5]/90 rounded-lg mt-5 p-2"
                             >
                               <div className="flex items-center">
-                                <div className="flex-2/3 flex flex-col gap-1 border-dashed border-r-[1px] border-gray-600 text-sm text-orange-600">
+                                <div className="flex-2/3 flex flex-col gap-1 border-dashed border-r-[0.05rem] border-gray-600 text-sm text-orange-600">
                                   <div>
                                     ￥
                                     <span className="font-bold text-3xl px-1">

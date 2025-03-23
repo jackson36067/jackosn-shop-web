@@ -27,7 +27,7 @@ const StoreTopBar = (props: {
         <div className="flex items-center justify-between px-2">
           <Icon
             icon={"ep:back"}
-            fontSize={26}
+            fontSize={"1rem"}
             onClick={() => window.history.back()}
           />
           <div className="relative bg-[#fff0f5]">
@@ -52,7 +52,7 @@ const StoreTopBar = (props: {
               }
               type="text"
               placeholder="搜索商品"
-              className="py-1 pl-8 text-black border border-[#ebdae0] rounded-md outline-none text-[12px]"
+              className="py-1 pl-8 text-black border border-[#ebdae0] rounded-md outline-none text-[0.8rem]"
             />
           </div>
         </div>
@@ -69,7 +69,7 @@ const StoreTopBar = (props: {
             </div>
             <div className="flex flex-col justify-around gap-1">
               <div className="text-xl font-bold">{props.storeInfo.name}</div>
-              <div className="text-[12px] text-gray-500">
+              <div className="text-[0.8rem] text-gray-500">
                 {props.storeInfo.fansNumber}粉丝
               </div>
             </div>
@@ -78,8 +78,8 @@ const StoreTopBar = (props: {
             <Button
               className={
                 props.storeInfo.isFollow
-                  ? "bg-[#d6cace] text-[16px] text-white font-bold"
-                  : "bg-orange-600 text-[16px] text-white font-bold"
+                  ? "bg-[#d6cace] text-[1rem] text-white font-bold"
+                  : "bg-orange-600 text-[1rem] text-white font-bold"
               }
               onClick={() =>
                 handelFollowStore(props.storeInfo.id, props.storeInfo.isFollow)

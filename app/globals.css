@@ -149,27 +149,32 @@ html {
 }
 @media screen and (min-width: 400px) {
   html {
-    font-size: 16.66666667px;
+    font-size: 15px;
   }
 }
 @media screen and (min-width: 414px) {
   html {
-    font-size: 17.6px;
+    font-size: 16.6px;
   }
 }
 @media screen and (min-width: 424px) {
   html {
-    font-size: 19.26666667px;
+    font-size: 17px;
   }
 }
 @media screen and (min-width: 480px) {
   html {
-    font-size: 22px;
+    font-size: 19px;
   }
 }
 @media screen and (min-width: 540px) {
   html {
-    font-size: 25px;
+    font-size: 22px;
+  }
+}
+@media screen and (min-width: 600px) {
+  html {
+    font-size: 24px;
   }
 }
 @media screen and (min-width: 720px) {
@@ -180,5 +185,25 @@ html {
 @media screen and (min-width: 750px) {
   html {
     font-size: 30px;
+  }
+}
+@media screen and (min-width: 800px) {
+  html {
+    font-size: 32px;
+  }
+}
+@media screen and (min-width: 840px) {
+  html {
+    font-size: 33px;
+  }
+}
+@media screen and (min-width: 900px) {
+  html {
+    font-size: 33.5px;
+  }
+}
+@media screen and (min-width: 940px) {
+  html {
+    font-size: 35px;
   }
 }

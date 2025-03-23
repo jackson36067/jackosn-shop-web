@@ -201,7 +201,7 @@ export default function StorePage() {
               }
             />
           </div>
-          <div className="flex-1 mt-[250px] overflow-auto bg-gray-100">
+          <div className="flex-1 mt-[15rem] overflow-auto bg-gray-100">
             {isLoding && (
               // 加载组件
               <div className="fixed z-99999 inset-0 w-full h-full flex justify-center items-center bg-[rgba(0,0,0,0.8)]">

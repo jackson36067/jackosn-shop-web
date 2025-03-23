@@ -6,9 +6,9 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 
 const myRelaContent = [
-  { icon: "mingcute:store-line", title: "收藏" },
-  { icon: "ep:goods", title: "关注店铺" },
-  { icon: "ic:sharp-history", title: "足迹" },
+  { icon: "mingcute:store-line", title: "收藏", path: "/collectGoods" },
+  { icon: "ep:goods", title: "关注店铺", path: "/followStore" },
+  { icon: "ic:sharp-history", title: "足迹", path: "browserHistory" },
 ];
 
 const myOrderItems = [
@@ -91,8 +91,9 @@ export default function My() {
               <div
                 key={index}
                 className="flex justify-center items-center gap-2 text-[#6a6a6a]"
+                onClick={() => (window.location.href = item.path)}
               >
-                <Icon icon={item.icon} fontSize={24} />
+                <Icon icon={item.icon} fontSize={"1rem"} />
                 <div>{item.title}</div>
               </div>
             );

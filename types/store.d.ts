@@ -6,3 +6,11 @@ export type StoreInfo = {
   isFollow: boolean;
   fansNumber: number;
 };
+
+export type FollowStoreItem = {
+  id: number;
+  name: string;
+  avatar: string;
+  followTime: string;
+  storeId: number;
+};

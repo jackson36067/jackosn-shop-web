@@ -77,17 +77,17 @@ const CouponContent = (props: {
                               {couponItem.discount}
                             </span>
                           </div>
-                          <div className="text-[12px]">
+                          <div className="text-[0.8rem]">
                             满{couponItem.min}可用
                           </div>
                         </div>
                         <div className="flex-3/4 flex justify-between items-center px-2">
-                          <div className="text-[12px] text-red-600">
-                            <p className="text-black text-[16px]">店铺优惠卷</p>
+                          <div className="text-[0.8rem] text-red-600">
+                            <p className="text-black text-[1rem]">店铺优惠卷</p>
                             <p>{couponItem.expireTime}到期</p>
                             <p>限该店铺内商品可用</p>
                           </div>
-                          <div className="bg-red-500 text-white p-2 text-[12px] rounded-[6px]">
+                          <div className="bg-red-500 text-white p-2 text-[0.8rem] rounded-[0.4rem]">
                             使用
                           </div>
                         </div>
