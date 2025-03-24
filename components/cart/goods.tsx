@@ -133,10 +133,15 @@ const CartContent = ({
   // 收藏商品或者取消收藏商品
   const handleCollectOrCancleCollectGoods = async (
     goodsId: number,
+    goodsName: string,
     isCollect: boolean
   ) => {
     // 发起请求收藏或者取消收藏商品
-    await doCollectOrCancelCollectGoodsAPI(goodsId, isCollect);
+    await doCollectOrCancelCollectGoodsAPI({
+      goodsId: goodsId,
+      goodsName: goodsName,
+      isCollect: isCollect,
+    });
     // 重新获取购物车商品数据
     getCartGoodsItems();
   };
@@ -236,6 +241,7 @@ const CartContent = ({
                       onClick={() =>
                         handleCollectOrCancleCollectGoods(
                           item.goodsId,
+                          item.goodsName,
                           item.isCollect
                         )
                       }

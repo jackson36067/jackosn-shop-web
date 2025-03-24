@@ -59,16 +59,47 @@ export const GetGoodsByCategoryIdAPI = (
   });
 };
 
-export const doCollectOrCancelCollectGoodsAPI = (
-  goodsId: number,
-  isCollect: boolean
-) => {
+/**
+ * 收藏商品 (购物车页收藏或者取消收藏商品需要goodId,iscollect,goodsname参数 , 我的收藏页删除收藏商品需要idList参数)
+ * @param goodsId
+ * @param isCollect
+ * @param goodsName
+ * @param idList 收藏商品id
+ * @returns
+ */
+export const doCollectOrCancelCollectGoodsAPI = (data: {
+  goodsId?: number;
+  isCollect?: boolean;
+  goodsName?: string;
+  idList?: number[];
+}) => {
   return httpInstance({
     method: "POST",
     url: "/goods/collect",
-    data: {
-      goodsId,
-      isCollect,
+    data,
+  });
+};
+
+/**
+ * 获取收藏商品列表
+ * @param name 商品名称
+ * @param sortType 排序类型 0. 根据收藏时间升序排序 1. 根据收藏时间降序排序
+ * @param collectTime 获取收藏商品天数范围 比如: 一周前, 一天前, 一个月前
+ * @returns
+ */
+export const getCollectGoodsListAPI = (
+  name?: string,
+  sortType?: number | undefined,
+  collectTime?: number | undefined
+) => {
+  if (!name) name = undefined;
+  return httpInstance({
+    method: "GET",
+    url: "/goods/collect/list",
+    params: {
+      name,
+      sortType,
+      collectTime,
     },
   });
 };
