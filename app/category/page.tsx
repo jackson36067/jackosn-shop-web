@@ -66,7 +66,7 @@ export default function Home() {
   // 主体内容组件
   const contentComponent = () => {
     return (
-      <div className="w-full h-full">
+      <div className="w-full h-full pb-40">
         <div className="w-full">
           <div className="relative w-90%">
             <svg
@@ -105,7 +105,7 @@ export default function Home() {
               </li>
             ))}
           </ul>
-          <div className="flex-1 justify-end">
+          <div className="flex-1">
             <div>
               <img
                 src={activeCategoryContent?.picUrl}
@@ -116,7 +116,7 @@ export default function Home() {
             <div className="text-center font-bold text-xl my-5">
               {activeCategoryContent?.remark}
             </div>
-            <div className="flex justify-between flex-wrap">
+            <div className="grid grid-cols-4">
               {activeCategoryContent?.subCategoryList.map((item) => {
                 return (
                   <div
