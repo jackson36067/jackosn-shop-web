@@ -106,7 +106,7 @@ const MoreCategoryGoods = () => {
       <div className="mt-8">
         <CategoryGoods goodItems={hotOrNewGoods} />
       </div>
-      <div className="mt-5">
+      <div className="mt-20 mb-5">
         {/* 判断是否还有商品获取 */}
         {isRemain.current ? (
           <div className="flex justify-center items-center gap-2 mt-5">

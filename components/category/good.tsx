@@ -32,7 +32,7 @@ const CategoryGoods = (props: { goodItems: GoodsMessage[] }) => {
                 </div>
               </div>
               {/* 购物车 */}
-              <div className="flex justify-around items-center">
+              <div className="flex justify-between items-center">
                 <div className="text-xs text-[#77787d]">
                   评论2000+条 70%好评
                 </div>
