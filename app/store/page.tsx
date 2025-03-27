@@ -3,7 +3,7 @@
 import { GetHotOrNewGoodsAPI } from "@/apis/goods";
 import { followStoreAPI, getStoerInfoAPI } from "@/apis/store";
 import HomeCategoryGoods from "@/components/home/category/goods";
-import { SearchSelectBar } from "@/components/searchDetail/selectBar";
+import SearchSelectBar from "@/components/searchDetail/selectBar";
 import StoreTopBar from "@/components/store/topBar";
 import StoreGoodsTypeBar from "@/components/store/typeSelectBar";
 import useMemberStore from "@/stores/MemberStore";
@@ -38,6 +38,10 @@ export default function StorePage() {
   const [isLoding, setIsLoding] = useState(true);
   // 商品名称
   const name = useRef<string>("");
+  //SearchSelectBar dom对象
+  const SearchSelectBarDomRef = useRef<{
+    triggerFunction: (newType: number) => void;
+  }>(null);
 
   // 获取店铺基本信息
   const getStoreInfo = async () => {
@@ -116,6 +120,8 @@ export default function StorePage() {
     isRemain.current = true;
     // 重新获取商品
     getStoreGoodsList(page.current);
+    // 更改子组件type值
+    SearchSelectBarDomRef.current?.triggerFunction(newType);
     // 500ms后取消加载中动画
     setTimeout(() => {
       setIsLoding(false);
@@ -196,6 +202,7 @@ export default function StorePage() {
               handleChangeStoreGoodsType={handleChangeStoreGoodsType}
             />
             <SearchSelectBar
+              ref={SearchSelectBarDomRef}
               handleSelectedSortTypeAndOrderType={
                 handleSelectedSortTypeAndOrderType
               }
