@@ -93,7 +93,7 @@ export default function My() {
                 className="flex justify-center items-center gap-2 text-[#6a6a6a]"
                 onClick={() => (window.location.href = item.path)}
               >
-                <Icon icon={item.icon} fontSize={"1rem"} />
+                <Icon icon={item.icon} fontSize={"1.3rem"} />
                 <div>{item.title}</div>
               </div>
             );

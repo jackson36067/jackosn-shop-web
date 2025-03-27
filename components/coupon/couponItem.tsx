@@ -13,17 +13,19 @@ const CouponContent = (props: {
   const selectedCouponId = useRef<number[]>([]);
   const [SelectedCouponId, setSelectedCouponId] = useState<number[]>([]);
   // 监听checkbox更改
-  const handleCheckCoupon = (id: number, isCheck: boolean) => {
+  const handleCheckCoupon = (idList: number[], isCheck: boolean) => {
     // 判断是否选中 ->
     if (isCheck) {
-      selectedCouponId.current.push(id);
-      setSelectedCouponId([...SelectedCouponId, id]);
+      selectedCouponId.current = [...selectedCouponId.current, ...idList];
+      setSelectedCouponId([...SelectedCouponId, ...idList]);
       //
     } else {
       selectedCouponId.current = selectedCouponId.current.filter(
-        (item) => item !== id
+        (item) => !idList.includes(item)
       );
-      setSelectedCouponId(SelectedCouponId.filter((item) => item !== id));
+      setSelectedCouponId(
+        SelectedCouponId.filter((item) => !idList.includes(item))
+      );
     }
     props.setSelectedCouponId(selectedCouponId.current);
   };
@@ -32,19 +34,36 @@ const CouponContent = (props: {
       {props.userCouponItems.map((item) => {
         return (
           <div key={item.storeId}>
-            <div className="flex flex-col gap-1">
+            <div className="flex flex-col gap-2">
               <div
                 className="flex gap-2 items-center"
                 onClick={() =>
                   (window.location.href = `/store?id=${item.storeId}`)
                 }
               >
+                {props.deleteState && (
+                  <div className="flex items-center pr-2">
+                    <Checkbox
+                      checked={item.memberCouponItemVOList
+                        .map((item) => item.id)
+                        .every((item) => SelectedCouponId.includes(item))}
+                      onCheckedChange={(checked) =>
+                        handleCheckCoupon(
+                          item.memberCouponItemVOList.map((item) => item.id),
+                          checked === true
+                        )
+                      }
+                      className="rounded-full w-5 h-5 border-[1px] border-gray-500"
+                      onClick={(e: React.MouseEvent) => e.stopPropagation()}
+                    />
+                  </div>
+                )}
                 <Image
                   src={item.avatar}
                   width={30}
                   height={30}
                   alt=""
-                  className="rounded-full"
+                  className="rounded-full w-10 h-10"
                 ></Image>
                 <div>{item.name}</div>
                 <div>
@@ -63,7 +82,10 @@ const CouponContent = (props: {
                           <Checkbox
                             checked={SelectedCouponId.includes(couponItem.id)}
                             onCheckedChange={(checked) =>
-                              handleCheckCoupon(couponItem.id, checked === true)
+                              handleCheckCoupon(
+                                [couponItem.id],
+                                checked === true
+                              )
                             }
                             className="rounded-full w-5 h-5 border-[1px] border-gray-500"
                           />
