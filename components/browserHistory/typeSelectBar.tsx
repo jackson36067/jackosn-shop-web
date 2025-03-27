@@ -14,6 +14,7 @@ const browseHistoryTypeItems = [
   { title: "图文", value: 2 },
 ];
 
+// 将传递的日期格式化,用户高亮显示有浏览记录的日期
 function formatDate(input: string): string {
   const currentYear = new Date().getFullYear();
   let date;
@@ -25,17 +26,18 @@ function formatDate(input: string): string {
   } else {
     return "格式错误";
   }
-
   return format(date, "yyyy-MM-dd");
 }
 
 const BrowseHistoryTypeSelectBar = (props: {
-  type: number;
-  changeBrowseHistoryType: (type: number) => void;
-  allBrowseHistroyDate: string[];
-  getPreDateBrowseList: (date: Date | undefined) => void;
+  type: number; // 浏览记录信息类型
+  changeBrowseHistoryType: (type: number) => void; // 更改浏览记录信息类型
+  allBrowseHistroyDate: string[]; // 所有有游览信息记录的日期
+  getPreDateBrowseList: (date: Date | undefined) => void; // 更改浏览记录日期范围
 }) => {
-  const [date, setDate] = useState<Date | undefined>(new Date());
+  // 浏览记录信息日期
+  const [date, setDate] = useState<Date | undefined>(undefined);
+  // 是否展示日历
   const [open, setOpen] = useState(false);
 
   return (
@@ -61,7 +63,9 @@ const BrowseHistoryTypeSelectBar = (props: {
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
             <Button className="bg-[#fff] text-[#161f28] font-[600] mt-2">
-              筛选浏览时间
+              {date === undefined
+                ? "筛选浏览时间"
+                : date?.toISOString().split("T")[0]}
               <Icon icon={"mdi:arrow-down-drop"} fontSize={"1rem"} />
             </Button>
           </PopoverTrigger>
@@ -79,9 +83,12 @@ const BrowseHistoryTypeSelectBar = (props: {
               }}
               selected={date}
               onDayClick={(newDate) => {
-                setDate(newDate);
+                // 让时间保持在白天，防止时区问题
+                const correctedDate = new Date(newDate.setHours(12, 0, 0, 0));
+                console.log(correctedDate.toISOString().split("T")[0]);
+                setDate(correctedDate);
                 setOpen(false);
-                props.getPreDateBrowseList(newDate);
+                props.getPreDateBrowseList(correctedDate);
               }}
             />
           </PopoverContent>

@@ -4,16 +4,19 @@ import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 
 const BrowseHistoryBottomBar = (props: {
-  operateState: boolean;
-  allSelectedStoreLength: number;
-  type: number;
-  isAllSelect: boolean;
-  handelCheckAllBrowse: (isCheck: boolean) => void;
-  handleDeleteBrowseHistory: () => void;
+  operateState: boolean; // 操作按钮状态
+  allSelectedBrowseInfoLength: number; // 被选中的浏览信息长度
+  type: number; // 浏览记录信息类型
+  isAllSelect: boolean; // 是否全选
+  handelCheckAllBrowse: (isCheck: boolean) => void; // 全选获取取消全选
+  handleDeleteBrowseHistory: () => void; // 删除选中的浏览记录历史
 }) => {
+  // 点击全选按钮选中所有浏览记录或者取消选中所有浏览记录,将是否全选传递给父组件,执行父组件的函数
   const handleCheckdChange = (isCheck: boolean) => {
     props.handelCheckAllBrowse(isCheck);
   };
+
+  // 点击删除选中浏览记录信息, 调用父组件的函数
   const handleDeleteBrowseHistory = () => {
     props.handleDeleteBrowseHistory();
   };
@@ -21,11 +24,11 @@ const BrowseHistoryBottomBar = (props: {
     <div>
       {props.operateState && (
         <div className="fixed bottom-0 left-0 w-[100%] p-3 bg-white">
-          {props.allSelectedStoreLength > 0 && (
+          {props.allSelectedBrowseInfoLength > 0 && (
             <div className="text-gray-500 text-[1rem]">
               已选中
               <span className="text-orange-500">
-                {props.allSelectedStoreLength}
+                {props.allSelectedBrowseInfoLength}
               </span>
               {props.type === 0
                 ? "件宝贝"

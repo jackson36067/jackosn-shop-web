@@ -15,28 +15,34 @@ import { cn } from "@/lib/utils";
 const BrowseHistoryContent = forwardRef(
   (
     props: {
-      type: number;
-      operateStatus: boolean;
-      browseHistoryItems: browseHistoryItem[];
-      handleSelectBrowse: (browseIdList: number[]) => void;
+      type: number; // 浏览记录信息类型
+      operateStatus: boolean; // 操作按钮状态
+      browseHistoryItems: browseHistoryItem[]; // 浏览记录信息列表
+      handleSelectBrowse: (browseIdList: number[]) => void; // 更改被选中浏览记录信息
     },
     ref
   ) => {
+    // 通过ref提供给父组件该函数,便于与父组件同步被选中的浏览记录信息
     useImperativeHandle(ref, () => ({
       triggerFunction(idList: number[]) {
         allSelectBrowseIdListRef.current = idList;
         setAllSelectBrowseIdList(idList);
       },
     }));
+    // 被选中浏览记录信息id列表
     const [allSelectBrowseIdList, setAllSelectBrowseIdList] = useState<
       number[]
     >([]);
+
+    // 用户向父组件传递被选中的浏览记录信息id列表
     const allSelectBrowseIdListRef = useRef<number[]>([]);
 
+    // 点击选中或者取消选中某个浏览记录或某个日期的所有浏览记录
     const handelBrowseSelectCheckChange = (
       checked: boolean,
       selectBrowseIdList: number[]
     ) => {
+      // 判断是否选中
       if (!checked) {
         setAllSelectBrowseIdList(
           allSelectBrowseIdList.filter(
@@ -57,6 +63,7 @@ const BrowseHistoryContent = forwardRef(
           ...selectBrowseIdList,
         ];
       }
+      // 调用父组件的函数同步被选中浏览记录信息
       props.handleSelectBrowse(allSelectBrowseIdListRef.current);
     };
 

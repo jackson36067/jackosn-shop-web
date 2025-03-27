@@ -31,3 +31,34 @@ export const removeBrowseHistoryAPI = (idList: number[]) => {
     },
   });
 };
+
+/**
+ * 获取用户查询浏览记录列表
+ * @returns
+ */
+export const getBrowseSearchHistoryListAPI = () => {
+  return httpInstance({
+    method: "GET",
+    url: "/browse/search/list",
+  });
+};
+
+/**
+ * 新增用户浏览搜索记录
+ * @param value 搜索值
+ * @returns
+ */
+export const addBrowseSearchAPI = (value: string) => {
+  return httpInstance({
+    method: "POST",
+    url: "/browse/search",
+    data: { value },
+  });
+};
+
+export const removeAllBrowseSearchHistoryAPI = () => {
+  return httpInstance({
+    method: "POST",
+    url: "/browse/search/remove",
+  });
+};

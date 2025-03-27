@@ -6,11 +6,12 @@ import { forwardRef, useImperativeHandle, useState } from "react";
 const BrowseHistoryTopBar = forwardRef(
   (
     props: {
-      browseLength: number;
-      changeOperateStatus: (isShowOperateButton: boolean) => void;
+      browseLength: number; // 总浏览记录长度
+      changeOperateStatus: (isShowOperateButton: boolean) => void; // 改变操作按钮的状态
     },
     ref
   ) => {
+    // 通过ref提供该方法给父组件,以便该组件操作按钮状态和父组件同步
     useImperativeHandle(ref, () => ({
       triggerFunction() {
         setShowOperateButton(
@@ -18,6 +19,7 @@ const BrowseHistoryTopBar = forwardRef(
         );
       },
     }));
+    // 操作按钮状态
     const [showOperateButton, setShowOperateButton] = useState<boolean>(false);
     return (
       <div>
@@ -35,7 +37,11 @@ const BrowseHistoryTopBar = forwardRef(
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <Icon icon={"tdesign:search"} fontSize={"1rem"} />
+              <Icon
+                icon={"tdesign:search"}
+                fontSize={"1rem"}
+                onClick={() => (window.location.href = "/browseSearch")}
+              />
               {/* 点击管理执行函数将是否展示操作按钮值传递给父组件 */}
               <p
                 className="text-[1rem]"
