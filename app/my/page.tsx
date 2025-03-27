@@ -4,6 +4,8 @@ import useMemberStore from "@/stores/MemberStore";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { IconRight } from "react-day-picker";
+import { Button } from "@/components/ui/button";
 
 const myRelaContent = [
   { icon: "mingcute:store-line", title: "收藏", path: "/collectGoods" },
@@ -14,19 +16,19 @@ const myRelaContent = [
 const myOrderItems = [
   {
     icon: "mingcute:wallet-2-line",
-    title: "待付款",
+    title: "待支付",
   },
   {
     icon: "mdi:truck",
-    title: "待收货",
+    title: "待发货",
   },
   {
     icon: "ri:money-cny-box-fill",
-    title: "退款/退货",
+    title: "待收货",
   },
   {
     icon: "lets-icons:order",
-    title: "全部订单",
+    title: "已完成",
   },
 ];
 
@@ -40,11 +42,7 @@ export default function My() {
     <div className="w-full h-full bg-[#f4f4f4] pb-28">
       {/* 信息展示 */}
       <div className="pt-10 pb-15 bg-[#ff2d4a]">
-        <h1 className="text-white text-3xl text-center mb-15">我的</h1>
-        <div className="flex justify-center items-center gap-8">
-          <div>
-            <Icon icon="weui:setting-outlined" className="text-white w-8 h-8" />
-          </div>
+        <div className="flex justify-center items-center">
           <div
             onClick={() => {
               if (!memberInfo.token) {
@@ -64,12 +62,6 @@ export default function My() {
               className="w-20 h-20 rounded-full border-white border-2"
               width={30}
               height={30}
-            />
-          </div>
-          <div>
-            <Icon
-              icon="fluent:chat-20-regular"
-              className="text-white w-8 h-8"
             />
           </div>
         </div>
@@ -100,8 +92,12 @@ export default function My() {
           })}
         </div>
         <div className="w-full mt-5 bg-white">
-          <div className="text-xl pl-5 py-3 border-b-[1px] border-gray-300">
-            我的订单
+          <div className="flex justify-between px-5 py-3 border-b-[1px] border-gray-300">
+            <div className="text-xl">我的订单</div>
+            <div className="flex items-center gap-1 text-gray-500">
+              <p>全部订单</p>
+              <IconRight className="w-3 h-3" />
+            </div>
           </div>
           <div className="flex justify-around w-full py-3 bg-white">
             {myOrderItems.map((item, index) => {
@@ -126,14 +122,20 @@ export default function My() {
           <p>收货地址管理</p>
           <Icon icon="weui:arrow-outlined" className="w-8 h-8"></Icon>
         </div>
-        <div
-          className="flex justify-between items-center py-3 px-4 bg-white my-3"
-          onClick={() => (window.location.href = "/coupon")}
-        >
-          <p>优惠卷管理</p>
-          <Icon icon="weui:arrow-outlined" className="w-8 h-8"></Icon>
-        </div>
         <div>
+          <div
+            className="flex justify-between items-center py-3 px-4 bg-white border-b-[1px] border-gray-300"
+            onClick={() => (window.location.href = "/coupon")}
+          >
+            <p>优惠卷管理</p>
+            <Icon icon="weui:arrow-outlined" className="w-8 h-8"></Icon>
+          </div>
+          <div className="flex justify-between items-center py-3 px-4 bg-white border-b-[1px] border-gray-300">
+            <p>领卷中心</p>
+            <Icon icon="weui:arrow-outlined" className="w-8 h-8"></Icon>
+          </div>
+        </div>
+        <div className="mt-3 mb-10">
           <div className="flex justify-between items-center py-3 px-4 bg-white border-b-[1px] border-gray-300">
             <p>联系客服</p>
             <Icon icon="weui:arrow-outlined" className="w-8 h-8"></Icon>
@@ -142,6 +144,12 @@ export default function My() {
             <p>意见反馈</p>
             <Icon icon="weui:arrow-outlined" className="w-8 h-8"></Icon>
           </div>
+        </div>
+
+        <div>
+          <Button className="w-full bg-[#ff2d4a]" size={"lg"}>
+            退出登录
+          </Button>
         </div>
       </div>
     </div>

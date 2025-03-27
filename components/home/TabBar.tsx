@@ -26,6 +26,12 @@ const TabBarItems: TabBarItem[] = [
     activeIcon: "/image/icon_category_active@3x.png",
   },
   {
+    title: "消息",
+    path: "/message",
+    icon: "/image/message.png",
+    activeIcon: "/image/active_message.png",
+  },
+  {
     title: "购物车",
     path: "/cart",
     icon: "/image/icon_cart@3x.png",
@@ -41,7 +47,7 @@ const TabBarItems: TabBarItem[] = [
 ];
 
 // 只有这些路径显示tabBar
-const showTabBarPath = ["/", "/category", "/my", "/cart"];
+const showTabBarPath = ["/", "/category", "/my", "/cart", "/message"];
 
 const TabBar = () => {
   const { selectedGoods } = useSelectedGoodsStore();
