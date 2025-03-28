@@ -68,10 +68,26 @@ export const uploadImageAPI = (file: File) => {
   });
 };
 
+/**
+ * 更新用户基本信息
+ * @param data 用户基本数据类型
+ * @returns
+ */
 export const updateMemberInfoAPI = (data: UpdateMemberInfo) => {
   return httpInstance({
     method: "PUT",
     url: "/member/update",
     data,
+  });
+};
+
+/**
+ * 用户登出
+ * @returns
+ */
+export const memberLogoutAPI = () => {
+  return httpInstance({
+    method: "POST",
+    url: "/member/logout",
   });
 };

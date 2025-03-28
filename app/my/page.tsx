@@ -6,6 +6,8 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { IconRight } from "react-day-picker";
 import { Button } from "@/components/ui/button";
+import { memberLogoutAPI } from "@/apis/member";
+import { toast } from "sonner";
 
 const myRelaContent = [
   { icon: "mingcute:store-line", title: "收藏", path: "/collectGoods" },
@@ -36,8 +38,17 @@ const myOrderItems = [
 const defaultAvatar = "/image/user_avator_default@2x.png";
 
 export default function My() {
-  const { memberInfo } = useMemberStore();
+  const { memberInfo, clearMemberInfo } = useMemberStore();
   const router = useRouter();
+
+  const handleMemberLogout = async () => {
+    await memberLogoutAPI();
+    toast.success("登出成功");
+    clearMemberInfo();
+    setTimeout(() => {
+      router.push("/login");
+    }, 200);
+  };
   return (
     <div className="w-full h-full bg-[#f4f4f4] pb-28">
       {/* 信息展示 */}
@@ -135,7 +146,7 @@ export default function My() {
             <Icon icon="weui:arrow-outlined" className="w-8 h-8"></Icon>
           </div>
         </div>
-        <div className="mt-3 mb-10">
+        <div className="my-3">
           <div className="flex justify-between items-center py-3 px-4 bg-white border-b-[1px] border-gray-300">
             <p>联系客服</p>
             <Icon icon="weui:arrow-outlined" className="w-8 h-8"></Icon>
@@ -145,12 +156,25 @@ export default function My() {
             <Icon icon="weui:arrow-outlined" className="w-8 h-8"></Icon>
           </div>
         </div>
-
-        <div>
-          <Button className="w-full bg-[#ff2d4a]" size={"lg"}>
-            退出登录
-          </Button>
+        {/* 进入修改手机号以及邮箱页 */}
+        <div
+          className="flex justify-between items-center py-3 px-4 bg-white mb-8"
+          onClick={() => (window.location.href = "/account")}
+        >
+          <p>账号安全</p>
+          <Icon icon="weui:arrow-outlined" className="w-8 h-8"></Icon>
         </div>
+        {memberInfo.token && (
+          <div>
+            <Button
+              className="w-full bg-[#ff2d4a]"
+              size={"lg"}
+              onClick={() => handleMemberLogout()}
+            >
+              退出登录
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );
