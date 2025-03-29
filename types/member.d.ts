@@ -19,11 +19,20 @@ export type MemberUpdateInfo = {
 
 export type UpdateMemberInfo = {
   id: number;
-  nickname: string;
-  avatar: string;
-  gender: 0 | 1;
-  birthday: string;
+  nickname?: string;
+  avatar?: string;
+  gender?: 0 | 1;
+  birthday?: string;
+  mobile?: string;
+  email?: string;
+};
+
+export type updatePasswordObject = {
   password: string;
-  mobile: string;
-  email: string;
+  newPassword: string;
+};
+
+export type updateEmailObject = {
+  code: string;
+  newEmail: string;
 };

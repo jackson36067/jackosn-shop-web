@@ -8,6 +8,7 @@ type State = {
 type Actions = {
   setMemberInfo: (member: MemberInfo) => void;
   clearMemberInfo: () => void;
+  updateMemberEmail: (email: string) => void;
 };
 
 const useMemberStore = create<State & Actions>()(
@@ -36,6 +37,13 @@ const useMemberStore = create<State & Actions>()(
             mobile: member.mobile,
           },
         }),
+      updateMemberEmail: (email: string) =>
+        set((state) => ({
+          memberInfo: {
+            ...state.memberInfo,
+            email: email,
+          },
+        })),
       clearMemberInfo: () =>
         set({
           memberInfo: {

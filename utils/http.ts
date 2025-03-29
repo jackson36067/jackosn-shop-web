@@ -30,8 +30,8 @@ httpInstance.interceptors.response.use(
   (error) => {
     if (error.status === 401) {
       useMemberStore.getState().clearMemberInfo();
-      return;
     }
+    console.log(error);
     const errorMsg: string = error.response.data.message || "请求失败";
     toast.error(errorMsg);
     return Promise.reject(error);

@@ -1,4 +1,8 @@
-import { UpdateMemberInfo } from "@/types/member";
+import {
+  updateEmailObject,
+  UpdateMemberInfo,
+  updatePasswordObject,
+} from "@/types/member";
 import httpInstance from "@/utils/http";
 
 /**
@@ -89,5 +93,33 @@ export const memberLogoutAPI = () => {
   return httpInstance({
     method: "POST",
     url: "/member/logout",
+  });
+};
+
+/**
+ * 更改用户密码
+ * @param passwordObject
+ * @returns
+ */
+export const updateMemberPasswordAPI = (
+  passwordObject: updatePasswordObject
+) => {
+  return httpInstance({
+    method: "POST",
+    url: "/member/password",
+    data: passwordObject,
+  });
+};
+
+/**
+ * 更改用户邮箱
+ * @param emailObject
+ * @returns
+ */
+export const updateMemberEmailAPI = (emailObject: updateEmailObject) => {
+  return httpInstance({
+    method: "POST",
+    url: "/member/email",
+    data: emailObject,
   });
 };

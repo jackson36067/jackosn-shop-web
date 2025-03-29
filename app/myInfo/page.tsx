@@ -112,7 +112,6 @@ const MyInfo = () => {
       avatar: avatar,
       gender: gender,
       birthday: birthday,
-      password: "",
       mobile: "",
       email: "",
     };
