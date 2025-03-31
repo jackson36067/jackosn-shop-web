@@ -18,7 +18,7 @@ export const getUnGetStoreCouponListAPI = (id: number) => {
  * @param couponId 优惠卷id
  * @returns
  */
-export const getStoreCouponAPI = (storeId: number, couponId: number) => {
+export const getCouponAPI = (couponId: number, storeId?: number) => {
   return httpInstance({
     method: "POST",
     url: "/coupon/get",
@@ -52,5 +52,16 @@ export const removeAllMemberCouponByIdsAPI = (idList: number[]) => {
     data: {
       idList,
     },
+  });
+};
+
+/**
+ * 获取平台提供的优惠卷
+ * @returns
+ */
+export const getPlatformCouponListAPI = () => {
+  return httpInstance({
+    method: "GET",
+    url: "/coupon/center",
   });
 };

@@ -22,10 +22,11 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer";
-import { getStoreCouponAPI, getUnGetStoreCouponListAPI } from "@/apis/coupon";
-import { SotreCouponItem } from "@/types/coupon";
+import { getCouponAPI, getUnGetStoreCouponListAPI } from "@/apis/coupon";
+import { CouponItem } from "@/types/coupon";
 import { toast } from "sonner";
 import { doCollectOrCancelCollectGoodsAPI } from "@/apis/goods";
+import GetCouponContent from "../coupon/getCouponItem";
 
 // 购物车有数据时
 const CartContent = ({
@@ -42,7 +43,7 @@ const CartContent = ({
   // 记录被点击打开的drawerId,防止打开多个,也可以用于控制drawer的打开与关闭
   const [openId, setOpenId] = useState<number | null>(null);
   // 记录通过点击id获取到的优惠卷列表
-  const [storeCouponList, setStoreCouponList] = useState<SotreCouponItem[]>([]);
+  const [storeCouponList, setStoreCouponList] = useState<CouponItem[]>([]);
 
   // 点击选中按钮后执行
   const doCheckGoods = async (item: CartGoodItem) => {
@@ -117,8 +118,8 @@ const CartContent = ({
   };
 
   // 关注并且领取优惠卷
-  const handleGetStoreCoupon = async (couponId: number, storeId: number) => {
-    await getStoreCouponAPI(storeId, couponId);
+  const handleGetStoreCoupon = async (couponId: number, storeId?: number) => {
+    await getCouponAPI(couponId, storeId);
     toast.success("成功领取优惠卷");
     // 重新获取优惠卷
     // getUnGetCouponList(storeId);
@@ -190,43 +191,12 @@ const CartContent = ({
                         领卷
                       </DrawerDescription>
                       <div className="pb-180">
-                        {storeCouponList.map((couponItem) => {
-                          return (
-                            <div
-                              key={couponItem.id}
-                              className="w-[100%] bg-[#ffece5]/90 rounded-lg mt-5 p-2"
-                            >
-                              <div className="flex items-center">
-                                <div className="flex-2/3 flex flex-col gap-1 border-dashed border-r-[0.05rem] border-gray-600 text-sm text-orange-600">
-                                  <div>
-                                    ￥
-                                    <span className="font-bold text-3xl px-1">
-                                      {couponItem.discount}
-                                    </span>
-                                    {couponItem.title}
-                                  </div>
-                                  <div>订单金额满{couponItem.min}元可使用</div>
-                                  <div>
-                                    领取后{couponItem.expireDay}天内可使用
-                                  </div>
-                                </div>
-                                <div className="flex-1/3 flex justify-center pl-2">
-                                  <button
-                                    className="rounded-2xl bg-orange-600 text-white p-2"
-                                    onClick={() =>
-                                      handleGetStoreCoupon(
-                                        couponItem.id,
-                                        item.storeId
-                                      )
-                                    }
-                                  >
-                                    {item.isFollow ? "领取" : "关注并领取"}
-                                  </button>
-                                </div>
-                              </div>
-                            </div>
-                          );
-                        })}
+                        <GetCouponContent
+                          couponList={storeCouponList}
+                          storeId={item.storeId}
+                          isFollow={item.isFollow}
+                          handleGetCoupon={handleGetStoreCoupon}
+                        />
                       </div>
                     </DrawerContent>
                   </Drawer>

@@ -141,7 +141,10 @@ export default function My() {
             <p>优惠卷管理</p>
             <Icon icon="weui:arrow-outlined" className="w-8 h-8"></Icon>
           </div>
-          <div className="flex justify-between items-center py-3 px-4 bg-white border-b-[1px] border-gray-300">
+          <div
+            className="flex justify-between items-center py-3 px-4 bg-white border-b-[1px] border-gray-300"
+            onClick={() => (window.location.href = "/couponCenter")}
+          >
             <p>领卷中心</p>
             <Icon icon="weui:arrow-outlined" className="w-8 h-8"></Icon>
           </div>

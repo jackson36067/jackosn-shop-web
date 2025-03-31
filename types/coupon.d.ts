@@ -1,4 +1,4 @@
-export type SotreCouponItem = {
+export type CouponItem = {
   id: number;
   title: string;
   discount: number;
