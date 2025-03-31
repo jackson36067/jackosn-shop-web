@@ -13,6 +13,7 @@ export type CartGoodItem = {
   remark: string;
   storeId: number;
   storeName: string;
+  isFollow: boolean;
   isContainCoupon: boolean;
   isCollect: boolean;
 };

@@ -6,15 +6,15 @@ import {
 } from "@/apis/coupon";
 import CouponContent from "@/components/coupon/couponItem";
 import CouponTopBar from "@/components/coupon/topbar";
-import { UserCouponItem } from "@/types/coupon";
+import { memberCouponMemberType } from "@/types/coupon";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
 export default function CouponPage() {
   // 定义接收用户优惠卷参数数据
-  const [memberCouponList, setMemberCouponList] = useState<UserCouponItem[]>(
-    []
-  );
+  const [memberCouponList, setMemberCouponList] = useState<
+    memberCouponMemberType[]
+  >([]);
   // 判断删除状态值,用于判断用户操作
   const [deleteState, setDeleteState] = useState(false);
   // 用于接收被选中的优惠卷的id

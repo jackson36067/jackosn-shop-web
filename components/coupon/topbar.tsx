@@ -1,11 +1,11 @@
 "use client";
 
-import { UserCouponItem } from "@/types/coupon";
+import { memberCouponMemberType } from "@/types/coupon";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { useRef } from "react";
 
 const CouponTopBar = (props: {
-  memberCouponList: UserCouponItem[];
+  memberCouponList: memberCouponMemberType[];
   setNewDeleteState: (newDeleteState: boolean) => void;
 }) => {
   // TODO: 点击删除调用父组件的函数将state传递过去

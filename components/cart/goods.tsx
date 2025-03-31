@@ -220,7 +220,7 @@ const CartContent = ({
                                       )
                                     }
                                   >
-                                    关注并领取
+                                    {item.isFollow ? "领取" : "关注并领取"}
                                   </button>
                                 </div>
                               </div>

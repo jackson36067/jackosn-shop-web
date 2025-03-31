@@ -20,3 +20,8 @@ export type memberCouponItemVOList = {
   title: string;
   discount: number;
 };
+
+export type memberCouponMemberType = {
+  type: string;
+  memberCouponList: memberCouponItemVOList[] | UserCouponItem[];
+};
