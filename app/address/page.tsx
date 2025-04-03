@@ -8,6 +8,7 @@ import { useEffect, useRef, useState } from "react";
 
 export default function AddressPage() {
   const [addressList, setAddressList] = useState<AddressItem[]>([]);
+  const [operateStatus, setOperateStatus] = useState<boolean>(false);
   const isFetch = useRef<boolean>(false);
   const getAddressList = async () => {
     const res = await getMemberAddressListAPI();
@@ -20,10 +21,15 @@ export default function AddressPage() {
   }, []);
   return (
     <div className="py-5 px-3">
-      <AddressTopBar getNewMemberAddress={() => getAddressList()} />
+      <AddressTopBar
+        getNewMemberAddress={() => getAddressList()}
+        operateStatus={operateStatus}
+        changeOperateStatus={() => setOperateStatus(!operateStatus)}
+      />
       <AddressContent
         memberAddressItems={addressList}
         getNewMemberAddress={() => getAddressList()}
+        operateStatus={operateStatus}
       />
     </div>
   );

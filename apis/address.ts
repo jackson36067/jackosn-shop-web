@@ -51,3 +51,15 @@ export const addMemberAddressAPI = (memberAddress: updateAddressItem) => {
     data: memberAddress,
   });
 };
+
+/**
+ * 根据地址id移除该地址
+ * @param id 地址id
+ * @returns
+ */
+export const removeMemberAddressById = (id: number) => {
+  return httpInstance({
+    method: "DELETE",
+    url: `/address/${id}`,
+  });
+};
