@@ -129,7 +129,11 @@ const AddressDrawerCoantent = (props?: {
         setId(props.id!);
         // tagValue要先赋值,防止后续tag变了
         setTagValue(props.tag!);
-        setTag(!tagItems.includes(props.tag!) ? "自定义" : props.tag!);
+        setTag(
+          !tagItems.includes(props.tag!) && props.tag !== ""
+            ? "自定义"
+            : props.tag!
+        );
         // 获取到该传递地址的经纬度,传递给地图组件
         const result = await getGeoLocation(
           `${props.province}${props.city}${props.county}${props.addressDetail}`

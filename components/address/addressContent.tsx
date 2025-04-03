@@ -120,7 +120,7 @@ const AddressContent = (props: {
                   <DrawerTrigger>
                     <div className="text-gray-400">
                       <Icon
-                        icon={"icon-park-outline:editor"}
+                        icon={"solar:pen-new-square-linear"}
                         fontSize={"1.6rem"}
                         onClick={() => handelUpdateAddress(item.id)}
                       />
