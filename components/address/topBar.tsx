@@ -10,8 +10,11 @@ import {
   DrawerTrigger,
 } from "../ui/drawer";
 import AddressDrawerCoantent from "./AddressDrawerContent";
+import { useState } from "react";
 
-const AddressTopBar = () => {
+const AddressTopBar = (props: { getNewMemberAddress: () => void }) => {
+  // 是否打开新增地址弹窗
+  const [open, setOpen] = useState<boolean>(false);
   return (
     <div>
       <div className="flex justify-between items-center">
@@ -33,16 +36,21 @@ const AddressTopBar = () => {
               icon={"material-symbols-light:add-rounded"}
               fontSize={"1.6rem"}
             />
-            <Drawer>
+            <Drawer open={open} onOpenChange={setOpen}>
               <DrawerTrigger>
                 <p>新增地址</p>
               </DrawerTrigger>
               <DrawerContent className="z-[99] pb-30 px-2">
-                <DrawerHeader>
+                <DrawerHeader className="pt-0">
                   <DrawerTitle></DrawerTitle>
                   <DrawerDescription></DrawerDescription>
                 </DrawerHeader>
-                <AddressDrawerCoantent />
+                <AddressDrawerCoantent
+                  closeDrawer={() => {
+                    setOpen(false);
+                  }}
+                  handleGetNewMemberAddress={() => props.getNewMemberAddress()}
+                />
               </DrawerContent>
             </Drawer>
           </div>

@@ -288,4 +288,8 @@ export const CityInfo: Province[] = [
     province: "广东省",
     city: [{ city: "广州市", county: ["白云区", "越秀区"] }],
   },
+  {
+    province: "江西省",
+    city: [{ city: "赣州市", county: ["宁都县", "于都县", "瑞金市"] }],
+  },
 ];

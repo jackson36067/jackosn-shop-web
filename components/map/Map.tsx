@@ -1,5 +1,4 @@
-"use client";
-
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef } from "react";
 
 // Extend the Window interface to include _AMapSecurityConfig
@@ -20,16 +19,21 @@ export default function MapContainer(props: {
     county: string,
     addressDetail: string,
     areaCode: string
-  ) => void;
+  ) => void; // 传递给父组件地图的信息
+  location?: { lat: number; lng: number }; // 接收传递的经纬度,将地图定位到该地点
 }) {
+  // 装map的div DOM
   const mapRef = useRef<HTMLDivElement | null>(null);
+  // 装 搜索地址的input DOM
   const inputRef = useRef<HTMLInputElement | null>(null);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let map: any = null;
+  // const location = useRef<{ lat: string; lng: string }>({ lat: "", lng: "" });
+
   useEffect(() => {
     window._AMapSecurityConfig = {
       securityJsCode: "7427c5d55924bb6d368f28bb5188020c",
     };
+
     AMapLoader.load({
       key: "1b8bd88e065c939dc870105e6a1844bd", // 申请好的Web端开发者Key，首次调用 load 时必填
       version: "2.0", // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
@@ -39,24 +43,29 @@ export default function MapContainer(props: {
         "AMap.Geocoder",
         "AMap.AutoComplete",
         "AMap.PlaceSearch",
-      ], //需要使用的的插件列表，如比例尺'AMap.Scale'，支持添加多个如：['...','...']
+      ],
     })
       .then((AMap) => {
+        // 判断是否有传递的地址经纬度,没有则使用指定的值作为map的中心
+        const initialCenter =
+          props.location?.lat !== 0 || props.location?.lng !== 0
+            ? [props.location?.lng, props.location?.lat] // 如果传递了经纬度参数，使用它作为中心点
+            : [113.27, 23.17]; // 默认的中心点
+
         map = new AMap.Map("container", {
-          // 设置地图容器id
-          viewMode: "3D", // 是否为3D地图模式
-          zoom: 11, // 初始化地图级别
-          center: [113.27, 23.17], // 初始化地图中心点位置
+          viewMode: "3D",
+          zoom: 11,
+          center: initialCenter,
         });
-        // 配置插件
-        //   添加地图插件
+
         map!.plugin(["AMap.ToolBar"], function () {
-          map!.addControl(new AMap.ToolBar()); // 工具条控件;范围选择控件
+          map!.addControl(new AMap.ToolBar());
         });
         map!.plugin(["AMap.Scale"], function () {
-          map!.addControl(new AMap.Scale()); // 比例尺条控件
+          map!.addControl(new AMap.Scale());
         });
-        // 初始化定位插件
+
+        // 添加插件 -> 获取用户的定位
         const geolocation = new AMap.Geolocation({
           enableHighAccuracy: true,
           timeout: 10000,
@@ -65,18 +74,23 @@ export default function MapContainer(props: {
         });
 
         map!.addControl(geolocation);
-
-        // 获取当前定位
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        geolocation.getCurrentPosition((status: string, result: any) => {
-          if (status === "complete" && result.position) {
-            // console.log("定位成功", result.position);
-            map?.setCenter(result.position);
-            getCityInfo(AMap, result.position);
-          } else {
-            console.error("定位失败", result);
-          }
-        });
+        // 判断是否有传递的地理位置,没有则根据浏览器定位
+        if (props.location?.lat === 0 || props.location?.lng === 0) {
+          // 如果没有传递经纬度参数，则进行当前位置定位
+          geolocation.getCurrentPosition((status: string, result: any) => {
+            if (status === "complete" && result.position) {
+              // 将地图中心点设置为该地点
+              map?.setCenter(result.position);
+              // 解析获取该地理位置信息,该函数会调用父组件的函数,将信息传递给父组件
+              getCityInfo(AMap, result.position);
+            } else {
+              console.error("定位失败", result);
+            }
+          });
+        } else {
+          // 如果有传递地理位置的经纬度信息,那么获取该地点的位置信息,该函数会调用父组件的函数,将信息传递给父组件
+          getCityInfo(AMap, props.location);
+        }
 
         const autocomplete = new AMap.AutoComplete({
           city: "010",
@@ -87,11 +101,9 @@ export default function MapContainer(props: {
           city: "010",
           map,
         });
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
         autocomplete.on("select", function (e: { poi: { name: any } }) {
-          //针对选中的poi实现自己的功能
           placeSearch.search(e.poi.name);
-          console.log(e.poi);
         });
       })
       .catch((e) => {
@@ -101,21 +113,18 @@ export default function MapContainer(props: {
     return () => {
       map?.destroy();
     };
-  }, []);
+  }, [props.location]); // 监听传递的位置经纬度,及时修改map中心点以及位置信息
 
-  // 获取定位城市信息
-  // 获取城市信息
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const getCityInfo = (AMap: any, position: any) => {
     const geocoder = new AMap.Geocoder();
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     geocoder.getAddress(position, (status: string, result: any) => {
       if (status === "complete" && result.regeocode) {
-        console.log(result);
+        // 解析地理位置信息
         const data = result.regeocode.addressComponent;
         const addressDetail = result.regeocode.formattedAddress.split(
           data.district
         )[1];
+        // 将信息传递给父组件
         props.handleGetPositionInfo(
           data.province,
           data.city,
@@ -128,6 +137,7 @@ export default function MapContainer(props: {
       }
     });
   };
+
   return (
     <div className="z-[9999999]">
       <div
@@ -146,7 +156,6 @@ export default function MapContainer(props: {
               ".amap-sug-result .auto-item"
             ) as HTMLElement;
             if (autocompletePanel) {
-              // 设置更高的 z-index
               autocompletePanel.style.zIndex = "9999";
             }
           }}

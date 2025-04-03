@@ -20,8 +20,11 @@ export default function AddressPage() {
   }, []);
   return (
     <div className="py-5 px-3">
-      <AddressTopBar />
-      <AddressContent memberAddressItems={addressList} />
+      <AddressTopBar getNewMemberAddress={() => getAddressList()} />
+      <AddressContent
+        memberAddressItems={addressList}
+        getNewMemberAddress={() => getAddressList()}
+      />
     </div>
   );
 }

@@ -18,19 +18,26 @@ type CityItem = {
   value: number;
 };
 const CityCascsder = (props: {
-  province: string;
-  city: string;
-  district: string;
+  province: string; // 父组件传递的省份初始值
+  city: string; // 父组件传递的城市初始值
+  district: string; // 父组件传递的区初始值
   handleSelectCity: (province: string, city: string, county: string) => void;
 }) => {
+  // 可以选择的城市列表 -> 省/市/区
   const [citySelectList, setCitySelectList] = useState<CityItem[]>([]);
+  // 用户正在选的级别 省/市/区
   const [activeSelect, setActiveSelect] = useState<number>(2);
+  // 省
   const [province, setProvince] = useState<string>("");
+  // 市
   const [city, setCity] = useState<string>("");
+  // 区
   const [county, setCounty] = useState<string>("");
+  // 是否打开该弹窗
   const [open, setOpen] = useState<boolean>(false);
   useMemo(() => {
     const array: CityItem[] = [];
+    // 将父组件传递的初始值加入到citySelectList中
     array.push({ title: props.province, value: 0 });
     array.push({ title: props.city, value: 1 });
     array.push({ title: props.district, value: 2 });
@@ -40,11 +47,14 @@ const CityCascsder = (props: {
     setCounty(props.district);
   }, [props.province, props.city, props.district]);
 
+  // 选择区
   const handleSelectCity = (item: string) => {
+    // 向父组件传递选择好的省-市-区
     props.handleSelectCity(province, city, item);
     setActiveSelect(2);
     citySelectList[1].title = item;
     setCounty(item);
+    // 选择好区后关闭弹窗
     setOpen(false);
   };
 
@@ -119,10 +129,14 @@ const CityCascsder = (props: {
                         key={index}
                         className="flex flex-col gap-2"
                         onClick={() => {
+                          // 选择城市后 -> 改变城市名称
                           setProvince(item);
+                          // 将选择的城市改为点击的城市
                           citySelectList[0].title = item;
+                          // 将选择的市设置为空
                           citySelectList[1].title = "";
                           setCity("");
+                          // 选择好省份后 -> 自动跳转到选择市
                           setActiveSelect(1);
                         }}
                       >
@@ -152,6 +166,7 @@ const CityCascsder = (props: {
             <div>
               {activeSelect === 1 && (
                 <div>
+                  {/* 取出省份中的所有市 */}
                   {CityInfo.find((item) => item.province === province)
                     ?.city.map((item) => item.city)
                     .map((item, index) => {
@@ -160,10 +175,15 @@ const CityCascsder = (props: {
                           className="flex items-center py-3 justify-between"
                           key={index}
                           onClick={() => {
+                            // 设置市的值
                             setCity(item);
+                            // 选择好市后,自动跳转选择区
                             setActiveSelect(2);
+                            // 将区清空
                             setCounty("");
+                            // 将选择的市改为点击的市
                             citySelectList[1].title = item;
+                            // 将选择的区清空
                             citySelectList[2].title = "";
                           }}
                         >
@@ -190,6 +210,7 @@ const CityCascsder = (props: {
             <div>
               {activeSelect === 2 && (
                 <div>
+                  {/* 取出选中的省份-市中的所有区/县 */}
                   {CityInfo.find((item) => item.province === province)
                     ?.city.find((cityItem) => cityItem.city === city)
                     ?.county?.map((item, index) => {
