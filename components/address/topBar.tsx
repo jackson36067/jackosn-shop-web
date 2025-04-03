@@ -5,6 +5,7 @@ import {
   Drawer,
   DrawerContent,
   DrawerDescription,
+  DrawerFooter,
   DrawerHeader,
   DrawerTitle,
   DrawerTrigger,
@@ -54,31 +55,30 @@ const AddressTopBar = (props: {
               <Icon icon={"iconamoon:sorting-left-light"} fontSize={"1.6rem"} />
               <p>管理</p>
             </div>
-            <div className="flex items-center">
-              <Icon
-                icon={"material-symbols-light:add-rounded"}
-                fontSize={"1.6rem"}
-              />
-              <Drawer open={open} onOpenChange={setOpen}>
-                <DrawerTrigger>
-                  <p>新增地址</p>
-                </DrawerTrigger>
-                <DrawerContent className="z-[99] pb-30 px-2">
-                  <DrawerHeader className="pt-0">
-                    <DrawerTitle></DrawerTitle>
-                    <DrawerDescription></DrawerDescription>
-                  </DrawerHeader>
-                  <AddressDrawerCoantent
-                    closeDrawer={() => {
-                      setOpen(false);
-                    }}
-                    handleGetNewMemberAddress={() =>
-                      props.getNewMemberAddress()
-                    }
+            <Drawer open={open} onOpenChange={setOpen}>
+              <DrawerTrigger>
+                <div className="flex items-center">
+                  <Icon
+                    icon={"material-symbols-light:add-rounded"}
+                    fontSize={"1.6rem"}
                   />
-                </DrawerContent>
-              </Drawer>
-            </div>
+                  <p>新增地址</p>
+                </div>
+              </DrawerTrigger>
+              <DrawerContent className="z-[99] pb-2 px-2">
+                <DrawerHeader className="pt-0">
+                  <DrawerTitle></DrawerTitle>
+                  <DrawerDescription></DrawerDescription>
+                </DrawerHeader>
+                <AddressDrawerCoantent
+                  closeDrawer={() => {
+                    setOpen(false);
+                  }}
+                  handleGetNewMemberAddress={() => props.getNewMemberAddress()}
+                />
+                <DrawerFooter className="h-0"></DrawerFooter>
+              </DrawerContent>
+            </Drawer>
           </div>
         )}
       </div>

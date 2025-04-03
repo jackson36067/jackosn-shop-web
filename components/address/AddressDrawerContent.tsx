@@ -228,7 +228,7 @@ const AddressDrawerCoantent = (props?: {
   }
 
   return (
-    <div>
+    <div className="h-160 overflow-auto mt-0">
       <MapContainer
         location={location}
         handleGetPositionInfo={handelGetpositionInfo}
@@ -336,12 +336,12 @@ const AddressDrawerCoantent = (props?: {
             />
             <div>
               <p className="text-lg font-bold">地址标签</p>
-              <div className="flex justify-between items-center mt-4">
+              <div className="flex justify-between items-center gap-1 mt-4">
                 {tagItems.map((item, index) => {
                   return (
                     <div
                       className={cn(
-                        "bg-gray-100 py-2 px-4 rounded-sm",
+                        "flex-1 bg-gray-100 py-2  rounded-sm text-center",
                         item === tag && "bg-[#ffece5]/90 text-orange-600"
                       )}
                       key={index}
