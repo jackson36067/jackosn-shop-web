@@ -68,7 +68,7 @@ const SearchBox: React.FC = () => {
           </Button>
         </div>
         <div className="mt-2 flex flex-wrap gap-2">
-          {recentSearches.map((item, index) => (
+          {recentSearches?.map((item, index) => (
             <Button
               key={index}
               variant="outline"

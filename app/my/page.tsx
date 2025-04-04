@@ -45,9 +45,6 @@ export default function My() {
     await memberLogoutAPI();
     toast.success("登出成功");
     clearMemberInfo();
-    setTimeout(() => {
-      router.push("/login");
-    }, 200);
   };
   return (
     <div className="w-full h-full bg-[#f4f4f4] pb-28">
