@@ -8,7 +8,13 @@ const HomeCategoryGoods = (props: { goodItems: GoodsMessage[] }) => {
       ) : (
         props.goodItems.map((item) => {
           return (
-            <div key={item.id} className="w-[50%]">
+            <div
+              key={item.id}
+              className="w-[50%]"
+              onClick={() =>
+                (window.location.href = `/goodsDetail?id=${item.id}`)
+              }
+            >
               <div>
                 <img src={item.picUrl} width={""} />
               </div>

@@ -11,11 +11,11 @@ import { Icon } from "@iconify/react";
 import { useEffect, useRef, useState } from "react";
 
 const BannerItems = [
-  { img: "/upload/banner1.webp" },
-  { img: "/upload/banner2.webp" },
-  { img: "/upload/ban3.webp" },
-  { img: "/upload/ban4.webp" },
-  { img: "/upload/ban5.webp" },
+  "/upload/banner1.webp",
+  "/upload/banner2.webp",
+  "/upload/ban3.webp",
+  "/upload/ban4.webp",
+  "/upload/ban5.webp",
 ];
 
 const categoryItems = [

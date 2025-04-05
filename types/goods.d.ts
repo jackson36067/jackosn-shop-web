@@ -27,3 +27,21 @@ export type CollectGoodsItem = {
   storeName: string; // 商品店铺名称
   collectNumber: number; // 商品收藏人数
 };
+
+export type GoodsDetail = {
+  id: number; // 商品id
+  storeId: number; // 商品店铺id
+  name: string; // 商品名称
+  brief: string; // 商品简介
+  gallery: string[]; // 商品图片
+  counterPrice: number; // 商品原价
+  retailPrice: number; // 商品现价
+  detail: string;
+  isCollect: boolean; // 是否收藏
+  goodsCommentVOList: GoodsComment[]; // 商品评论列表
+  goodCommentNumber: number; // 商品好评数
+  naturalCommentNumber: number; // 商品中评数
+  badCommentNumber: number; // 商品差评数
+  hasPictureCommentNumber: number; // 商品有图评论数
+  defaultAddress: string; // 默认地址
+};

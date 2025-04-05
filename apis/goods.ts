@@ -103,3 +103,15 @@ export const getCollectGoodsListAPI = (
     },
   });
 };
+
+/**
+ * 根据商品id获取商品详情
+ * @param id 商品id
+ * @returns
+ */
+export const getGoodsDetailAPI = (id: number) => {
+  return httpInstance({
+    method: "GET",
+    url: `/goods/detail/${id}`,
+  });
+};
