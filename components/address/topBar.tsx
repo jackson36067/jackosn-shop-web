@@ -10,13 +10,14 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer";
-import AddressDrawerCoantent from "./AddressDrawerContent";
+import AddressDrawerContent from "./AddressDrawerContent";
 import { useState } from "react";
 
 const AddressTopBar = (props: {
   getNewMemberAddress: () => void;
   operateStatus: boolean;
   changeOperateStatus: () => void;
+  addressSelectedPage: boolean;
 }) => {
   // 是否打开新增地址弹窗
   const [open, setOpen] = useState<boolean>(false);
@@ -24,15 +25,21 @@ const AddressTopBar = (props: {
     props.changeOperateStatus();
   };
   return (
-    <div>
+    <div className="px-3">
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-4">
-          <Icon
-            icon={"stash:arrow-left-light"}
-            fontSize={"1.6rem"}
-            onClick={() => window.history.back()}
-          />
-          <p className="font-bold text-xl">收货地址</p>
+          {props.addressSelectedPage ? (
+            <div>常用地址</div>
+          ) : (
+            <div>
+              <Icon
+                icon={"stash:arrow-left-light"}
+                fontSize={"1.6rem"}
+                onClick={() => window.history.back()}
+              />
+              <p className="font-bold text-xl">收货地址</p>
+            </div>
+          )}
         </div>
         {props.operateStatus ? (
           <div
@@ -70,7 +77,7 @@ const AddressTopBar = (props: {
                   <DrawerTitle></DrawerTitle>
                   <DrawerDescription></DrawerDescription>
                 </DrawerHeader>
-                <AddressDrawerCoantent
+                <AddressDrawerContent
                   closeDrawer={() => {
                     setOpen(false);
                   }}

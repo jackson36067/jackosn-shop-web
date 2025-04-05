@@ -65,7 +65,7 @@ const formSchema = z.object({
 // 标签数据
 const tagItems = ["家", "公司", "学校", "父母", "朋友", "自定义"];
 
-const AddressDrawerCoantent = (props?: {
+const AddressDrawerContent = (props?: {
   id?: number; // 地址id,可传递
   province?: string; // 省份, 可传递
   city?: string; // 市, 可传递
@@ -383,4 +383,4 @@ const AddressDrawerCoantent = (props?: {
     </div>
   );
 };
-export default AddressDrawerCoantent;
+export default AddressDrawerContent;

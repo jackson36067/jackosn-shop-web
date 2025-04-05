@@ -6,7 +6,7 @@ import AddressTopBar from "@/components/address/topBar";
 import { AddressItem } from "@/types/address";
 import { useEffect, useRef, useState } from "react";
 
-export default function AddressPage() {
+export default function AddressPage(props: { addressSelectedPage: boolean }) {
   const [addressList, setAddressList] = useState<AddressItem[]>([]);
   const [operateStatus, setOperateStatus] = useState<boolean>(false);
   const isFetch = useRef<boolean>(false);
@@ -20,16 +20,18 @@ export default function AddressPage() {
     getAddressList();
   }, []);
   return (
-    <div className="py-5 px-3">
+    <div className="py-5">
       <AddressTopBar
         getNewMemberAddress={() => getAddressList()}
         operateStatus={operateStatus}
         changeOperateStatus={() => setOperateStatus(!operateStatus)}
+        addressSelectedPage={props.addressSelectedPage}
       />
       <AddressContent
         memberAddressItems={addressList}
         getNewMemberAddress={() => getAddressList()}
         operateStatus={operateStatus}
+        addressSelectedPage={props.addressSelectedPage}
       />
     </div>
   );

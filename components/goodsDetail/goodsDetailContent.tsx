@@ -8,6 +8,18 @@ import StarRating from "./starRating";
 import Image from "next/image";
 import { FC } from "react";
 import ToTopButton from "../home/ToTop";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "../ui/drawer";
+import AddressPage from "@/app/address/page";
+import { Button } from "../ui/button";
 
 // 商品详情组件用于解析富文本内容
 const RichText: FC<{ content: string }> = ({ content }) => {
@@ -59,16 +71,35 @@ const GoodsDetailContent = (props: {
                   <Icon icon={"ri:arrow-right-s-line"} fontSize={"1.6rem"} />
                 </div>
               </div>
-              <div className="flex items-center justify-between">
-                <p>送至</p>
-                <div className="flex items-center gap-2">
-                  <p className="w-80 truncate">
-                    {props.goodsDetail.defaultAddress &&
-                      props.goodsDetail.defaultAddress}
-                  </p>
-                  <Icon icon={"ri:arrow-right-s-line"} fontSize={"1.6rem"} />
-                </div>
-              </div>
+              <Drawer>
+                <DrawerTrigger>
+                  <div className="flex items-center justify-between">
+                    <p>送至</p>
+                    <div className="flex items-center gap-2">
+                      <p className="w-80 truncate">
+                        {props.goodsDetail.defaultAddress &&
+                          props.goodsDetail.defaultAddress}
+                      </p>
+                      <Icon
+                        icon={"ri:arrow-right-s-line"}
+                        fontSize={"1.6rem"}
+                      />
+                    </div>
+                  </div>
+                </DrawerTrigger>
+                <DrawerContent>
+                  <DrawerHeader>
+                    <DrawerTitle></DrawerTitle>
+                    <DrawerDescription></DrawerDescription>
+                  </DrawerHeader>
+                  <AddressPage addressSelectedPage={true} />
+                  <DrawerFooter>
+                    <DrawerClose asChild>
+                      <Button className="bg-orange-500 text-white">确认</Button>
+                    </DrawerClose>
+                  </DrawerFooter>
+                </DrawerContent>
+              </Drawer>
               <div className="flex items-center justify-between">
                 <p>运费</p>
                 <div className="flex items-center gap-2">
