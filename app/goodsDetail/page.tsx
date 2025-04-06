@@ -57,6 +57,8 @@ export default function GoodsDetailPage() {
     });
     getGoodsDetail(); // 重新获取商品详情数据
   };
+
+  // 用户点击地址选择按钮,跳转到地址选择页面
   return (
     <div className="pb-5">
       <GoodsDetailTopBar showButton={showButton} />

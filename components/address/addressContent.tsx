@@ -20,13 +20,14 @@ import {
 } from "@/apis/address";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
+import useSelectedAddressStore from "@/stores/selectAddressStore";
 
 const AddressContent = (props: {
   memberAddressItems: AddressItem[]; // 接收父组件传递的地址列表
   getNewMemberAddress: () => void; // 用户子组件从新获取地址信息,执行父组件的函数从新加载地址信息
   operateStatus: boolean;
   addressSelectedPage: boolean; // 是否为地址选择页面
-  selectAddress?: (address: AddressItem) => void; // 选择地址的回调函数
+  selectedAddress: (address: AddressItem) => void;
 }) => {
   // 是否打开更新地址弹窗
   const [open, setOpen] = useState<number>(0);
@@ -47,8 +48,12 @@ const AddressContent = (props: {
   const name = useRef<string>("");
   // 地址标签
   const tag = useRef<string>("");
-  // 地址选择页面选中的地址id
-  const [selectAddressId, setSelectAddressId] = useState<number>(0);
+
+  // 下面两个都是在商品详情页选择地址时使用
+  // 用户选中的地址
+  const { selectedAddress } = useSelectedAddressStore();
+  // 用户点击的地址,用于交互,当点击后就将该数据传递给父组件
+  const [selectAddress, setSelectAddress] = useState<AddressItem | null>(null);
 
   // 点击地址更新图标后,获取到该地址的信息传递给子组件
   const handelUpdateAddress = (id: number) => {
@@ -80,20 +85,47 @@ const AddressContent = (props: {
     toast.success("移除成功");
   };
 
+  // 这些交互都是在商品详情页选择地址使执行
+
   // 设置默认地址id
   useEffect(() => {
-    setSelectAddressId(
-      props.memberAddressItems.find((item) => item.isDefault === 0)?.id || 0
-    );
-  }, [props.memberAddressItems]);
+    // 判断传递的地址以及是否有之前就选中的地址, 有地址以及没有选中地址就拿默认地址或者第一个地址
+    if (
+      props.addressSelectedPage &&
+      props.memberAddressItems.length > 0 &&
+      !selectedAddress.province
+    ) {
+      // 如果地址列表不为空,则设置默认地址为选中地址
+      const defaultAddress = props.memberAddressItems.find(
+        (item) => item.isDefault === 0
+      );
+      if (defaultAddress) {
+        // 有默认地址,则设置默认地址为选中地址
+        setSelectAddress(defaultAddress);
+      } else {
+        // 没有默认地址,则设置第一个地址为默认地址
+        setSelectAddress(props.memberAddressItems[0]);
+      }
+    } else if (selectedAddress.province) {
+      // 如果有默认地址就选默认地址
+      setSelectAddress(selectedAddress);
+    }
+  }, [
+    props.addressSelectedPage,
+    props.memberAddressItems,
+    selectedAddress,
+    selectedAddress.province,
+    setSelectAddress,
+  ]);
 
-  // 选择地址
-  const handleSelectAddress = (id: number) => {
+  // 点击地址后,将地址信息传递给父组件
+  const handleSelectAddress = (item: AddressItem) => {
     if (props.addressSelectedPage) {
-      setSelectAddressId(id);
-      // TODO: 向父组件传递选中的地址信息
+      setSelectAddress(item);
+      props.selectedAddress(item);
     }
   };
+
   return (
     <div>
       {props.memberAddressItems.map((item) => {
@@ -102,10 +134,10 @@ const AddressContent = (props: {
             key={item.id}
             className={cn(
               props.addressSelectedPage &&
-                selectAddressId === item.id &&
+                selectAddress?.id === item.id &&
                 "bg-[#f8e3e0]/90"
             )}
-            onClick={() => handleSelectAddress(item.id)}
+            onClick={() => handleSelectAddress(item)}
           >
             <div
               key={item.id}
@@ -127,12 +159,12 @@ const AddressContent = (props: {
                     <div className="flex gap-2 items-center">
                       <p>{item.name}</p>
                       <p>{item.tel}</p>
-                      {item.isDefault === 0 && (
+                      {item.isDefault === 0 && !props.addressSelectedPage && (
                         <p className="bg-[#ffece5]/90 text-orange-600 p-1 font-[600]">
                           默认
                         </p>
                       )}
-                      {item.tag && (
+                      {item.tag && !props.addressSelectedPage && (
                         <p className="bg-[#ffece5]/90 text-orange-600 p-1 font-[600]">
                           {item.tag}
                         </p>

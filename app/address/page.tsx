@@ -6,7 +6,10 @@ import AddressTopBar from "@/components/address/topBar";
 import { AddressItem } from "@/types/address";
 import { useEffect, useRef, useState } from "react";
 
-export default function AddressPage(props: { addressSelectedPage: boolean }) {
+export default function AddressPage(props: {
+  addressSelectedPage: boolean;
+  selectedAddress: (address: AddressItem) => void;
+}) {
   const [addressList, setAddressList] = useState<AddressItem[]>([]);
   const [operateStatus, setOperateStatus] = useState<boolean>(false);
   const isFetch = useRef<boolean>(false);
@@ -32,6 +35,7 @@ export default function AddressPage(props: { addressSelectedPage: boolean }) {
         getNewMemberAddress={() => getAddressList()}
         operateStatus={operateStatus}
         addressSelectedPage={props.addressSelectedPage}
+        selectedAddress={(address) => props.selectedAddress(address)}
       />
     </div>
   );

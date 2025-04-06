@@ -6,7 +6,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import StarRating from "./starRating";
 import Image from "next/image";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import ToTopButton from "../home/ToTop";
 import {
   Drawer,
@@ -20,6 +20,8 @@ import {
 } from "../ui/drawer";
 import AddressPage from "@/app/address/page";
 import { Button } from "../ui/button";
+import useSelectedAddressStore from "@/stores/selectAddressStore";
+import { AddressItem } from "@/types/address";
 
 // 商品详情组件用于解析富文本内容
 const RichText: FC<{ content: string }> = ({ content }) => {
@@ -30,6 +32,27 @@ const GoodsDetailContent = (props: {
   goodsDetail: GoodsDetail | null;
   showButton: boolean;
 }) => {
+  const { setSelectedAddress } = useSelectedAddressStore();
+  const [defaultAddress, setDefaultAddress] = useState<string>("");
+  // 用于接收用户点击地址后传递的地址信息
+  const [selectAddress, setSelectAddress] = useState<AddressItem | null>(null);
+  // 初始地址设置为默认地址,没有默认地址就设置成空字符串
+  useEffect(() => {
+    setDefaultAddress(props.goodsDetail?.defaultAddress || "");
+  }, [props.goodsDetail?.defaultAddress]);
+
+  // 点击地址后将地址传递过来
+  const handleSelectedAddress = (address: AddressItem) => {
+    setSelectAddress(address);
+  };
+
+  // 点击确认按钮后,更改选中地址
+  const handleChangeAddress = () => {
+    // 点击确认再将最后点击的地址信息封装到选中的地址信息中
+    const { province, city, county, addressDetail } = selectAddress || {};
+    setDefaultAddress(`${province}${city}${county}${addressDetail}`);
+    setSelectedAddress(selectAddress);
+  };
   return (
     <div>
       {props.goodsDetail ? (
@@ -76,9 +99,8 @@ const GoodsDetailContent = (props: {
                   <div className="flex items-center justify-between">
                     <p>送至</p>
                     <div className="flex items-center gap-2">
-                      <p className="w-80 truncate">
-                        {props.goodsDetail.defaultAddress &&
-                          props.goodsDetail.defaultAddress}
+                      <p className="max-w-80 truncate">
+                        {props.goodsDetail.defaultAddress && defaultAddress}
                       </p>
                       <Icon
                         icon={"ri:arrow-right-s-line"}
@@ -92,10 +114,20 @@ const GoodsDetailContent = (props: {
                     <DrawerTitle></DrawerTitle>
                     <DrawerDescription></DrawerDescription>
                   </DrawerHeader>
-                  <AddressPage addressSelectedPage={true} />
+                  <AddressPage
+                    addressSelectedPage={true}
+                    selectedAddress={(address: AddressItem) =>
+                      handleSelectedAddress(address)
+                    }
+                  />
                   <DrawerFooter>
                     <DrawerClose asChild>
-                      <Button className="bg-orange-500 text-white">确认</Button>
+                      <Button
+                        className="bg-orange-500 text-white"
+                        onClick={() => handleChangeAddress()}
+                      >
+                        确认
+                      </Button>
                     </DrawerClose>
                   </DrawerFooter>
                 </DrawerContent>

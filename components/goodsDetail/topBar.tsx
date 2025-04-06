@@ -2,10 +2,12 @@
 
 import { cn } from "@/lib/utils";
 import useSelectedGoodsStore from "@/stores/CartSelectedGoods";
+import useSelectedAddressStore from "@/stores/selectAddressStore";
 import { Icon } from "@iconify/react/dist/iconify.js";
 
 const GoodsDetailTopBar = (props: { showButton: boolean }) => {
   const { selectedGoods } = useSelectedGoodsStore();
+  const { clearSelectedAddress } = useSelectedAddressStore();
   return (
     <div
       className={cn(
@@ -19,7 +21,12 @@ const GoodsDetailTopBar = (props: { showButton: boolean }) => {
           "p-1 rounded-sm",
           props.showButton ? "bg-white text-black" : "bg-black/40 text-white"
         )}
-        onClick={() => window.history.back()}
+        onClick={() => {
+          // 返回上一页
+          window.history.back();
+          // 清空选中的地址
+          clearSelectedAddress();
+        }}
       >
         <Icon icon={"mdi:keyboard-arrow-left"} fontSize={"1.6rem"} />
       </div>

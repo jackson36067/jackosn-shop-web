@@ -27,11 +27,11 @@ const AddressTopBar = (props: {
   return (
     <div className="px-3">
       <div className="flex justify-between items-center">
-        <div className="flex items-center gap-4">
+        <div>
           {props.addressSelectedPage ? (
             <div>常用地址</div>
           ) : (
-            <div>
+            <div className="flex items-center gap-2">
               <Icon
                 icon={"stash:arrow-left-light"}
                 fontSize={"1.6rem"}
