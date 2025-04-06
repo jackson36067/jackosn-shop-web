@@ -1,4 +1,5 @@
 import { GoodsMessage } from "@/types/goods";
+import Image from "next/image";
 
 const HomeCategoryGoods = (props: { goodItems: GoodsMessage[] }) => {
   return (
@@ -16,7 +17,13 @@ const HomeCategoryGoods = (props: { goodItems: GoodsMessage[] }) => {
               }
             >
               <div>
-                <img src={item.picUrl} width={""} />
+                <Image
+                  src={item.picUrl}
+                  width={"50"}
+                  height={"50"}
+                  alt=""
+                  className="w-50 h-50"
+                />
               </div>
               <p className="truncate text-center">{item.name}</p>
               {/* 商品价格 */}

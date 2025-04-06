@@ -10,3 +10,13 @@ export type GoodsComment = {
   hasPicture: boolean; // 是否有图片
   picUrls: string[]; // 评论图片
 };
+
+interface CommentCategoryItem {
+  title: string;
+  value: number;
+}
+
+interface GoodsCommentPageResult {
+  data: GoodsComment[];
+  isRemain: boolean;
+}

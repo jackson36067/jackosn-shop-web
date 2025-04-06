@@ -39,6 +39,7 @@ export type GoodsDetail = {
   detail: string;
   isCollect: boolean; // 是否收藏
   goodsCommentVOList: GoodsComment[]; // 商品评论列表
+  totalCommentNumber: number;
   goodCommentNumber: number; // 商品好评数
   naturalCommentNumber: number; // 商品中评数
   badCommentNumber: number; // 商品差评数

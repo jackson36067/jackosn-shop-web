@@ -7,6 +7,7 @@ import {
 import GoodsDetailBottomBar from "@/components/goodsDetail/bottom";
 import GoodsDetailContent from "@/components/goodsDetail/goodsDetailContent";
 import GoodsDetailTopBar from "@/components/goodsDetail/topBar";
+import useSelectedAddressStore from "@/stores/selectAddressStore";
 import { GoodsDetail } from "@/types/goods";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -58,7 +59,17 @@ export default function GoodsDetailPage() {
     getGoodsDetail(); // 重新获取商品详情数据
   };
 
-  // 用户点击地址选择按钮,跳转到地址选择页面
+  const { clearSelectedAddress } = useSelectedAddressStore();
+  // 监听刷新页面,将选中地址清除,防止刷新后选中地址以及商品详情页展示地址不一致
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      clearSelectedAddress();
+    };
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [clearSelectedAddress]);
   return (
     <div className="pb-5">
       <GoodsDetailTopBar showButton={showButton} />

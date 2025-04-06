@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import type { CategoryList } from "@/types/category";
 import { getCategoryListAPI } from "@/apis/category";
 import { cn } from "@/lib/utils";
-import { Icon } from "@iconify/react/dist/iconify.js";
 import { useRouter } from "next/navigation";
+import LoadingComponent from "@/components/common/loading";
 
 export default function Home() {
   // 分类集合
@@ -43,21 +43,6 @@ export default function Home() {
     setTimeout(() => {
       setLoading(false); // 关闭遮罩层
     }, 500);
-  };
-
-  // 加载组件
-  const loadingComponent = () => {
-    return (
-      <div className="fixed z-99999 inset-0 w-full h-full flex justify-center items-center bg-[rgba(0,0,0,0.8)]">
-        <div className="flex flex-col justify-center items-center p-6 bg-[rgba(0,0,0,0.9)] rounded-md">
-          <Icon
-            icon="line-md:loading-twotone-loop"
-            className="w-16 h-16 text-white"
-          />
-          <p className="text-white text-xl">加载中...</p>
-        </div>
-      </div>
-    );
   };
 
   // 跳转页面
@@ -145,7 +130,7 @@ export default function Home() {
   };
   return (
     <div className="w-full h-full">
-      {loading && loadingComponent()}
+      {loading && <LoadingComponent />}
       {contentComponent()}
     </div>
   );

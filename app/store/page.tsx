@@ -2,6 +2,7 @@
 
 import { GetHotOrNewGoodsAPI } from "@/apis/goods";
 import { followStoreAPI, getStoerInfoAPI } from "@/apis/store";
+import LoadingComponent from "@/components/common/loading";
 import HomeCategoryGoods from "@/components/home/category/goods";
 import SearchSelectBar from "@/components/searchDetail/selectBar";
 import StoreTopBar from "@/components/store/topBar";
@@ -209,18 +210,7 @@ export default function StorePage() {
             />
           </div>
           <div className="flex-1 mt-[15rem] overflow-auto bg-gray-100">
-            {isLoding && (
-              // 加载组件
-              <div className="fixed z-99999 inset-0 w-full h-full flex justify-center items-center bg-[rgba(0,0,0,0.8)]">
-                <div className="flex flex-col justify-center items-center p-6 bg-[rgba(0,0,0,0.9)] rounded-md">
-                  <Icon
-                    icon="line-md:loading-twotone-loop"
-                    className="w-16 h-16 text-white"
-                  />
-                  <p className="text-white text-xl">加载中...</p>
-                </div>
-              </div>
-            )}
+            {isLoding && <LoadingComponent />}
             <div className="mt-4 pb-6 bg-white">
               <HomeCategoryGoods goodItems={goodItems} />
             </div>

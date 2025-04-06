@@ -3,9 +3,6 @@
 import { GoodsDetail } from "@/types/goods";
 import Banner from "../home/Banner";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
-import StarRating from "./starRating";
-import Image from "next/image";
 import { FC, useEffect, useState } from "react";
 import ToTopButton from "../home/ToTop";
 import {
@@ -22,6 +19,9 @@ import AddressPage from "@/app/address/page";
 import { Button } from "../ui/button";
 import useSelectedAddressStore from "@/stores/selectAddressStore";
 import { AddressItem } from "@/types/address";
+import CommentBar from "./commentBar";
+import CommentContent from "./commentContent";
+import { CommentCategoryItem } from "@/types/comment";
 
 // 商品详情组件用于解析富文本内容
 const RichText: FC<{ content: string }> = ({ content }) => {
@@ -32,6 +32,10 @@ const GoodsDetailContent = (props: {
   goodsDetail: GoodsDetail | null;
   showButton: boolean;
 }) => {
+  // 商品评论分类列表
+  const [commentCategoryItems, setCommentCategoryItems] = useState<
+    CommentCategoryItem[]
+  >([]);
   const { setSelectedAddress } = useSelectedAddressStore();
   const [defaultAddress, setDefaultAddress] = useState<string>("");
   // 用于接收用户点击地址后传递的地址信息
@@ -53,6 +57,30 @@ const GoodsDetailContent = (props: {
     setDefaultAddress(`${province}${city}${county}${addressDetail}`);
     setSelectedAddress(selectAddress);
   };
+
+  // 加载评论分类数据
+  useEffect(() => {
+    // 组件加载就封装数据
+    const updatedItems = [
+      { title: "全部", value: 0 },
+      { title: `(好评${props.goodsDetail?.goodCommentNumber || 0})`, value: 1 },
+      {
+        title: `(中评${props.goodsDetail?.naturalCommentNumber || 0})`,
+        value: 2,
+      },
+      { title: `(差评${props.goodsDetail?.badCommentNumber || 0})`, value: 3 },
+      {
+        title: `(有图${props.goodsDetail?.hasPictureCommentNumber || 0})`,
+        value: 4,
+      },
+    ];
+    setCommentCategoryItems(updatedItems);
+  }, [
+    props.goodsDetail?.badCommentNumber,
+    props.goodsDetail?.goodCommentNumber,
+    props.goodsDetail?.hasPictureCommentNumber,
+    props.goodsDetail?.naturalCommentNumber,
+  ]);
   return (
     <div>
       {props.goodsDetail ? (
@@ -148,9 +176,7 @@ const GoodsDetailContent = (props: {
                       ? props.goodsDetail.goodCommentNumber
                       : (
                           props.goodsDetail.goodCommentNumber /
-                          (props.goodsDetail.badCommentNumber +
-                            props.goodsDetail.goodCommentNumber +
-                            props.goodsDetail.naturalCommentNumber)
+                          props.goodsDetail.totalCommentNumber
                         ).toFixed(1)}
                     %
                   </p>
@@ -158,81 +184,37 @@ const GoodsDetailContent = (props: {
                 </div>
               </div>
             </div>
-            <div className="flex items-center gap-4 mt-5 text-[0.9rem] text-orange-600">
-              <div className="bg-[#f8e3e0]/90 p-1 rounded-md">全部</div>
-              <div className="bg-[#f8e3e0]/90 text-orange-600 p-1 rounded-md">
-                好评({props.goodsDetail.goodCommentNumber})
-              </div>
-              <div className="bg-[#f8e3e0]/90 text-orange-600 p-1 rounded-md">
-                中评({props.goodsDetail.naturalCommentNumber})
-              </div>
-              <div className="bg-[#f8e3e0]/90 text-orange-600 p-1 rounded-md">
-                差评({props.goodsDetail.badCommentNumber})
-              </div>
-              <div className="bg-[#f8e3e0]/90 text-orange-600 p-1 rounded-md">
-                有图({props.goodsDetail.hasPictureCommentNumber})
-              </div>
-            </div>
+            <CommentBar commentCategoryList={commentCategoryItems} type={0} />
           </div>
           {/* 商品评论 */}
-          <div className="px-3 mt-5">
-            {props.goodsDetail.goodsCommentVOList.length > 0 ? (
-              <div>
-                {props.goodsDetail.goodsCommentVOList.map((item) => {
-                  return (
-                    <div key={item.id} className="mt-5 first:mt-0">
-                      <div className="flex items-center justify-between">
-                        {/* 用户头像以及用户昵称 */}
-                        <div className="flex items-center gap-2">
-                          <Avatar className="w-8 h-8">
-                            <AvatarImage
-                              src={item.avatar}
-                              alt=""
-                              className="w-full h-full"
-                            />
-                            <AvatarFallback>CN</AvatarFallback>
-                          </Avatar>
-                          <p className="w-17 truncate text-lg text-gray-500">
-                            {item.nickname}
-                          </p>
-                          <StarRating rating={item.star} />
-                        </div>
-                        <div className="text-gray-500">{item.createTime}</div>
-                      </div>
-                      <div className="mt-3">{item.content}</div>
-                      <div>
-                        {item.hasPicture && (
-                          <div className="flex items-center gap-2 mt-3">
-                            {item.picUrls.map((url: string) => {
-                              return (
-                                <Image
-                                  key={url}
-                                  src={url}
-                                  alt=""
-                                  width={50}
-                                  height={50}
-                                  className="w-20 h-20 rounded-md"
-                                />
-                              );
-                            })}
-                          </div>
-                        )}
-                      </div>
-                      {item.adminContent && <p>{item.adminContent}</p>}
-                    </div>
-                  );
-                })}
-                <p className="mt-8 text-lg text-center text-black">
-                  查看全部评论
-                </p>
-              </div>
-            ) : (
-              <p className="mt-8 text-lg text-center text-black">
-                该商品还没有评论哦,快来评论吧
-              </p>
-            )}
-          </div>
+          <CommentContent
+            goodsCommentItems={props.goodsDetail.goodsCommentVOList}
+          />
+          {/* 查看更多评论 */}
           {/* 商品详情 */}
+          {props.goodsDetail.goodsCommentVOList.length > 0 && (
+            <div
+              onClick={() =>
+                (window.location.href = `/comment?id=${
+                  props.goodsDetail?.id
+                }&totalCommentCount=${
+                  props.goodsDetail?.totalCommentNumber
+                }&goodCommentCount=${
+                  props.goodsDetail?.goodCommentNumber
+                }&naturalCommentCount=${
+                  props.goodsDetail?.naturalCommentNumber
+                }&badCommentCount=${
+                  props.goodsDetail?.badCommentNumber
+                }&hasPictureCommentCount=${
+                  props.goodsDetail?.hasPictureCommentNumber
+                }&type=${0}`)
+              }
+            >
+              <p className="mt-8 text-lg text-center text-black">
+                查看全部评论
+              </p>
+            </div>
+          )}
           <div>
             <p className="px-3 mt-5 text-lg font-bold text-gray-500">
               商品详情
