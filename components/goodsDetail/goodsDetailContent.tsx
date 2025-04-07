@@ -162,7 +162,7 @@ const GoodsDetailContent = (props: {
                     />
                   </div>
                   <DrawerFooter>
-                    <DrawerClose>
+                    <DrawerClose asChild>
                       <Button className="w-full bg-orange-500 text-white">
                         确认
                       </Button>

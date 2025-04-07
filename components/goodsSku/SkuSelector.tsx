@@ -60,7 +60,7 @@ export default function SkuSelector({
         )}
         <div>
           <div className="text-xl font-bold text-red-500">
-            ￥{matchedSku?.price ? matchedSku.price * quantity : "--"}
+            ￥{matchedSku?.price ?? "--"}
           </div>
           <div className="flex items-center gap-2 mt-4">
             {/* 数量选择 */}
