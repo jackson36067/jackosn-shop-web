@@ -22,6 +22,7 @@ import { AddressItem } from "@/types/address";
 import CommentBar from "./commentBar";
 import CommentContent from "./commentContent";
 import { CommentCategoryItem } from "@/types/comment";
+import GoodsAttributeContent from "./goodsAttributeContent";
 
 // 商品详情组件用于解析富文本内容
 const RichText: FC<{ content: string }> = ({ content }) => {
@@ -115,13 +116,29 @@ const GoodsDetailContent = (props: {
                   <Icon icon={"ri:arrow-right-s-line"} fontSize={"1.6rem"} />
                 </div>
               </div>
-              <div className="flex items-center justify-between">
-                <p>属性</p>
-                <div>
-                  <p></p>
-                  <Icon icon={"ri:arrow-right-s-line"} fontSize={"1.6rem"} />
-                </div>
-              </div>
+              <Drawer>
+                <DrawerTrigger>
+                  <div className="flex items-center justify-between">
+                    <p>参数</p>
+                    <div>
+                      <p></p>
+                      <Icon
+                        icon={"ri:arrow-right-s-line"}
+                        fontSize={"1.6rem"}
+                      />
+                    </div>
+                  </div>
+                </DrawerTrigger>
+                <DrawerContent>
+                  <DrawerHeader className="text-center">
+                    <DrawerTitle>商品参数</DrawerTitle>
+                    <DrawerDescription></DrawerDescription>
+                  </DrawerHeader>
+                  <GoodsAttributeContent
+                    goodsAttributeList={props.goodsDetail.goodsAttributeList}
+                  />
+                </DrawerContent>
+              </Drawer>
               <Drawer>
                 <DrawerTrigger>
                   <div className="flex items-center justify-between">
@@ -175,9 +192,10 @@ const GoodsDetailContent = (props: {
                     {props.goodsDetail.goodCommentNumber === 0
                       ? props.goodsDetail.goodCommentNumber
                       : (
-                          props.goodsDetail.goodCommentNumber /
-                          props.goodsDetail.totalCommentNumber
-                        ).toFixed(1)}
+                          (props.goodsDetail.goodCommentNumber /
+                            props.goodsDetail.totalCommentNumber) *
+                          100
+                        ).toFixed(2)}
                     %
                   </p>
                   <Icon icon={"ri:arrow-right-s-line"} fontSize={"1.6rem"} />

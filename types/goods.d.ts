@@ -1,3 +1,5 @@
+import { goodsAttributeItem } from "./goodsAttribute";
+
 export type GoodsMessage = {
   id: number;
   goodSn: string;
@@ -45,4 +47,5 @@ export type GoodsDetail = {
   badCommentNumber: number; // 商品差评数
   hasPictureCommentNumber: number; // 商品有图评论数
   defaultAddress: string; // 默认地址
+  goodsAttributeList: goodsAttributeItem[];
 };

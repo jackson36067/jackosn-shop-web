@@ -42,7 +42,7 @@ export default function GoodsDetailPage() {
   // 监听窗口Y轴方向移动, 如果大于200px则显示回到顶部按钮,以及改变顶部导航栏颜色
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 200) {
+      if (window.scrollY > 300) {
         setShowButton(true);
       } else {
         setShowButton(false);
