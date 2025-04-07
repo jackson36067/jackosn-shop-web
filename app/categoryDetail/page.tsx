@@ -57,10 +57,11 @@ const CategoryDetails = () => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [page, isRemain]);
+
   return (
-    <div>
+    <div className="overflow-auto pb-10">
       <TopBar title={title} />
-      <div className="flex justify-center relative mt-3">
+      <div className="flex justify-center relative mt-5">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="absolute top-0 bottom-0 w-5 h-5 my-auto text-gray-400 left-10"

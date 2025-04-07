@@ -16,22 +16,28 @@ export default function GoodsDetailPage() {
   // 从URL中获取id参数
   const searchParmas = useSearchParams();
   const id = searchParmas.get("id");
+  // 用于触发获取商品详情函数
+  const [reGetGoodsDetail, setReGetGoodsDetail] = useState<boolean>(true);
   const [goodsDetail, setGoodsDetail] = useState<GoodsDetail | null>(null);
   // 是否显示回到顶部按钮
   const [showButton, setShowButton] = useState(false);
   // 用户是否收藏商品
   const [isCollect, setIsCollect] = useState(false);
 
-  // 获取商品详情数据
-  const getGoodsDetail = async () => {
-    const res = await getGoodsDetailAPI(Number(id));
-    setGoodsDetail(res.data);
-    // 设置是否收藏商品
-    setIsCollect(res.data.isCollect);
-  };
   useEffect(() => {
+    // 获取商品详情数据
+    const getGoodsDetail = async () => {
+      const res = await getGoodsDetailAPI(Number(id));
+      setGoodsDetail(res.data);
+      // 设置是否收藏商品
+      setIsCollect(res.data.isCollect);
+    };
     getGoodsDetail();
-  }, []);
+    // 当对商品进行操作时用于触发该函数
+    if (reGetGoodsDetail) {
+      return;
+    }
+  }, [id, reGetGoodsDetail]);
 
   // 监听窗口Y轴方向移动, 如果大于200px则显示回到顶部按钮,以及改变顶部导航栏颜色
   useEffect(() => {
@@ -51,12 +57,12 @@ export default function GoodsDetailPage() {
   // 用户收藏商品
   const handleMemberCollectGoods = async () => {
     // 用户点击收藏商品或者取消收藏商品, 发送请求
+    setReGetGoodsDetail(!reGetGoodsDetail);
     await doCollectOrCancelCollectGoodsAPI({
       goodsId: Number(id),
       goodsName: goodsDetail?.name,
       isCollect: isCollect,
     });
-    getGoodsDetail(); // 重新获取商品详情数据
   };
 
   const { clearSelectedAddress } = useSelectedAddressStore();
