@@ -49,3 +49,27 @@ export type GoodsDetail = {
   defaultAddress: string; // 默认地址
   goodsAttributeList: goodsAttributeItem[];
 };
+
+export type goodsSkuInfo = {
+  specsList: SkuGroup[];
+  skuList: SkuData[];
+};
+
+export type SkuOption = {
+  value: string; // 唯一值
+  picUrl?: string;
+};
+
+export type SkuGroup = {
+  name: string; // 中文组名，如“颜色分类”
+  options: SkuOption[];
+};
+
+export type SkuData = {
+  id: number;
+  goodsId: number;
+  price: number;
+  number: number;
+  url: string;
+  specs: Record<string, string>; // key 是中文名，如 { "颜色分类": "雪山白", "轴体名称": "红轴" }
+};

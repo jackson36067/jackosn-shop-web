@@ -1,6 +1,6 @@
 "use client";
 
-import { GoodsDetail } from "@/types/goods";
+import { GoodsDetail, goodsSkuInfo, SkuData, SkuGroup } from "@/types/goods";
 import Banner from "../home/Banner";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { FC, useEffect, useState } from "react";
@@ -23,6 +23,8 @@ import CommentBar from "./commentBar";
 import CommentContent from "./commentContent";
 import { CommentCategoryItem } from "@/types/comment";
 import GoodsAttributeContent from "./goodsAttributeContent";
+import { getGoodsSkuInfoAPI } from "@/apis/goods";
+import SkuSelector from "../goodsSku/SkuSelector";
 
 // 商品详情组件用于解析富文本内容
 const RichText: FC<{ content: string }> = ({ content }) => {
@@ -41,6 +43,10 @@ const GoodsDetailContent = (props: {
   const [defaultAddress, setDefaultAddress] = useState<string>("");
   // 用于接收用户点击地址后传递的地址信息
   const [selectAddress, setSelectAddress] = useState<AddressItem | null>(null);
+  // 商品sku规格列表
+  const [skuGroup, setSkuGourp] = useState<SkuGroup[]>([]);
+  // 商品sku详情信息
+  const [skuData, setSkuData] = useState<SkuData[]>([]);
   // 初始地址设置为默认地址,没有默认地址就设置成空字符串
   useEffect(() => {
     setDefaultAddress(props.goodsDetail?.defaultAddress || "");
@@ -82,6 +88,25 @@ const GoodsDetailContent = (props: {
     props.goodsDetail?.hasPictureCommentNumber,
     props.goodsDetail?.naturalCommentNumber,
   ]);
+
+  // 当点击规格后获取商品规格列表
+  const handelGetGoodsSkuInfo = async (open: boolean) => {
+    if (open) {
+      const res = await getGoodsSkuInfoAPI(props.goodsDetail!.id);
+      const data: goodsSkuInfo = res.data;
+      setSkuGourp(data.specsList);
+      setSkuData(data.skuList);
+    }
+  };
+
+  // TODO: 封装选择的数据
+  const handleSelectedSkuInfo = (
+    info: Record<string, string>,
+    count: number,
+    skuData: SkuData
+  ) => {
+    console.log(info, count, skuData);
+  };
   return (
     <div>
       {props.goodsDetail ? (
@@ -109,13 +134,42 @@ const GoodsDetailContent = (props: {
             </p>
             {/* 商品属性 */}
             <div className="flex flex-col gap-4 mt-5 text-gray-400">
-              <div className="flex items-center justify-between">
-                <p>规格</p>
-                <div>
-                  <p></p>
-                  <Icon icon={"ri:arrow-right-s-line"} fontSize={"1.6rem"} />
-                </div>
-              </div>
+              <Drawer onOpenChange={(open) => handelGetGoodsSkuInfo(open)}>
+                <DrawerTrigger>
+                  <div className="flex items-center justify-between">
+                    <p>规格</p>
+                    <div>
+                      <p></p>
+                      <Icon
+                        icon={"ri:arrow-right-s-line"}
+                        fontSize={"1.6rem"}
+                      />
+                    </div>
+                  </div>
+                </DrawerTrigger>
+                <DrawerContent>
+                  <DrawerTitle></DrawerTitle>
+                  <DrawerDescription></DrawerDescription>
+                  <div className="p-3">
+                    <SkuSelector
+                      groups={skuGroup}
+                      skus={skuData}
+                      onSelectedSkuInfo={(
+                        info: Record<string, string>,
+                        count: number,
+                        skuData: SkuData
+                      ) => handleSelectedSkuInfo(info, count, skuData)}
+                    />
+                  </div>
+                  <DrawerFooter>
+                    <DrawerClose>
+                      <Button className="w-full bg-orange-500 text-white">
+                        确认
+                      </Button>
+                    </DrawerClose>
+                  </DrawerFooter>
+                </DrawerContent>
+              </Drawer>
               <Drawer>
                 <DrawerTrigger>
                   <div className="flex items-center justify-between">

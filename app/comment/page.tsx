@@ -4,7 +4,7 @@ import { getGoodsCommentAPI } from "@/apis/comment";
 import LoadingComponent from "@/components/common/loading";
 import CommentBar from "@/components/goodsDetail/commentBar";
 import CommentContent from "@/components/goodsDetail/commentContent";
-import CommentTopBar from "@/components/topBar";
+import CommentTopBar from "@/components/comment/topBar";
 import {
   CommentCategoryItem,
   GoodsComment,

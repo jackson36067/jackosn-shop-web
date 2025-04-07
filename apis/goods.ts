@@ -115,3 +115,10 @@ export const getGoodsDetailAPI = (id: number) => {
     url: `/goods/detail/${id}`,
   });
 };
+
+export const getGoodsSkuInfoAPI = (id: number) => {
+  return httpInstance({
+    method: "GET",
+    url: `goods/sku/${id}`,
+  });
+};
