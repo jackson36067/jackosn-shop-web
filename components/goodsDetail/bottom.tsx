@@ -1,12 +1,73 @@
 "use client";
 
 import { Icon } from "@iconify/react/dist/iconify.js";
+import {
+  Drawer,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerHeader,
+  DrawerTitle,
+  DrawerTrigger,
+} from "../ui/drawer";
+import SkuSelector from "../goodsSku/SkuSelector";
+import { SkuData, SkuGroup } from "@/types/goods";
+import { useState } from "react";
+import { Button } from "../ui/button";
+import { toast } from "sonner";
 
 const GoodsDetailBottomBar = (props: {
   storeId: number;
   isCollect: boolean;
+  skuGroups: SkuGroup[];
+  skuData: SkuData[];
+  slectedSkuInfo: Record<string, string>;
   handleCollect: () => void;
+  handleCheckSKuInfo: (
+    info: Record<string, string>,
+    count: number,
+    skuData: SkuData
+  ) => void;
+  handleSelectSku: (info: Record<string, string>) => void;
 }) => {
+  // 选中的sku-spe组,用于保存数据
+  const [selectedSkuGroup, setSelectedSkuGroup] = useState<Record<
+    string,
+    string
+  > | null>(null);
+  // 选中的sku单件
+  const [skuInfo, setSkuInfo] = useState<SkuData | null>(null);
+  // 选中的sku单件数量
+  const [selectedSkuCount, sestSelectedSkuCount] = useState<number>(0);
+  // 购物车弹窗是否打开
+  const [cartDrawer, setCartDrawer] = useState<boolean>(false);
+
+  // 子组件修改规格后触发该函数,接收新选的规格数据,封装选择的数据
+  const handleSelectedSkuInfo = (
+    info: Record<string, string>,
+    count: number,
+    skuData: SkuData
+  ) => {
+    setSkuInfo(skuData);
+    setSelectedSkuGroup(info);
+    sestSelectedSkuCount(count);
+    // 修改默认被选中商品
+    props.handleSelectSku(info);
+  };
+
+  // 点击确认后将选中的商品规格数据发送给父组件
+  const handelCheckedSelectdSku = () => {
+    if (!selectedSkuGroup) {
+      toast.info("请选择规格");
+      return;
+    }
+    props.handleCheckSKuInfo(
+      selectedSkuGroup || {},
+      selectedSkuCount,
+      skuInfo ?? ({} as SkuData)
+    );
+    setCartDrawer(false);
+  };
   return (
     <div className="fixed bottom-0 left-0 right-0 z-99 flex items-center justify-between bg-white p-3 border-t-[1px] border-t-gray-400">
       <div className="flex items-center gap-4">
@@ -36,9 +97,37 @@ const GoodsDetailBottomBar = (props: {
         </div>
       </div>
       <div className="w-[70%] flex items-center text-white">
-        <div className="flex items-center justify-around w-[50%] h-13 rounded-xl rounded-r-none bg-[#f5c73d]">
-          加入购物车
-        </div>
+        <Drawer open={cartDrawer} onOpenChange={setCartDrawer}>
+          <DrawerTrigger className="w-[50%]">
+            <div className="flex items-center justify-around w-full h-13 rounded-xl rounded-r-none bg-[#f5c73d]">
+              加入购物车
+            </div>
+          </DrawerTrigger>
+          <DrawerContent className="px-3">
+            <DrawerHeader>
+              <DrawerTitle></DrawerTitle>
+              <DrawerDescription></DrawerDescription>
+            </DrawerHeader>
+            <SkuSelector
+              groups={props.skuGroups}
+              skus={props.skuData}
+              onSelectedSkuInfo={(
+                info: Record<string, string>,
+                count: number,
+                skuData: SkuData
+              ) => handleSelectedSkuInfo(info, count, skuData)}
+              defaultSelectedSku={props.slectedSkuInfo}
+            />
+            <DrawerFooter>
+              <Button
+                className="w-full bg-orange-500 text-white"
+                onClick={() => handelCheckedSelectdSku()}
+              >
+                加入购物车
+              </Button>
+            </DrawerFooter>
+          </DrawerContent>
+        </Drawer>
         <div className="flex items-center justify-around w-[50%] h-13 rounded-xl rounded-l-none bg-[#d66c5e]">
           立即购买
         </div>

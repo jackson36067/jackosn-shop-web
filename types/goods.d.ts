@@ -32,6 +32,7 @@ export type CollectGoodsItem = {
 
 export type GoodsDetail = {
   id: number; // 商品id
+  goodsSn: string; // 商品编号
   storeId: number; // 商品店铺id
   name: string; // 商品名称
   brief: string; // 商品简介
@@ -48,28 +49,25 @@ export type GoodsDetail = {
   hasPictureCommentNumber: number; // 商品有图评论数
   defaultAddress: string; // 默认地址
   goodsAttributeList: goodsAttributeItem[];
-};
-
-export type goodsSkuInfo = {
-  specsList: SkuGroup[];
-  skuList: SkuData[];
+  goodsSpecificationList: SkuGroup[];
+  goodsProductList: SkuData[];
 };
 
 export type SkuOption = {
-  value: string; // 唯一值
-  picUrl?: string;
+  value: string; // 规格值 唯一值
+  picUrl?: string; // 规格图片
 };
 
 export type SkuGroup = {
-  name: string; // 中文组名，如“颜色分类”
-  options: SkuOption[];
+  name: string; //规格名称// 中文组名，如“颜色分类”
+  options: SkuOption[]; // 规格选项列表
 };
 
 export type SkuData = {
-  id: number;
-  goodsId: number;
-  price: number;
-  number: number;
-  url: string;
-  specs: Record<string, string>; // key 是中文名，如 { "颜色分类": "雪山白", "轴体名称": "红轴" }
+  id: number; // skuId
+  price: number; // 商品规格价格
+  number: number; // 选择规格商品数量
+  url: string; // 规格商品图片
+  defaultSelected: boolean; // 是否默认选择该商品规格
+  specs: Record<string, string>; // 规格商品所有值  如:{"颜色:":"xxx", "规格":"xxx"}
 };

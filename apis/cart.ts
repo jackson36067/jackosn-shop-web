@@ -1,3 +1,4 @@
+import { AddCartParams } from "@/types/cart";
 import httpInstance from "@/utils/http";
 
 /**
@@ -34,9 +35,27 @@ export const SetGoodsCheckedAPI = (
   });
 };
 
+/**
+ * 从购物车中移除商品
+ * @param id 商品id
+ * @returns
+ */
 export const removeGoodsFromCartAPI = (id: number) => {
   return httpInstance({
     method: "DELETE",
     url: `/cart/${id}`,
+  });
+};
+
+/**
+ * 新增商品到购物车
+ * @param data 新增到购物车的数据对象
+ * @returns
+ */
+export const addGoodsToCartAPI = (data: AddCartParams) => {
+  return httpInstance({
+    method: "POST",
+    url: "/cart/add",
+    data,
   });
 };

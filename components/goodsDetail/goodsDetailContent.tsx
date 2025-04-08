@@ -1,6 +1,6 @@
 "use client";
 
-import { GoodsDetail, goodsSkuInfo, SkuData, SkuGroup } from "@/types/goods";
+import { GoodsDetail, SkuData, SkuGroup } from "@/types/goods";
 import Banner from "../home/Banner";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import { FC, useEffect, useState } from "react";
@@ -23,8 +23,8 @@ import CommentBar from "./commentBar";
 import CommentContent from "./commentContent";
 import { CommentCategoryItem } from "@/types/comment";
 import GoodsAttributeContent from "./goodsAttributeContent";
-import { getGoodsSkuInfoAPI } from "@/apis/goods";
 import SkuSelector from "../goodsSku/SkuSelector";
+import { toast } from "sonner";
 
 // 商品详情组件用于解析富文本内容
 const RichText: FC<{ content: string }> = ({ content }) => {
@@ -34,6 +34,10 @@ const RichText: FC<{ content: string }> = ({ content }) => {
 const GoodsDetailContent = (props: {
   goodsDetail: GoodsDetail | null;
   showButton: boolean;
+  skuGroups: SkuGroup[];
+  skuData: SkuData[];
+  slectedSkuInfo: Record<string, string>;
+  handleSelectSku: (info: Record<string, string>) => void;
 }) => {
   // 商品评论分类列表
   const [commentCategoryItems, setCommentCategoryItems] = useState<
@@ -43,10 +47,13 @@ const GoodsDetailContent = (props: {
   const [defaultAddress, setDefaultAddress] = useState<string>("");
   // 用于接收用户点击地址后传递的地址信息
   const [selectAddress, setSelectAddress] = useState<AddressItem | null>(null);
-  // 商品sku规格列表
-  const [skuGroup, setSkuGourp] = useState<SkuGroup[]>([]);
-  // 商品sku详情信息
-  const [skuData, setSkuData] = useState<SkuData[]>([]);
+  // 选中的sku-spe组,用于保存数据
+  const [selectedSkuGroup, setSelectedSkuGroup] = useState<Record<
+    string,
+    string
+  > | null>(null);
+  // 是否代开规格弹窗
+  const [open, setOpen] = useState<boolean>(false);
   // 初始地址设置为默认地址,没有默认地址就设置成空字符串
   useEffect(() => {
     setDefaultAddress(props.goodsDetail?.defaultAddress || "");
@@ -89,23 +96,21 @@ const GoodsDetailContent = (props: {
     props.goodsDetail?.naturalCommentNumber,
   ]);
 
-  // 当点击规格后获取商品规格列表
-  const handelGetGoodsSkuInfo = async (open: boolean) => {
-    if (open) {
-      const res = await getGoodsSkuInfoAPI(props.goodsDetail!.id);
-      const data: goodsSkuInfo = res.data;
-      setSkuGourp(data.specsList);
-      setSkuData(data.skuList);
-    }
+  // 规格选择组件选择规格后,封装选择的数据
+  const handleSelectedSkuInfo = (info: Record<string, string>) => {
+    setSelectedSkuGroup(info);
   };
 
-  // TODO: 封装选择的数据
-  const handleSelectedSkuInfo = (
-    info: Record<string, string>,
-    count: number,
-    skuData: SkuData
-  ) => {
-    console.log(info, count, skuData);
+  // 点击确认后将选中的商品规格数据发送给父组件
+  const handelCheckedSelectdSku = () => {
+    if (!selectedSkuGroup) {
+      toast.info("请选择规格");
+      setOpen(true);
+      return;
+    }
+    // 将选中的规格数据传递给父组件
+    props.handleSelectSku(selectedSkuGroup || {});
+    setOpen(false);
   };
   return (
     <div>
@@ -134,12 +139,22 @@ const GoodsDetailContent = (props: {
             </p>
             {/* 商品属性 */}
             <div className="flex flex-col gap-4 mt-5 text-gray-400">
-              <Drawer onOpenChange={(open) => handelGetGoodsSkuInfo(open)}>
+              {/* 选择商品规格 */}
+              <Drawer open={open} onOpenChange={setOpen}>
                 <DrawerTrigger>
                   <div className="flex items-center justify-between">
                     <p>规格</p>
-                    <div>
-                      <p></p>
+                    <div className="flex gap-2 items-center">
+                      <p className="flex items-center gap-2 max-w-80 truncate">
+                        {props.slectedSkuInfo &&
+                          Object.entries(props.slectedSkuInfo).map(
+                            ([key, value]) => (
+                              <span key={key}>
+                                {key}: {value}
+                              </span>
+                            )
+                          )}
+                      </p>
                       <Icon
                         icon={"ri:arrow-right-s-line"}
                         fontSize={"1.6rem"}
@@ -147,26 +162,24 @@ const GoodsDetailContent = (props: {
                     </div>
                   </div>
                 </DrawerTrigger>
-                <DrawerContent>
+                <DrawerContent className="px-3">
                   <DrawerTitle></DrawerTitle>
                   <DrawerDescription></DrawerDescription>
-                  <div className="p-3">
-                    <SkuSelector
-                      groups={skuGroup}
-                      skus={skuData}
-                      onSelectedSkuInfo={(
-                        info: Record<string, string>,
-                        count: number,
-                        skuData: SkuData
-                      ) => handleSelectedSkuInfo(info, count, skuData)}
-                    />
-                  </div>
+                  <SkuSelector
+                    groups={props.skuGroups}
+                    skus={props.skuData}
+                    defaultSelectedSku={props.slectedSkuInfo}
+                    onSelectedSkuInfo={(info: Record<string, string>) =>
+                      handleSelectedSkuInfo(info)
+                    }
+                  />
                   <DrawerFooter>
-                    <DrawerClose asChild>
-                      <Button className="w-full bg-orange-500 text-white">
-                        确认
-                      </Button>
-                    </DrawerClose>
+                    <Button
+                      className="w-full bg-orange-500 text-white"
+                      onClick={() => handelCheckedSelectdSku()}
+                    >
+                      确认
+                    </Button>
                   </DrawerFooter>
                 </DrawerContent>
               </Drawer>
@@ -219,7 +232,7 @@ const GoodsDetailContent = (props: {
                       handleSelectedAddress(address)
                     }
                   />
-                  <DrawerFooter>
+                  <DrawerFooter className="pt-30">
                     <DrawerClose asChild>
                       <Button
                         className="bg-orange-500 text-white"

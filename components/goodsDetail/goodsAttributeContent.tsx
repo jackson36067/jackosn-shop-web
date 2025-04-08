@@ -6,7 +6,7 @@ const GoodsAttributeContent = (props: {
   goodsAttributeList: goodsAttributeItem[];
 }) => {
   return (
-    <div className="px-3 pb-3">
+    <div className="px-3 pb-3 overflow-auto">
       {props.goodsAttributeList?.map((item) => {
         return (
           <div

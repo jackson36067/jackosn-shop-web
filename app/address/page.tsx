@@ -23,7 +23,7 @@ export default function AddressPage(props: {
     getAddressList();
   }, []);
   return (
-    <div className="py-5">
+    <div className="py-5 overflow-auto">
       <AddressTopBar
         getNewMemberAddress={() => getAddressList()}
         operateStatus={operateStatus}

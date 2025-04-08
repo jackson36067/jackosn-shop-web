@@ -17,3 +17,15 @@ export type CartGoodItem = {
   isContainCoupon: boolean;
   isCollect: boolean;
 };
+
+export type AddCartParams = {
+  goodsId: number;
+  goodsSn: string;
+  goodsName: string;
+  price: number;
+  productId: number;
+  number: number;
+  specification: Record<string, string>;
+  picUrl: string;
+  remark: string;
+};

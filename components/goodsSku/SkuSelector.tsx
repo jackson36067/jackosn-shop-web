@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 type Props = {
   groups: SkuGroup[];
   skus: SkuData[];
+  defaultSelectedSku: Record<string, string> | null;
   onSelectedSkuInfo: (
     info: Record<string, string>,
     count: number,
@@ -19,6 +20,7 @@ type Props = {
 export default function SkuSelector({
   groups,
   skus,
+  defaultSelectedSku,
   onSelectedSkuInfo,
 }: Props) {
   // 用于保存选中的规格名称以及值
@@ -26,26 +28,44 @@ export default function SkuSelector({
   // 用于保存选中数量
   const [quantity, setQuantity] = useState(1);
 
-  // 选择规格列表时将规格保存到selected中;
-  const handleSelect = (groupName: string, value: string) => {
-    setSelected((prev) => ({ ...prev, [groupName]: value }));
-  };
+  // 设置默认选中的信息,或者上一次选中的信息
+  useEffect(() => {
+    if (defaultSelectedSku != null) {
+      setSelected(defaultSelectedSku);
+    }
+  }, [defaultSelectedSku]);
 
   // 用于获取被选中的最后的sku单件,每个group的值都要选择,要不然就没法进行下一步操作
   const matchedSku = skus.find((sku) =>
     groups.every((group) => sku.specs[group.name] === selected[group.name])
   );
 
-  // 新增：监听 selected 和 matchedSku 变化，通知父组件
+  // 新增：监听 selected 和 matchedSku 变化，通知父组件,将选中信息传递给父组件
   useEffect(() => {
+    // 判断规格是否都选了
     const allSelected = groups.every((group) => selected[group.name]);
+    // 列表都选择了以及sku单件也有了那么将sku单件,规格信息,规格数量等数据传递给给父组件
     if (allSelected && matchedSku) {
+      // 传递数据给父组件
       onSelectedSkuInfo(selected, quantity, matchedSku);
     }
   }, [selected, matchedSku, groups, onSelectedSkuInfo, quantity]);
 
+  // 选择规格列表时将规格保存到selected中;
+  const handleSelect = (
+    disabled: boolean,
+    groupName: string,
+    value: string
+  ) => {
+    // 如果点击的是没有库存的规格,则直接退出函数
+    if (disabled) {
+      return;
+    }
+    setSelected((prev) => ({ ...prev, [groupName]: value }));
+  };
+
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 border-b-[1px] border-gray-400 pb-5 overflow-auto h-100">
       {/* 图 + 价格 */}
       <div className="flex items-center gap-4">
         {/* 通过判断用户使用选择出sku单件,选中就可以展示该图片 */}
@@ -103,16 +123,13 @@ export default function SkuSelector({
               const active = selected[group.name] === opt.value;
               const disabled = (() => {
                 // 当前选中的组名为 group.name，当前选项为 opt.value
-
                 // 如果没有任何选中项，判断所有包含该选项的 sku 是否都没库存
                 const candidateSkus = skus.filter(
                   (sku) => sku.specs[group.name] === opt.value
                 );
-
                 if (Object.keys(selected).length === 0) {
                   return candidateSkus.every((sku) => sku.number === 0);
                 }
-
                 // 当前组以外的所有选项都匹配 selected，当前选项是被尝试的 group.name 下的一个选项
                 const matchingSkus = skus.filter((sku) =>
                   groups.every((g) => {
@@ -125,7 +142,6 @@ export default function SkuSelector({
                     );
                   })
                 );
-
                 return matchingSkus.every((sku) => sku.number === 0);
               })();
 
@@ -139,7 +155,7 @@ export default function SkuSelector({
                   )}
                   key={opt.value}
                   disabled={disabled}
-                  onClick={() => handleSelect(group.name, opt.value)}
+                  onClick={() => handleSelect(disabled, group.name, opt.value)}
                 >
                   {opt.picUrl && (
                     <Image src={opt.picUrl} alt="" width={20} height={20} />
