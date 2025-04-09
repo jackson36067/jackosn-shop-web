@@ -43,14 +43,14 @@ const GoodsDetailTopBar = (props: { showButton: boolean }) => {
         </div>
         <div
           className={cn(
-            "p-1 rounded-sm",
+            "relative p-1 rounded-sm",
             props.showButton ? "bg-white text-black" : "bg-black/40 text-white"
           )}
           onClick={() => (window.location.href = "/cart")}
         >
           <Icon icon={"lucide:shopping-cart"} fontSize={"1.6rem"} />
           {selectedGoods.length > 0 && (
-            <div className="absolute -top-1 -right-1 w-4 h-4 bg-red-500 text-white text-xs rounded-full flex justify-center items-center">
+            <div className="absolute -top-2 -right-1 w-6 h-6 bg-red-500 text-white text-xs rounded-full flex justify-center items-center">
               {selectedGoods.length}
             </div>
           )}

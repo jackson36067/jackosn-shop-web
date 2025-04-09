@@ -3,12 +3,13 @@
 import { getMemberAddressListAPI } from "@/apis/address";
 import AddressContent from "@/components/address/addressContent";
 import AddressTopBar from "@/components/address/topBar";
-import { AddressItem } from "@/types/address";
+import { AddressItem, AddressSelectedType } from "@/types/address";
 import { useEffect, useRef, useState } from "react";
 
 export default function AddressPage(props: {
   addressSelectedPage: boolean;
-  selectedAddress: (address: AddressItem) => void;
+  selectedAddres: AddressSelectedType | null;
+  selectedAddress: (address: AddressSelectedType) => void;
 }) {
   const [addressList, setAddressList] = useState<AddressItem[]>([]);
   const [operateStatus, setOperateStatus] = useState<boolean>(false);
@@ -36,6 +37,7 @@ export default function AddressPage(props: {
         operateStatus={operateStatus}
         addressSelectedPage={props.addressSelectedPage}
         selectedAddress={(address) => props.selectedAddress(address)}
+        onSelectedAddress={props.selectedAddres}
       />
     </div>
   );

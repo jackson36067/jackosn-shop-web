@@ -5,28 +5,54 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { SkuData, SkuGroup } from "@/types/goods";
 import { cn } from "@/lib/utils";
+import { Icon } from "@iconify/react/dist/iconify.js";
+import {
+  Drawer,
+  DrawerClose,
+  DrawerContent,
+  DrawerDescription,
+  DrawerFooter,
+  DrawerTitle,
+  DrawerTrigger,
+} from "../ui/drawer";
+import { CouponItem } from "@/types/coupon";
+import { Checkbox } from "../ui/checkbox";
 
 type Props = {
   groups: SkuGroup[];
   skus: SkuData[];
   defaultSelectedSku: Record<string, string> | null;
+  showCouponSelect: boolean;
+  storeCouponList?: CouponItem[];
+  platformCouponList?: CouponItem[];
+  allDiscount?: number;
   onSelectedSkuInfo: (
     info: Record<string, string>,
     count: number,
     skuData: SkuData
   ) => void;
+  checkSelectPlatformCoupon?: (couponList: CouponItem[]) => void;
 };
 
 export default function SkuSelector({
   groups,
   skus,
   defaultSelectedSku,
+  showCouponSelect,
+  storeCouponList,
+  platformCouponList,
+  allDiscount,
   onSelectedSkuInfo,
+  checkSelectPlatformCoupon,
 }: Props) {
   // 用于保存选中的规格名称以及值
   const [selected, setSelected] = useState<Record<string, string>>({});
   // 用于保存选中数量
   const [quantity, setQuantity] = useState(1);
+  // 保存被选中的平台优惠卷
+  const [selectedPlatformCouponList, setSelectedPlatformCouponList] = useState<
+    CouponItem[]
+  >([]);
 
   // 设置默认选中的信息,或者上一次选中的信息
   useEffect(() => {
@@ -64,6 +90,32 @@ export default function SkuSelector({
     setSelected((prev) => ({ ...prev, [groupName]: value }));
   };
 
+  // 选择平台优惠卷
+  const handleSelectedPlatformCoupon = (checked: boolean, item: CouponItem) => {
+    if (checked) {
+      const isAleaderSelect = selectedPlatformCouponList.includes(item);
+      if (isAleaderSelect) {
+        return;
+      }
+      setSelectedPlatformCouponList([...selectedPlatformCouponList, item]);
+    } else {
+      const newCouponList = selectedPlatformCouponList.filter(
+        (item) => item.id !== item.id
+      );
+      setSelectedPlatformCouponList(newCouponList);
+    }
+  };
+
+  // 点击确认后将选中的平台优惠卷发送给父组件
+  const handelCheckSelectedPlatformCoupon = () => {
+    if (selectedPlatformCouponList.length <= 0) {
+      return;
+    }
+    if (checkSelectPlatformCoupon) {
+      checkSelectPlatformCoupon(selectedPlatformCouponList);
+    }
+  };
+
   return (
     <div className="space-y-4 border-b-[1px] border-gray-400 pb-5 overflow-auto h-100">
       {/* 图 + 价格 */}
@@ -73,17 +125,130 @@ export default function SkuSelector({
           <Image
             src={matchedSku.url}
             alt="商品图"
-            width={80}
-            height={80}
+            width={100}
+            height={100}
             className="rounded-md"
           />
         )}
-        <div>
+        <div className="flex flex-col gap-1">
           <div className="text-xl font-bold text-red-500">
             ￥{matchedSku?.price ?? "--"}
           </div>
-          <div className="flex items-center gap-2 mt-4">
-            {/* 数量选择 */}
+          {showCouponSelect && matchedSku && (
+            <Drawer>
+              <DrawerTrigger>
+                <div className="flex items-center justify-between py-1 px-2 bg-[#fff5f2] text-orange-500 rounded-sm text-sm">
+                  {storeCouponList && storeCouponList.length > 0 ? (
+                    <p>立减￥ {allDiscount}</p>
+                  ) : (
+                    <p>选择优惠卷</p>
+                  )}
+                  <Icon icon={"ri:arrow-right-s-line"} fontSize={"1.1rem"} />
+                </div>
+              </DrawerTrigger>
+              <DrawerContent>
+                <DrawerTitle className="mt-5 text-center text-2xl font-bold">
+                  价格明细
+                </DrawerTitle>
+                <DrawerDescription></DrawerDescription>
+                <div className="flex flex-col gap-4 px-3 pb-80 font-[600] text-lg mt-5">
+                  <div className="flex items-center justify-between">
+                    <p>
+                      商品总价
+                      <span className="font-medium text-sm text-gray-300"></span>
+                    </p>
+                    <p>
+                      ￥<span className="text-2xl">{matchedSku.price}</span>
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <p>共减</p>
+                    <p className="text-orange-500">
+                      -￥<span className="text-2xl">{allDiscount}</span>
+                    </p>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <p>红包</p>
+                    <div className="font-medium text-sm text-gray-500">
+                      {platformCouponList && platformCouponList.length > 0 ? (
+                        <Drawer>
+                          <DrawerTrigger>
+                            <div className="flex items-center gap-1">
+                              <p>
+                                {selectedPlatformCouponList.length <= 0
+                                  ? "选择红包"
+                                  : `已选择${selectedPlatformCouponList.length}个红包`}
+                              </p>
+                              <Icon
+                                icon={"ri:arrow-right-s-line"}
+                                fontSize={"1.1rem"}
+                              />
+                            </div>
+                          </DrawerTrigger>
+                          <DrawerContent>
+                            <DrawerTitle className="text-center text-2xl font-bold">
+                              平台卷
+                            </DrawerTitle>
+                            <DrawerDescription></DrawerDescription>
+                            <div className="mt-10 pb-100 px-3">
+                              {platformCouponList &&
+                                platformCouponList.map((item) => {
+                                  return (
+                                    <div
+                                      className="flex items-center justify-between text-lg font-[600]"
+                                      key={item.id}
+                                    >
+                                      <p>{item.title}</p>
+                                      <Checkbox
+                                        className="rounded-full border-gray-400 w-5 h-5"
+                                        checked={selectedPlatformCouponList?.includes(
+                                          item
+                                        )}
+                                        onCheckedChange={(checked) =>
+                                          handleSelectedPlatformCoupon(
+                                            checked === true,
+                                            item
+                                          )
+                                        }
+                                      />
+                                    </div>
+                                  );
+                                })}
+                            </div>
+                            <DrawerFooter>
+                              <DrawerClose asChild>
+                                <Button
+                                  className="w-full bg-orange-500 text-white"
+                                  onClick={() =>
+                                    handelCheckSelectedPlatformCoupon()
+                                  }
+                                >
+                                  确认
+                                </Button>
+                              </DrawerClose>
+                            </DrawerFooter>
+                          </DrawerContent>
+                        </Drawer>
+                      ) : (
+                        <p>不可用</p>
+                      )}
+                    </div>
+                  </div>
+                  <div className="flex items-center justify-between">
+                    <p>合计</p>
+                    <p>
+                      ￥
+                      <span className="text-2xl">
+                        {matchedSku.price - (allDiscount ?? 0)}
+                      </span>
+                    </p>
+                  </div>
+                </div>
+              </DrawerContent>
+            </Drawer>
+          )}
+          {/* 数量选择 */}
+          <div className="flex items-center gap-2">
             <div className="flex items-center gap-3">
               <Button
                 size="sm"

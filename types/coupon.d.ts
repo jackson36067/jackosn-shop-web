@@ -4,6 +4,7 @@ export type CouponItem = {
   discount: number;
   min: number;
   expireDay: number;
+  storeId: number;
 };
 
 export type UserCouponItem = {

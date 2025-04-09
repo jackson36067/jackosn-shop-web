@@ -23,3 +23,11 @@ export type updateAddressItem = {
   isDefault?: number;
   tag?: string;
 };
+
+export type AddressSelectedType = {
+  id: number;
+  name: string;
+  address: string;
+  tel: string;
+  isDefault: number;
+};

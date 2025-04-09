@@ -65,3 +65,10 @@ export const getPlatformCouponListAPI = () => {
     url: "/coupon/center",
   });
 };
+
+export const getUserCanUseCouponListAPI = (id: number) => {
+  return httpInstance({
+    method: "GET",
+    url: `/coupon/use/${id}`,
+  });
+};

@@ -72,7 +72,7 @@ const AddressTopBar = (props: {
                   <p>新增地址</p>
                 </div>
               </DrawerTrigger>
-              <DrawerContent className="z-[99] pb-2 px-2">
+              <DrawerContent className="pb-2 px-2">
                 <DrawerHeader className="pt-0">
                   <DrawerTitle></DrawerTitle>
                   <DrawerDescription></DrawerDescription>

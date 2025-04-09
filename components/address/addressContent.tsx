@@ -1,6 +1,6 @@
 "use client";
 
-import { AddressItem } from "@/types/address";
+import { AddressItem, AddressSelectedType } from "@/types/address";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import {
   Drawer,
@@ -20,14 +20,14 @@ import {
 } from "@/apis/address";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
-import useSelectedAddressStore from "@/stores/selectAddressStore";
 
 const AddressContent = (props: {
   memberAddressItems: AddressItem[]; // 接收父组件传递的地址列表
   getNewMemberAddress: () => void; // 用户子组件从新获取地址信息,执行父组件的函数从新加载地址信息
   operateStatus: boolean;
   addressSelectedPage: boolean; // 是否为地址选择页面
-  selectedAddress: (address: AddressItem) => void;
+  selectedAddress: (address: AddressSelectedType) => void;
+  onSelectedAddress: AddressSelectedType | null;
 }) => {
   // 是否打开更新地址弹窗
   const [open, setOpen] = useState<number>(0);
@@ -49,11 +49,9 @@ const AddressContent = (props: {
   // 地址标签
   const tag = useRef<string>("");
 
-  // 下面两个都是在商品详情页选择地址时使用
-  // 用户选中的地址
-  const { selectedAddress } = useSelectedAddressStore();
   // 用户点击的地址,用于交互,当点击后就将该数据传递给父组件
-  const [selectAddress, setSelectAddress] = useState<AddressItem | null>(null);
+  const [selectAddress, setSelectAddress] =
+    useState<AddressSelectedType | null>(null);
 
   // 点击地址更新图标后,获取到该地址的信息传递给子组件
   const handelUpdateAddress = (id: number) => {
@@ -93,7 +91,7 @@ const AddressContent = (props: {
     if (
       props.addressSelectedPage &&
       props.memberAddressItems.length > 0 &&
-      !selectedAddress.province
+      !props.onSelectedAddress?.address
     ) {
       // 如果地址列表不为空,则设置默认地址为选中地址
       const defaultAddress = props.memberAddressItems.find(
@@ -101,28 +99,56 @@ const AddressContent = (props: {
       );
       if (defaultAddress) {
         // 有默认地址,则设置默认地址为选中地址
-        setSelectAddress(defaultAddress);
+        const { id, name, tel, province, city, county, addressDetail } =
+          defaultAddress;
+        setSelectAddress({
+          id: id,
+          name: name,
+          tel: tel,
+          address: `${province}${city}${county}${addressDetail}`,
+          isDefault: 0,
+        });
       } else {
         // 没有默认地址,则设置第一个地址为默认地址
-        setSelectAddress(props.memberAddressItems[0]);
+        const { id, name, tel, province, city, county, addressDetail } =
+          props.memberAddressItems[0];
+        setSelectAddress({
+          id: id,
+          name: name,
+          tel: tel,
+          address: `${province}${city}${county}${addressDetail}`,
+          isDefault: 0,
+        });
       }
-    } else if (selectedAddress.province) {
+    } else if (props.onSelectedAddress) {
       // 如果有默认地址就选默认地址
-      setSelectAddress(selectedAddress);
+      setSelectAddress(props.onSelectedAddress);
     }
   }, [
     props.addressSelectedPage,
     props.memberAddressItems,
-    selectedAddress,
-    selectedAddress.province,
+    props.onSelectedAddress,
     setSelectAddress,
   ]);
 
   // 点击地址后,将地址信息传递给父组件
   const handleSelectAddress = (item: AddressItem) => {
     if (props.addressSelectedPage) {
-      setSelectAddress(item);
-      props.selectedAddress(item);
+      const { id, name, tel, province, city, county, addressDetail } = item;
+      setSelectAddress({
+        id: id,
+        name: name,
+        tel: tel,
+        address: `${province}${city}${county}${addressDetail}`,
+        isDefault: 0,
+      });
+      props.selectedAddress({
+        id: id,
+        name: name,
+        tel: tel,
+        address: `${province}${city}${county}${addressDetail}`,
+        isDefault: 0,
+      });
     }
   };
 

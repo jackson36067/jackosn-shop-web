@@ -47,7 +47,10 @@ export type GoodsDetail = {
   naturalCommentNumber: number; // 商品中评数
   badCommentNumber: number; // 商品差评数
   hasPictureCommentNumber: number; // 商品有图评论数
+  defaultAddressId: number;
   defaultAddress: string; // 默认地址
+  tel: string;
+  consignee: string;
   goodsAttributeList: goodsAttributeItem[];
   goodsSpecificationList: SkuGroup[];
   goodsProductList: SkuData[];
