@@ -131,7 +131,7 @@ export default function CommentPage() {
       />
       {/* 注意重新加载只能重新加载评论数据 */}
       {isLoding ? (
-        <LoadingComponent />
+        <LoadingComponent title="加载中..." />
       ) : (
         <div>
           {/* 评论列表 */}

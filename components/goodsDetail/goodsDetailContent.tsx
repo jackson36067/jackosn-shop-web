@@ -266,7 +266,7 @@ const GoodsDetailContent = (props: {
               <div className="flex items-center justify-between">
                 <p>运费</p>
                 <div className="flex items-center gap-2">
-                  <p>满88免运费</p>
+                  <p>免运费</p>
                   <Icon icon={"ri:arrow-right-s-line"} fontSize={"1.6rem"} />
                 </div>
               </div>

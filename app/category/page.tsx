@@ -130,7 +130,7 @@ export default function Home() {
   };
   return (
     <div className="w-full h-full">
-      {loading && <LoadingComponent />}
+      {loading && <LoadingComponent title="加载中..." />}
       {contentComponent()}
     </div>
   );

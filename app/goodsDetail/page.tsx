@@ -6,6 +6,8 @@ import {
   doCollectOrCancelCollectGoodsAPI,
   getGoodsDetailAPI,
 } from "@/apis/goods";
+import { purchaseGoodsAPI } from "@/apis/order";
+import LoadingComponent from "@/components/common/loading";
 import GoodsDetailBottomBar from "@/components/goodsDetail/bottom";
 import GoodsDetailContent from "@/components/goodsDetail/goodsDetailContent";
 import GoodsDetailTopBar from "@/components/goodsDetail/topBar";
@@ -56,6 +58,8 @@ export default function GoodsDetailPage() {
   const [selectedPlatformCouponList, setSelectedPlatformCouponList] = useState<
     CouponItem[]
   >([]);
+  // 是否展示生成订单加载组件
+  const [showLoding, setShowLoding] = useState<boolean>(false);
 
   // 获取商品详情数据
   const getGoodsDetail = async () => {
@@ -192,6 +196,47 @@ export default function GoodsDetailPage() {
     setAllDiscount(allDiscount + platfomrCouponDiscount);
   };
 
+  const handlePurchaseGoods = async () => {
+    // 判断是否登录
+    if (!memberInfo.token) {
+      toast.info("请先登录");
+      return;
+    }
+    const useCouponIdList = [...storeCouponList.map((item) => item.id)];
+    useCouponIdList.push(...selectedPlatformCouponList.map((item) => item.id));
+    const res = await purchaseGoodsAPI({
+      consignee: selectAddress?.name ?? "",
+      mobile: selectAddress?.tel ?? "",
+      address: selectAddress?.address ?? "",
+      message: "",
+      goodsPrice: skuInfo?.price ?? 0,
+      freightPrice: 0,
+      couponPrice: allDiscount,
+      orderPrice: (skuInfo?.price ?? 0) - allDiscount,
+      payStatus: true,
+      orderGoodsList: [
+        {
+          goodsId: goodsDetail?.id ?? 0,
+          goodsName: goodsDetail?.name ?? "",
+          goodsSn: goodsDetail?.goodsSn ?? "",
+          productId: skuInfo?.id ?? 0,
+          number: count,
+          price: skuInfo?.price,
+          specification: selectedSkuGroup ?? {},
+          picUrl: skuInfo?.url ?? "",
+        },
+      ],
+      useCouponIdList: useCouponIdList,
+    });
+    // 给出生成订单提示
+    setShowLoding(true);
+    setTimeout(() => {
+      setShowLoding(false);
+    }, 2000);
+    // 支付后生成订单返回订单编号
+    window.location.href = `/orderDetail?orderSn=${res.data}`;
+  };
+
   return (
     <div className="pb-5">
       <GoodsDetailTopBar showButton={showButton} />
@@ -244,7 +289,9 @@ export default function GoodsDetailPage() {
         checkSelectPlatformCouponList={(couponList: CouponItem[]) =>
           handleSelectPlatformCoupon(couponList)
         }
+        purchaseGoos={() => handlePurchaseGoods()}
       />
+      {showLoding && <LoadingComponent title="下单中..." />}
     </div>
   );
 }

@@ -210,7 +210,7 @@ export default function StorePage() {
             />
           </div>
           <div className="flex-1 mt-[15rem] overflow-auto bg-gray-100">
-            {isLoding && <LoadingComponent />}
+            {isLoding && <LoadingComponent title="加载中..." />}
             <div className="mt-4 pb-6 bg-white">
               <HomeCategoryGoods goodItems={goodItems} />
             </div>

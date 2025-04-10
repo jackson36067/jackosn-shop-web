@@ -43,6 +43,7 @@ const GoodsDetailBottomBar = (props: {
   selecteAddress: AddressSelectedType | null;
   openAddressDrawer: () => void;
   checkSelectPlatformCouponList: (couponList: CouponItem[]) => void;
+  purchaseGoos: () => void;
 }) => {
   // 选中的sku-spe组,用于保存数据
   const [selectedSkuGroup, setSelectedSkuGroup] = useState<Record<
@@ -89,7 +90,10 @@ const GoodsDetailBottomBar = (props: {
     props.openAddressDrawer();
   };
   // TODO:实现支付完成订单
-  const handlePurchase = () => {};
+  const handlePurchase = () => {
+    setPurchaseDrawer(false);
+    props.purchaseGoos();
+  };
   return (
     <div className="fixed bottom-0 left-0 right-0 z-99 flex items-center justify-between bg-white p-3 border-t-[1px] border-t-gray-400">
       <div className="flex items-center gap-4">
