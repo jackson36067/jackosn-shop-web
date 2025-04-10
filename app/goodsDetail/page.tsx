@@ -12,7 +12,6 @@ import GoodsDetailBottomBar from "@/components/goodsDetail/bottom";
 import GoodsDetailContent from "@/components/goodsDetail/goodsDetailContent";
 import GoodsDetailTopBar from "@/components/goodsDetail/topBar";
 import useMemberStore from "@/stores/MemberStore";
-import useSelectedAddressStore from "@/stores/selectAddressStore";
 import { AddressSelectedType } from "@/types/address";
 import { CouponItem } from "@/types/coupon";
 import { GoodsDetail, SkuData } from "@/types/goods";
@@ -106,7 +105,7 @@ export default function GoodsDetailPage() {
   // 监听窗口Y轴方向移动, 如果大于200px则显示回到顶部按钮,以及改变顶部导航栏颜色
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 300) {
+      if (window.scrollY > 250) {
         setShowButton(true);
       } else {
         setShowButton(false);
@@ -133,19 +132,6 @@ export default function GoodsDetailPage() {
   const handleSelectedAddress = (address: AddressSelectedType) => {
     setSelectAddress(address);
   };
-
-  // 清空选择地址
-  const { clearSelectedAddress } = useSelectedAddressStore();
-  // 监听刷新页面,将选中地址清除,防止刷新后选中地址以及商品详情页展示地址不一致
-  useEffect(() => {
-    const handleBeforeUnload = () => {
-      clearSelectedAddress();
-    };
-    window.addEventListener("beforeunload", handleBeforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", handleBeforeUnload);
-    };
-  }, [clearSelectedAddress]);
 
   // 当子组件GoodsDetailCoontent选择商品规格时触发, 显示选择的商品规格
   const handleSelectedSkuInfo = (
@@ -255,10 +241,10 @@ export default function GoodsDetailPage() {
           count: number,
           skuData: SkuData | null
         ) => handleSelectedSkuInfo(info, count, skuData)} // 当选择好商品规格后将规格信息传递给父组件用于保存上一次选择记录
-        openAddressDarwer={openAddressDarwer}
+        openAddressDarwer={openAddressDarwer} // 是否打开选择地址弹窗
         changeAddressDrawerStatus={() =>
           setOpenAddressDrawer(!openAddressDarwer)
-        }
+        } // 改变是否打开选择地址弹窗
       />
       <GoodsDetailBottomBar
         storeId={goodsDetail?.storeId || 0} // 商品店铺id
@@ -266,11 +252,11 @@ export default function GoodsDetailPage() {
         skuGroups={goodsDetail?.goodsSpecificationList || []} // 商品规格列表, 通过传递给子组件传递给skuSelector组件
         skuData={goodsDetail?.goodsProductList || []} // 商品sku列表, 通过传递给子组件传递给skuSelector组件
         slectedSkuInfo={selectedSkuGroup || {}} // 默认选中的sku组件,或者上一次选中的sku单件
-        skuInfo={skuInfo}
-        count={count}
-        storeCouponList={storeCouponList}
-        platformCouponList={platformCouponList}
-        allDiscount={allDiscount}
+        skuInfo={skuInfo} // 选择的商品规格详情信息
+        count={count} // 选择规格商品的数量
+        storeCouponList={storeCouponList} // 店铺优惠卷列表
+        platformCouponList={platformCouponList} // 平台优惠卷列表
+        allDiscount={allDiscount} // 优惠卷总共折扣
         handleCollect={() => handleMemberCollectGoods()} // 收藏或者取消收藏商品
         handleCheckSKuInfo={(
           info: Record<string, string>,
@@ -282,15 +268,16 @@ export default function GoodsDetailPage() {
           count: number,
           skuData: SkuData
         ) => handleSelectedSkuInfo(info, count, skuData)} // 当选择好商品规格后将规格信息传递给父组件用于保存上一次选择记录
-        selecteAddress={selectAddress}
+        selecteAddress={selectAddress} // 选择的地址
         openAddressDrawer={() => {
           setOpenAddressDrawer(true);
-        }}
+        }} // 打开选择地址弹窗
         checkSelectPlatformCouponList={(couponList: CouponItem[]) =>
           handleSelectPlatformCoupon(couponList)
-        }
-        purchaseGoos={() => handlePurchaseGoods()}
+        } // 确认选择平台优惠卷后将选择的优惠卷信息传递给该组件
+        purchaseGoos={() => handlePurchaseGoods()} // 点击支付后下单,生成订单
       />
+      {/* 下单提示组件 */}
       {showLoding && <LoadingComponent title="下单中..." />}
     </div>
   );
