@@ -1,9 +1,13 @@
+import { cn } from "@/lib/utils";
 import { GoodsMessage } from "@/types/goods";
 import Image from "next/image";
 
-const HomeCategoryGoods = (props: { goodItems: GoodsMessage[] }) => {
+const HomeCategoryGoods = (props: {
+  className?: string;
+  goodItems: GoodsMessage[];
+}) => {
   return (
-    <div className="flex flex-wrap bg-[#fff] w-full">
+    <div className={cn("flex flex-wrap bg-[#fff] w-full", props.className)}>
       {!props.goodItems.length ? (
         <div className="w-full text-center text-sm py-4">没有更多商品了</div>
       ) : (
@@ -11,14 +15,14 @@ const HomeCategoryGoods = (props: { goodItems: GoodsMessage[] }) => {
           return (
             <div
               key={item.id}
-              className="w-[50%]"
+              className="flex flex-col gap-2 w-[50%] mt-3"
               onClick={() =>
                 (window.location.href = `/goodsDetail?id=${item.id}`)
               }
             >
               <div>
                 <Image
-                  src={item.picUrl}
+                  src={item.picUrl || "/upload/notImage.png"}
                   width={"50"}
                   height={"50"}
                   alt=""
@@ -29,10 +33,10 @@ const HomeCategoryGoods = (props: { goodItems: GoodsMessage[] }) => {
               {/* 商品价格 */}
               <div className="flex justify-center items-end gap-1">
                 <div className="text-[#d76e56] text-xl">
-                  ￥{item.counterPrice}
+                  ￥{item.retailPrice}
                 </div>
                 <div className="line-through text-[#77787d] text-sm">
-                  ￥{item.retailPrice}
+                  ￥{item.counterPrice}
                 </div>
               </div>
             </div>

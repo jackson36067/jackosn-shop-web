@@ -115,3 +115,18 @@ export const getGoodsDetailAPI = (id: number) => {
     url: `/goods/detail/${id}`,
   });
 };
+
+/**
+ * 获取用户可能喜欢的商品列表
+ * @param idList 商品id数组
+ * @returns
+ */
+export const getUserMayLikeGoodsListAPI = (idList: number[]) => {
+  return httpInstance({
+    method: "GET",
+    url: `/goods/like`,
+    params: {
+      idList: idList.join(","),
+    },
+  });
+};

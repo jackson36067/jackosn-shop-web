@@ -1,5 +1,4 @@
 "use client";
-
 import { addGoodsToCartAPI } from "@/apis/cart";
 import { getUserCanUseCouponListAPI } from "@/apis/coupon";
 import {
@@ -190,7 +189,7 @@ export default function GoodsDetailPage() {
     }
     const useCouponIdList = [...storeCouponList.map((item) => item.id)];
     useCouponIdList.push(...selectedPlatformCouponList.map((item) => item.id));
-    const res = await purchaseGoodsAPI({
+    await purchaseGoodsAPI({
       consignee: selectAddress?.name ?? "",
       mobile: selectAddress?.tel ?? "",
       address: selectAddress?.address ?? "",
@@ -220,7 +219,7 @@ export default function GoodsDetailPage() {
       setShowLoding(false);
     }, 2000);
     // 支付后生成订单返回订单编号
-    window.location.href = `/orderDetail?orderSn=${res.data}`;
+    window.location.href = `/paymentComplete?id=${goodsDetail?.id}`;
   };
 
   return (
