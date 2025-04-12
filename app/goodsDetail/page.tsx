@@ -219,7 +219,7 @@ export default function GoodsDetailPage() {
       setShowLoding(false);
     }, 2000);
     // 支付后生成订单返回订单编号
-    window.location.href = `/paymentComplete?id=${goodsDetail?.id}`;
+    window.location.href = `/paymentComplete?ids=${goodsDetail?.id}`;
   };
 
   return (

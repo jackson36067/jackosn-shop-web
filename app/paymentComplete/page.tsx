@@ -5,13 +5,9 @@ import HomeCategoryGoods from "@/components/home/category/goods";
 import PaymentCompleteContent from "@/components/paymentComplete/paymentCompleteContent";
 import PaymentCompleteTopBar from "@/components/paymentComplete/topBar";
 import { GoodsMessage } from "@/types/goods";
-import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 export default function OrderDetailPage() {
-  // 获取请求参数中的商品id, 用于获取用户可能喜欢的商品列表
-  const path = useSearchParams();
-  const id = path.get("id");
   // 存储用户可能喜欢的商品列表
   const [userMayLikeGoodsList, setUserMayLikeGoodsList] = useState<
     GoodsMessage[]
@@ -19,11 +15,13 @@ export default function OrderDetailPage() {
 
   useEffect(() => {
     const getUserMayLikeGoodsList = async () => {
-      const res = await getUserMayLikeGoodsListAPI([Number(id)]);
+      const params = new URLSearchParams(window.location.search);
+      const idsArray = params.getAll("ids").map((id) => Number(id));
+      const res = await getUserMayLikeGoodsListAPI(idsArray);
       setUserMayLikeGoodsList(res.data);
     };
     getUserMayLikeGoodsList();
-  }, [id]);
+  }, []);
   return (
     <div className="flex flex-col h-[100vh]">
       <PaymentCompleteTopBar />
