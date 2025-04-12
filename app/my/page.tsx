@@ -19,18 +19,22 @@ const myOrderItems = [
   {
     icon: "mingcute:wallet-2-line",
     title: "待支付",
+    path: `/order?type=1`,
   },
   {
     icon: "mdi:truck",
     title: "待发货",
+    path: "/order?type=2",
   },
   {
     icon: "ri:money-cny-box-fill",
     title: "待收货",
+    path: "/order?type=3",
   },
   {
     icon: "lets-icons:order",
     title: "已完成",
+    path: "/order?type=4",
   },
 ];
 
@@ -102,7 +106,10 @@ export default function My() {
         <div className="w-full mt-5 bg-white">
           <div className="flex justify-between px-5 py-3 border-b-[1px] border-gray-300">
             <div className="text-xl">我的订单</div>
-            <div className="flex items-center gap-1 text-gray-500">
+            <div
+              className="flex items-center gap-1 text-gray-500"
+              onClick={() => (window.location.href = "/order?type=0")}
+            >
               <p>全部订单</p>
               <IconRight className="w-3 h-3" />
             </div>
@@ -113,6 +120,7 @@ export default function My() {
                 <div
                   key={index}
                   className="flex flex-col justify-center items-center"
+                  onClick={() => (window.location.href = item.path)}
                 >
                   <div>
                     <Icon

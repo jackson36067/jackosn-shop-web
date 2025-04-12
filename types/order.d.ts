@@ -22,3 +22,23 @@ export interface AddOrderGoodsItem {
   specification: Record<string, string>; // 商品规格详情信息
   picUrl: string; // 商品图片
 }
+
+export interface OrderItem {
+  id: number; // 订单id
+  orderSn: string; // 订单编号
+  orderStatus: number; // 订单类型 1.待付款 2.代发货 3.待收货 4.已完成
+  orderPrice: number; // 订单总价格
+  orderGoodsList: orderGoodsItem[];
+}
+
+export interface orderGoodsItem {
+  id: number; // 订单商品id;
+  goodsId: number; // 商品id
+  picUrl: string; // 商品图片
+  goodsName: string; // 商品名称
+  specifications: string[]; // 商品规格
+  number: number; // 商品数量
+  price: number; // 商品价格
+  storeId: number; // 商品店铺id
+  storeName: string; // 商品店铺名称
+}

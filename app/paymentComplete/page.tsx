@@ -7,7 +7,7 @@ import PaymentCompleteTopBar from "@/components/paymentComplete/topBar";
 import { GoodsMessage } from "@/types/goods";
 import { useEffect, useState } from "react";
 
-export default function OrderDetailPage() {
+export default function PaymentCompletePage() {
   // 存储用户可能喜欢的商品列表
   const [userMayLikeGoodsList, setUserMayLikeGoodsList] = useState<
     GoodsMessage[]

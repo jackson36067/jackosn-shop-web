@@ -20,7 +20,7 @@ const PaymentCompleteContent = () => {
             <p onClick={() => (window.location.href = "/")}>回到首页</p>
             <p
               className="ml-3"
-              onClick={() => (window.location.href = "/order")}
+              onClick={() => (window.location.href = `/order?type=${2}`)}
             >
               查看订单
             </p>
