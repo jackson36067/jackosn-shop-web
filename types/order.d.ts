@@ -42,3 +42,18 @@ export interface orderGoodsItem {
   storeId: number; // 商品店铺id
   storeName: string; // 商品店铺名称
 }
+
+export interface orderDataItem {
+  unPaymentOrderNumber: number;
+  unShippedOrderNumber: number;
+  unReceiptOrderNumber: number;
+  completedOrderNumber: number;
+  refundOrderNumber: number;
+}
+
+export interface orderTypeItem {
+  icon: string;
+  title: string;
+  path: string;
+  count: number;
+}

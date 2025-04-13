@@ -43,3 +43,14 @@ export const getOrderListAPI = (
     params,
   });
 };
+
+/**
+ * 获取订单状态数量数据
+ * @returns
+ */
+export const getOrderCountDataAPI = () => {
+  return httpInstance({
+    method: "GET",
+    url: "/order/data",
+  });
+};

@@ -8,6 +8,7 @@ const typeItems = [
   { title: "待发货", value: 2 },
   { title: "待收货", value: 3 },
   { title: "待评价", value: 4 },
+  { title: "退款/售后", value: 5 },
 ];
 const OrderTypeSelector = (props: {
   type: number;
