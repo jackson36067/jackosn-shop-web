@@ -17,20 +17,51 @@ export default function OrderPage() {
   const [type, setType] = useState<number>(Number(pathParmas.get("type")));
   // 订单列表
   const [orderList, setOrderList] = useState<OrderItem[]>([]);
+  // 搜索订单-订单商品名称/订单编号
+  const [goodsNameOrOrderSn, setGoodsNameOrOrderSn] = useState<string>("");
   // 是否展示加载组件
   const [isLoding, setIsLoding] = useState<boolean>(true);
+  // 定义订单时间范围
+  const [placeOrderBeginTime, setPlaceOrderBeginTime] = useState<string>("");
+  const [placeOrderEndTime, setPlaceOrderEndTime] = useState<string>("");
   useEffect(() => {
     setIsLoding(true);
     const getOrderList = async () => {
-      const res = await getOrderListAPI(type);
+      const res = await getOrderListAPI(
+        type,
+        goodsNameOrOrderSn,
+        placeOrderBeginTime,
+        placeOrderEndTime
+      );
       setOrderList(res.data);
       setIsLoding(false);
     };
     getOrderList();
-  }, [type]);
+  }, [goodsNameOrOrderSn, placeOrderBeginTime, placeOrderEndTime, type]);
+
+  // 改变时间范围
+  const handleChangePlaceOrderTimeRange = (
+    beginTime: string,
+    endTime: string
+  ) => {
+    setPlaceOrderBeginTime(beginTime);
+    setPlaceOrderEndTime(endTime);
+  };
+
+  // 改变顶部输入框的值,搜索订单
+  const handleChnageOrderSnOrGoodsName = (value: string) => {
+    setGoodsNameOrOrderSn(value);
+  };
   return (
     <div className="w-full h-full">
-      <OrderTopBar />
+      <OrderTopBar
+        changePlaceOrderTimeRange={(beginTime: string, endTime: string) =>
+          handleChangePlaceOrderTimeRange(beginTime, endTime)
+        }
+        changeOrderSnOrGoodsName={(value: string) =>
+          handleChnageOrderSnOrGoodsName(value)
+        }
+      />
       <OrderTypeSelector
         type={type}
         changeOrderType={(type: number) => setType(type)}

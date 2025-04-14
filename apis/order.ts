@@ -29,13 +29,13 @@ export const getOrderListAPI = (
 ) => {
   const params: Record<string, object | string | number> = { type };
   if (goodsNameOrOrderSnParam) {
-    params.goodsNameOrOrderSn = goodsNameOrOrderSnParam;
+    params.goodsNameOrOrderSnParam = goodsNameOrOrderSnParam;
   }
   if (placeOrderBeginTimeParam) {
-    params.placeOrderTime = placeOrderBeginTimeParam;
+    params.placeOrderBeginTimeParam = placeOrderBeginTimeParam;
   }
   if (placeOrderEndTimeParam) {
-    params.placeOrderTimeEndParam = placeOrderEndTimeParam;
+    params.placeOrderEndTimeParam = placeOrderEndTimeParam;
   }
   return httpInstance({
     method: "GET",
