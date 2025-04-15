@@ -63,3 +63,14 @@ export const removeMemberAddressById = (id: number) => {
     url: `/address/${id}`,
   });
 };
+
+/**
+ * 获取用户默认地址信息
+ * @returns
+ */
+export const getMemberDefaultAddressAPI = () => {
+  return httpInstance({
+    method: "GET",
+    url: "/address/default",
+  });
+};

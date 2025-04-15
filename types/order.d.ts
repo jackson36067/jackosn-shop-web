@@ -10,6 +10,7 @@ export interface AddOrderItem {
   payStatus: boolean; // 是否付款
   orderGoodsList: AddOrderGoodsItem[];
   useCouponIdList: number[];
+  cartIdList?: number[];
 }
 
 export interface AddOrderGoodsItem {

@@ -9,7 +9,7 @@ const PaymentCompleteTopBar = () => {
         <Icon
           icon={"material-symbols:keyboard-arrow-left"}
           fontSize={"1.6rem"}
-          onClick={() => window.history.back()}
+          onClick={() => (window.location.href = "/my")}
         />
         <Icon icon={"icon-park-outline:more"} fontSize={"1.6rem"} />
       </div>

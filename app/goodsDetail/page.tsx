@@ -79,7 +79,7 @@ export default function GoodsDetailPage() {
     setSelectedSkuGroup(
       data.goodsProductList.find((item) => item.defaultSelected)?.specs || null
     );
-    const result = await getUserCanUseCouponListAPI(data.storeId);
+    const result = await getUserCanUseCouponListAPI([data.storeId]);
     const couponList: CouponItem[] = result.data;
     if (couponList) {
       setStoreCouponList(couponList.filter((item) => item.storeId != null));

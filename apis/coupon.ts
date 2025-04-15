@@ -66,9 +66,17 @@ export const getPlatformCouponListAPI = () => {
   });
 };
 
-export const getUserCanUseCouponListAPI = (id: number) => {
+/**
+ * 获取用户可以使用的优惠卷
+ * @param id 店铺id
+ * @returns
+ */
+export const getUserCanUseCouponListAPI = (storeIds: number[]) => {
   return httpInstance({
     method: "GET",
-    url: `/coupon/use/${id}`,
+    url: `/coupon/use`,
+    params: {
+      storeIds: storeIds.join(","),
+    },
   });
 };

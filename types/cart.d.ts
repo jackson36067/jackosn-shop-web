@@ -29,3 +29,15 @@ export type AddCartParams = {
   picUrl: string;
   remark: string;
 };
+
+export interface SelectedCartItem {
+  id: number;
+  goodsId: number;
+  productId: number;
+  goodsName: string;
+  goodsSn: string;
+  specifications: Record<string, string>;
+  number: number;
+  price: number;
+  picUrl: string;
+}

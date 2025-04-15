@@ -2,6 +2,7 @@ import { CartGoodItem } from "@/types/cart";
 import { Checkbox } from "../ui/checkbox";
 import useSelectedGoodsStore from "@/stores/CartSelectedGoods";
 import { SetGoodsCheckedAPI } from "@/apis/cart";
+import { toast } from "sonner";
 
 const BottomBar = (props: {
   cartGoodsItems: CartGoodItem[];
@@ -33,6 +34,15 @@ const BottomBar = (props: {
     }
     props.getCartGoodsItems();
   };
+
+  // 点击去结算按钮跳转到结算页
+  const handleSettlement = () => {
+    if (selectedGoods.length <= 0) {
+      toast.info("请选择商品");
+      return;
+    }
+    window.location.href = "/settlement";
+  };
   return (
     <div className="fixed bottom-20 w-full flex items-center justify-between p-4 bg-white border-t border-gray-200">
       <div className="flex items-center" onClick={() => onAllSelectedChange()}>
@@ -57,9 +67,9 @@ const BottomBar = (props: {
         className={`px-6 py-2 text-white text-lg rounded-full transition ${
           !selectedGoods.length
             ? "bg-gray-600 hover:bg-gray-700"
-            : "bg-red-500 hover:bg-red-600"
+            : "bg-orange-500 hover:bg-orange-600"
         }`}
-        // onClick={() => emit("checkout")}
+        onClick={() => handleSettlement()}
       >
         去结算
       </button>

@@ -59,3 +59,14 @@ export const addGoodsToCartAPI = (data: AddCartParams) => {
     data,
   });
 };
+
+/**
+ * 获取用户选中的购物车商品列表
+ * @returns
+ */
+export const getSelectCartGoodsListAPI = () => {
+  return httpInstance({
+    method: "GET",
+    url: "/cart/selected",
+  });
+};
