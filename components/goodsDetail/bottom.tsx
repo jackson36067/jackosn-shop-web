@@ -17,6 +17,7 @@ import { Button } from "../ui/button";
 import { toast } from "sonner";
 import { AddressSelectedType } from "@/types/address";
 import { CouponItem } from "@/types/coupon";
+import GoodsConsigneeInfo from "../common/goodsConsigneeInfo";
 
 const GoodsDetailBottomBar = (props: {
   storeId: number;
@@ -172,17 +173,11 @@ const GoodsDetailBottomBar = (props: {
               className="flex items-center justify-between gap-2 py-2 border-b-[1px] border-b-gray-200"
               onClick={() => handleOpenAddressDrawer()}
             >
-              <div className="flex items-center gap-4">
-                <Icon icon={"mynaui:location"} fontSize={"1.6rem"} />
-                <div className="font-[600]">
-                  <p>
-                    {props.selecteAddress?.name} {props.selecteAddress?.tel}
-                  </p>
-                  <p className="max-w-65 truncate">
-                    {props.selecteAddress?.address}
-                  </p>
-                </div>
-              </div>
+              <GoodsConsigneeInfo
+                consignee={props.selecteAddress?.name}
+                mobile={props.selecteAddress?.tel}
+                address={props.selecteAddress?.address}
+              />
               <div>
                 <Icon icon={"ri:arrow-right-s-line"} fontSize={"1.6rem"} />
               </div>

@@ -54,3 +54,15 @@ export const getOrderCountDataAPI = () => {
     url: "/order/data",
   });
 };
+
+/**
+ * 根据订单id获取订单数据
+ * @param id 订单id
+ * @returns
+ */
+export const getOrderDetailDataAPI = (id: number) => {
+  return httpInstance({
+    method: "GET",
+    url: `/order/detail/${id}`,
+  });
+};

@@ -24,8 +24,13 @@ import SkuSelector from "../goodsSku/SkuSelector";
 import { toast } from "sonner";
 
 // 商品详情组件用于解析富文本内容
-const RichText: FC<{ content: string }> = ({ content }) => {
-  return <div dangerouslySetInnerHTML={{ __html: content }} />;
+const RichText: FC<{ content: string; className: string }> = ({
+  content,
+  className,
+}) => {
+  return (
+    <div className={className} dangerouslySetInnerHTML={{ __html: content }} />
+  );
 };
 
 const GoodsDetailContent = (props: {
@@ -323,8 +328,8 @@ const GoodsDetailContent = (props: {
             <p className="px-3 mt-5 text-lg font-bold text-gray-500">
               商品详情
             </p>
-            <div className="mt-3">
-              <RichText content={props.goodsDetail.detail} />
+            <div className="w-full mt-3">
+              <RichText content={props.goodsDetail.detail} className="w-full" />
             </div>
           </div>
         </div>

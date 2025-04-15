@@ -78,6 +78,7 @@ export default function My() {
     <div className="w-full h-full bg-[#f4f4f4] pb-28">
       {/* 信息展示 */}
       <div className="pt-10 pb-15 bg-[#ff2d4a]">
+        {/* 用户头像 */}
         <div className="flex justify-center items-center">
           <div
             onClick={() => {
@@ -101,11 +102,13 @@ export default function My() {
             />
           </div>
         </div>
+        {/* 用户名称 */}
         <div className="text-white text-xl text-center mt-5">
           <div
             onClick={() => {
               if (!memberInfo.token) router.push("/login");
             }}
+            className={memberInfo.token && "font-bold"}
           >
             {memberInfo.token ? memberInfo.nickname : "点击登录"}
           </div>

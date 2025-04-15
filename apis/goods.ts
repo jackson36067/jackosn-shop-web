@@ -121,12 +121,12 @@ export const getGoodsDetailAPI = (id: number) => {
  * @param idList 商品id数组
  * @returns
  */
-export const getUserMayLikeGoodsListAPI = (idList: number[]) => {
+export const getUserMayLikeGoodsListAPI = (idList?: number[]) => {
   return httpInstance({
     method: "GET",
     url: `/goods/like`,
     params: {
-      idList: idList.join(","),
+      idList: idList?.join(","),
     },
   });
 };

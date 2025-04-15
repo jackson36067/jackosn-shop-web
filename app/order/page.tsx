@@ -34,9 +34,9 @@ export default function OrderPage() {
         placeOrderEndTime
       );
       setOrderList(res.data);
-      setIsLoding(false);
     };
     getOrderList();
+    setIsLoding(false);
   }, [goodsNameOrOrderSn, placeOrderBeginTime, placeOrderEndTime, type]);
 
   // 改变时间范围
@@ -77,7 +77,7 @@ export default function OrderPage() {
           {orderList.length > 0 ? (
             <OrderContent orderItems={orderList} />
           ) : (
-            <div className="flex flex-col items-center gap-2">
+            <div className="flex flex-col items-center gap-2 mt-30">
               <Icon
                 icon={"akar-icons:file"}
                 fontSize={"3rem"}

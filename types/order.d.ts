@@ -57,3 +57,18 @@ export interface orderTypeItem {
   path: string;
   count: number;
 }
+
+export interface orderDetailData {
+  id: number;
+  orderId: number;
+  orderSn: string;
+  address: string;
+  mobile: string;
+  consignee: string;
+  orderStatus: number;
+  goodsPrice: number;
+  orderPrice: number;
+  freightPrice: number;
+  couponPrice: number;
+  orderGoodsList: orderGoodsItem[];
+}
