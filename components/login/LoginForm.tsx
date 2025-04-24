@@ -19,6 +19,7 @@ import { doMemberLoginAPI, sendCodeAPI } from "@/apis/member";
 import { toast } from "sonner";
 import useMemberStore from "@/stores/MemberStore";
 import { useRouter } from "next/navigation";
+import useWebSocket from "@/utils/webSocket";
 
 // 邮箱表单规则
 const emailFormSchema = z.object({
@@ -73,29 +74,63 @@ export function LoginForm() {
 
   const router = useRouter();
 
+  // 使用 useWebSocket 连接 WebSocket
+  const { connect } = useWebSocket();
+
   // 邮箱表单提交执行
   async function onEmailFormSubmit(values: z.infer<typeof emailFormSchema>) {
-    const res = await doMemberLoginAPI({
-      email: values.email,
-      emailCode: values.emailCode,
-    });
-    setMemberInfo(res.data);
-    toast.success("登录成功");
-    router.push("/");
+    try {
+      // 登录请求
+      const res = await doMemberLoginAPI({
+        email: values.email,
+        emailCode: values.emailCode,
+      });
+
+      // 设置用户信息
+      setMemberInfo(res.data);
+
+      // 提示用户登录成功
+      toast.success("登录成功");
+
+      // 构建 WebSocket URL（带上用户id）
+      const wsUrl = `ws://localhost:8080/ws/${res.data.id}`;
+
+      // 调用 connect 方法连接 WebSocket
+      connect(wsUrl);
+
+      // 跳转到主页
+      router.push("/");
+    } catch (error) {
+      console.error("Login failed:", error);
+      toast.error("登录失败，请检查账号和验证码");
+    }
   }
 
   // 用户名表单提交执行
   async function onNicknameFormSubmit(
     values: z.infer<typeof nicknameFormSchema>
   ) {
-    const res = await doMemberLoginAPI({
-      nickname: values.nickname,
-      password: values.password,
-    });
-    setMemberInfo(res.data);
-    toast.success("登录成功");
-    router.push("/");
+    try {
+      const res = await doMemberLoginAPI({
+        nickname: values.nickname,
+        password: values.password,
+      });
+      // 设置用户信息
+      setMemberInfo(res.data);
+      // 提示用户登录成功
+      toast.success("登录成功");
+      // 构建 WebSocket URL（带上用户id）
+      const wsUrl = `ws://localhost:8080/ws/${res.data.id}`;
+      // 调用 connect 方法连接 WebSocket
+      connect(wsUrl);
+      // 跳转到主页
+      router.push("/");
+    } catch (error) {
+      console.error("Login failed:", error);
+      toast.error("登录失败，请检查账号和验证码");
+    }
   }
+
   return (
     <Tabs defaultValue="nickname" className="w-[400px]">
       <TabsList className="grid w-full grid-cols-2">

@@ -31,7 +31,38 @@ export default function My() {
     clearMemberInfo();
   };
 
-  const [myOrderItems, setMyOrderItem] = useState<orderTypeItem[]>([]);
+  const [myOrderItems, setMyOrderItem] = useState<orderTypeItem[]>([
+    {
+      icon: "material-symbols-light:paid-outline",
+      title: "待支付",
+      path: `/order?type=1`,
+      count: 0,
+    },
+    {
+      icon: "mage:shop",
+      title: "待发货",
+      path: "/order?type=2",
+      count: 0,
+    },
+    {
+      icon: "material-symbols:local-shipping-outline",
+      title: "待收货",
+      path: "/order?type=3",
+      count: 0,
+    },
+    {
+      icon: "basil:chat-outline",
+      title: "已完成",
+      path: "/order?type=4",
+      count: 0,
+    },
+    {
+      icon: "mingcute:refund-cny-fill",
+      title: "退款/售后",
+      path: "/order?type=5",
+      count: 0,
+    },
+  ]);
 
   // 获取用户订单数量数据
   useEffect(() => {
@@ -44,31 +75,31 @@ export default function My() {
           icon: "material-symbols-light:paid-outline",
           title: "待支付",
           path: `/order?type=1`,
-          count: data.unPaymentOrderNumber,
+          count: data ? data.unPaymentOrderNumber : 0,
         },
         {
           icon: "mage:shop",
           title: "待发货",
           path: "/order?type=2",
-          count: data.unShippedOrderNumber,
+          count: data ? data.unShippedOrderNumber : 0,
         },
         {
           icon: "material-symbols:local-shipping-outline",
           title: "待收货",
           path: "/order?type=3",
-          count: data.unReceiptOrderNumber,
+          count: data ? data.unReceiptOrderNumber : 0,
         },
         {
           icon: "basil:chat-outline",
           title: "已完成",
           path: "/order?type=4",
-          count: data.completedOrderNumber,
+          count: data ? data.completedOrderNumber : 0,
         },
         {
           icon: "mingcute:refund-cny-fill",
           title: "退款/售后",
           path: "/order?type=5",
-          count: data.refundOrderNumber,
+          count: data ? data.refundOrderNumber : 0,
         },
       ]);
     };

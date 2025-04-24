@@ -3,7 +3,7 @@
 import { GetHotOrNewGoodsAPI } from "@/apis/goods";
 import HomeCategoryGoods from "@/components/home/category/goods";
 import SearchTopBar from "@/components/search/Topbar";
-import { SearchSelectBar } from "@/components/searchDetail/selectBar";
+import SearchSelectBar from "@/components/searchDetail/selectBar";
 import { GoodsMessage, GoodsPageResult } from "@/types/goods";
 import { debounce } from "@/utils/debounce";
 import { Icon } from "@iconify/react/dist/iconify.js";

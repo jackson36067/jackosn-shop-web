@@ -15,6 +15,7 @@ export default function Cart() {
   const isFecth = useRef(false);
   const { memberInfo } = useMemberStore();
   const getCartGoods = async () => {
+    if (!memberInfo.token) return;
     const res = await getCartGoodsAPI();
     const data: CartGoodItem[] = res.data;
     setCartGoods(data);
