@@ -21,3 +21,15 @@ export const getMemberChatMessageThreadListAPI = () => {
     url: "/message/thread/list",
   });
 };
+
+/**
+ * 获取消息详情
+ * @param id 消息队列id
+ * @returns
+ */
+export const getMemberChatMessageThreadDetailAPI = (id: number) => {
+  return httpInstance({
+    method: "GET",
+    url: `/message/${id}`,
+  });
+};

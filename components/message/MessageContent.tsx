@@ -11,7 +11,7 @@ const MessageContent = (props: { messageThreadItems: MessageThreadItem[] }) => {
           return (
             <div
               key={item.id}
-              className="flex items-center gap-4 py-2 rounded-md"
+              className="flex items-center gap-4 py-2 rounded-md border-b-[1px] border-b-gray-300"
               onClick={() =>
                 (window.location.href = `/messageDetail?id=${item.id}`)
               }

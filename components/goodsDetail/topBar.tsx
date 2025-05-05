@@ -10,7 +10,7 @@ const GoodsDetailTopBar = (props: { showButton: boolean }) => {
     <div
       className={cn(
         "fixed top-0 left-0 z-999 flex items-center justify-between w-full p-3",
-        props.showButton && "bg-white"
+        props.showButton && "bg-white transition-all duration-300 ease-in-out"
       )}
     >
       {/* 返回键 */}
