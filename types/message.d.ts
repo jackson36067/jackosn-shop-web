@@ -14,13 +14,15 @@ export interface MessageThreadDetailItem {
   id: number;
   name: string; // 接收者名称
   receiverId: number; // 接收者id, 接收者为用户时存在
-  storeId: number; // 店铺id, 如果存在那么接收者是店铺客服
+  senderStoreId: number; // 发送者店铺id, 发送者为店铺客服时存在
+  receiverStoreId: number; // 店铺id, 如果存在那么接收者是店铺客服
   chatMessageList: MessageItem[]; // 消息列表
 }
 
 export interface MessageItem {
   id: number; // 消息id
   userId: number; // 发送者id
+  receiverId: number; // 接收者id
   avatar: string; // 发送者头像
   name: string; // 发送者名称
   message: string; // 消息内容

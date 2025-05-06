@@ -51,12 +51,12 @@ export default function MessageDetailPage() {
     <div className="w-full">
       <MessageDetailTopBar
         name={messsageDetail?.name}
-        storeId={messsageDetail?.storeId}
+        storeId={messsageDetail?.receiverStoreId}
       />
       <MessageDetailContent
         className="w-full mt-4"
         messageList={messsageDetail?.chatMessageList}
-        storeId={messsageDetail?.storeId}
+        storeId={messsageDetail?.receiverStoreId}
       />
       <MessageDetailBottomBar
         className="w-full fixed bottom-0 left-0 bg-white"
