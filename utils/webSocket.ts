@@ -35,6 +35,7 @@ const useWebSocket = (): UseWebSocketReturn => {
     // 监听 WebSocket 关闭
     ws.onclose = () => {
       setIsOpen(false);
+      console.log("WebSocket 被关闭: ");
     };
 
     // 清理 WebSocket 连接

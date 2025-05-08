@@ -9,6 +9,7 @@ export const MessageDetailBottomBar = (props: {
   message: string;
   isInput: boolean;
   handleInput: (value: string) => void;
+  handleSendMessage: () => void;
 }) => {
   return (
     <div className={cn("p-3", props.className)}>
@@ -26,6 +27,7 @@ export const MessageDetailBottomBar = (props: {
             props.isInput &&
               "top-1 py-1 px-3 bg-orange-500 rounded-xl transition-all duration-300 ease-in-out"
           )}
+          onClick={() => props.handleSendMessage()}
         >
           <Icon
             icon={"majesticons:send-line"}

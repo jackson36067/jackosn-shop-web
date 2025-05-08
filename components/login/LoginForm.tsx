@@ -19,7 +19,7 @@ import { doMemberLoginAPI, sendCodeAPI } from "@/apis/member";
 import { toast } from "sonner";
 import useMemberStore from "@/stores/MemberStore";
 import { useRouter } from "next/navigation";
-import useWebSocket from "@/utils/webSocket";
+import { useWebSocketStore } from "@/stores/WebSocketStore";
 
 // 邮箱表单规则
 const emailFormSchema = z.object({
@@ -74,9 +74,6 @@ export function LoginForm() {
 
   const router = useRouter();
 
-  // 使用 useWebSocket 连接 WebSocket
-  const { connect } = useWebSocket();
-
   // 邮箱表单提交执行
   async function onEmailFormSubmit(values: z.infer<typeof emailFormSchema>) {
     try {
@@ -96,7 +93,7 @@ export function LoginForm() {
       const wsUrl = `ws://localhost:8080/ws/${res.data.id}`;
 
       // 调用 connect 方法连接 WebSocket
-      connect(wsUrl);
+      useWebSocketStore.getState().connect(wsUrl);
 
       // 跳转到主页
       router.push("/");
@@ -122,7 +119,7 @@ export function LoginForm() {
       // 构建 WebSocket URL（带上用户id）
       const wsUrl = `ws://localhost:8080/ws/${res.data.id}`;
       // 调用 connect 方法连接 WebSocket
-      connect(wsUrl);
+      useWebSocketStore.getState().connect(wsUrl);
       // 跳转到主页
       router.push("/");
     } catch (error) {
