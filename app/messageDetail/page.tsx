@@ -12,7 +12,13 @@ import useMemberStore from "@/stores/MemberStore";
 import { useWebSocketStore } from "@/stores/WebSocketStore";
 import { MessageItem, MessageThreadDetailItem } from "@/types/message";
 import { useSearchParams } from "next/navigation";
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 
 export default function MessageDetailPage() {
   const searchParams = useSearchParams();
@@ -107,7 +113,7 @@ export default function MessageDetailPage() {
   }, [id, messages]);
 
   // 发送消息
-  const sendMessage = async () => {
+  const sendMessage = useCallback(async () => {
     if (isInput) {
       await sendMessageAPI({
         id: Number(id),
@@ -135,7 +141,25 @@ export default function MessageDetailPage() {
         ];
       });
     }
-  };
+  }, [isInput, id, messsageDetail, message]);
+
+  // 监听按下回车键
+  const handleKeyDown = useCallback(
+    (event: KeyboardEvent) => {
+      if (event.key === "Enter") {
+        event.preventDefault(); // 阻止默认行为
+        sendMessage();
+      }
+    },
+    [sendMessage]
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [handleKeyDown]);
   return (
     <div className="w-full">
       <MessageDetailTopBar
