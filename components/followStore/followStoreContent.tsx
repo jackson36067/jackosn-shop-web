@@ -15,6 +15,7 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer";
+import { useRouter } from "next/navigation";
 
 const FollowStoreContent = forwardRef(
   (
@@ -41,6 +42,7 @@ const FollowStoreContent = forwardRef(
     );
     // 是否打开更多操作弹窗
     const [open, setOpne] = useState<boolean>(false);
+    const router = useRouter();
 
     // 当更新选中店铺时,更新组件被选中店铺信息以及更新父组件被选中店铺信息
     const handleCheckStore = (id: number, isChecked: boolean) => {
@@ -85,9 +87,7 @@ const FollowStoreContent = forwardRef(
               >
                 <div
                   className="flex-11/12 flex items-center"
-                  onClick={() =>
-                    (window.location.href = `/store?id=${item.storeId}`)
-                  }
+                  onClick={() => router.push(`/store?id=${item.storeId}`)}
                 >
                   {props.operateStatus && (
                     <div className="flex-1/9">
@@ -117,9 +117,7 @@ const FollowStoreContent = forwardRef(
                   <div className="flex items-center">
                     <Button
                       className="bg-[#ffece5]/90 text-orange-600"
-                      onClick={() =>
-                        (window.location.href = `/store?id=${item.id}`)
-                      }
+                      onClick={() => router.push(`/store?id=${item.id}`)}
                     >
                       进店
                     </Button>

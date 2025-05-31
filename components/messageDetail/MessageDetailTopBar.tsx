@@ -1,11 +1,13 @@
 "use client";
 
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useRouter } from "next/navigation";
 
 const MessageDetailTopBar = (props: {
   name: string | undefined;
   storeId: number | undefined;
 }) => {
+  const router = useRouter();
   return (
     <div className="p-3">
       <div className="flex items-center justify-between">
@@ -13,7 +15,7 @@ const MessageDetailTopBar = (props: {
           <Icon
             icon={"fluent-mdl2:back"}
             fontSize={"1.2rem"}
-            onClick={() => window.history.back()}
+            onClick={() => router.back()}
           />
           {/* 店铺名称或者用户名称 */}
           <p className="text-lg">{props.name ? props.name : ""}</p>

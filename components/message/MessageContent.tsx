@@ -2,8 +2,10 @@
 
 import { MessageThreadItem } from "@/types/message";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const MessageContent = (props: { messageThreadItems: MessageThreadItem[] }) => {
+  const router = useRouter();
   return (
     <div className="p-3">
       <div className="flex flex-col gap-2">
@@ -12,9 +14,7 @@ const MessageContent = (props: { messageThreadItems: MessageThreadItem[] }) => {
             <div
               key={item.id}
               className="flex items-center gap-4 py-2 rounded-md border-b-[1px] border-b-gray-300"
-              onClick={() =>
-                (window.location.href = `/messageDetail?id=${item.id}`)
-              }
+              onClick={() => router.push(`/messageDetail?id=${item.id}`)}
             >
               <div>
                 <Image

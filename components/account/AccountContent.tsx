@@ -30,6 +30,7 @@ import {
 } from "@/apis/member";
 import { toast } from "sonner";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const FormSchema = z.object({
   password: z.string().min(6, {
@@ -50,6 +51,7 @@ const eamilFormSchema = z.object({
     .min(1, { message: "邮箱不能为空" }),
 });
 const AccountContent = (props: { operateState: boolean }) => {
+  const router = useRouter();
   const { updateMemberEmail, clearMemberInfo, memberInfo } = useMemberStore();
   const [open, setOpen] = useState<boolean>(false);
   // 对邮箱进行加密
@@ -88,7 +90,7 @@ const AccountContent = (props: { operateState: boolean }) => {
     });
     toast.success("更改密码成功,请重新登录");
     clearMemberInfo();
-    window.location.href = "/login";
+    router.push("/login");
   }
 
   const getCode = async () => {

@@ -1,6 +1,7 @@
 "use client";
 
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useRouter } from "next/navigation";
 import { useRef } from "react";
 
 const FollowStoreTopBar = (props: {
@@ -18,6 +19,7 @@ const FollowStoreTopBar = (props: {
     nameRef.current = name;
     props.handleSelectFollowStoreName(name);
   };
+  const router = useRouter();
   return (
     <div className="fixed top-0 left-0 w-full py-5 px-3">
       <div className="flex items-center justify-between">
@@ -25,7 +27,7 @@ const FollowStoreTopBar = (props: {
           <Icon
             icon={"ep:back"}
             fontSize={"1rem"}
-            onClick={() => window.history.back()}
+            onClick={() => router.back()}
           />
           <p className="font-bold text-xl">
             关注店铺

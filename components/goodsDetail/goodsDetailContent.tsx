@@ -13,7 +13,6 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer";
-import AddressPage from "@/app/address/page";
 import { Button } from "../ui/button";
 import { AddressSelectedType } from "@/types/address";
 import CommentBar from "./commentBar";
@@ -22,6 +21,8 @@ import { CommentCategoryItem } from "@/types/comment";
 import GoodsAttributeContent from "./goodsAttributeContent";
 import SkuSelector from "../goodsSku/SkuSelector";
 import { toast } from "sonner";
+import AddressView from "../address/addressView";
+import { useRouter } from "next/navigation";
 
 // 商品详情组件用于解析富文本内容
 const RichText: FC<{ content: string; className: string }> = ({
@@ -72,6 +73,7 @@ const GoodsDetailContent = (props: {
   const handleSelectedAddress = (address: AddressSelectedType) => {
     setSelectAddress(address);
   };
+  const router = useRouter();
 
   // 点击确认按钮后,更改选中地址
   const handleChangeAddress = () => {
@@ -249,7 +251,7 @@ const GoodsDetailContent = (props: {
                     <DrawerTitle></DrawerTitle>
                     <DrawerDescription></DrawerDescription>
                   </DrawerHeader>
-                  <AddressPage
+                  <AddressView
                     selectedAddres={props.selectedAddress}
                     addressSelectedPage={true}
                     selectedAddress={(address: AddressSelectedType) =>
@@ -304,19 +306,19 @@ const GoodsDetailContent = (props: {
           {props.goodsDetail.goodsCommentVOList.length > 0 && (
             <div
               onClick={() =>
-                (window.location.href = `/comment?id=${
-                  props.goodsDetail?.id
-                }&totalCommentCount=${
-                  props.goodsDetail?.totalCommentNumber
-                }&goodCommentCount=${
-                  props.goodsDetail?.goodCommentNumber
-                }&naturalCommentCount=${
-                  props.goodsDetail?.naturalCommentNumber
-                }&badCommentCount=${
-                  props.goodsDetail?.badCommentNumber
-                }&hasPictureCommentCount=${
-                  props.goodsDetail?.hasPictureCommentNumber
-                }&type=${0}`)
+                router.push(
+                  `/comment?id=${props.goodsDetail?.id}&totalCommentCount=${
+                    props.goodsDetail?.totalCommentNumber
+                  }&goodCommentCount=${
+                    props.goodsDetail?.goodCommentNumber
+                  }&naturalCommentCount=${
+                    props.goodsDetail?.naturalCommentNumber
+                  }&badCommentCount=${
+                    props.goodsDetail?.badCommentNumber
+                  }&hasPictureCommentCount=${
+                    props.goodsDetail?.hasPictureCommentNumber
+                  }&type=${0}`
+                )
               }
             >
               <p className="mt-8 text-lg text-center text-black">

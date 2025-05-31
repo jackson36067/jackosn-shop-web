@@ -1,3 +1,4 @@
+"use client";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect, useRef } from "react";
 
@@ -52,6 +53,7 @@ export default function MapContainer(props: {
             ? [props.location?.lng, props.location?.lat] // 如果传递了经纬度参数，使用它作为中心点
             : [113.27, 23.17]; // 默认的中心点
 
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         map = new AMap.Map("container", {
           viewMode: "3D",
           zoom: 11,

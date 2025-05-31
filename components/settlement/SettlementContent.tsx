@@ -13,13 +13,13 @@ import {
   DrawerTitle,
   DrawerTrigger,
 } from "../ui/drawer";
-import AddressPage from "@/app/address/page";
 import { useState } from "react";
 import { Button } from "../ui/button";
 import { SelectedCartItem } from "@/types/cart";
 import Image from "next/image";
 import { CouponItem } from "@/types/coupon";
 import { Checkbox } from "../ui/checkbox";
+import AddressView from "../address/addressView";
 
 const SettlementContent = (props: {
   defaultAddress: AddressSelectedType | null;
@@ -87,7 +87,7 @@ const SettlementContent = (props: {
             <DrawerTitle></DrawerTitle>
             <DrawerDescription></DrawerDescription>
           </DrawerHeader>
-          <AddressPage
+          <AddressView
             selectedAddres={props.defaultAddress}
             addressSelectedPage={true}
             selectedAddress={(address: AddressSelectedType) =>

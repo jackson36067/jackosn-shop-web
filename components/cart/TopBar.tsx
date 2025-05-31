@@ -1,14 +1,16 @@
 "use client";
 
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useRouter } from "next/navigation";
 
 const CartTopBar = (props: { cartGoodsItemsLength: number }) => {
+  const router = useRouter();
   return (
     <div className="w-full h-[100%] px-2 bg-[#fff]">
       <div className="flex justify-between items-center sm:h-12 h-14 w-full">
         {/* 主题 */}
         <div className="flex items-center gap-2">
-          <div onClick={() => window.history.back()}>
+          <div onClick={() => router.back()}>
             <Icon icon="iconamoon:arrow-left-2" fontSize={"1.6rem"} />
           </div>
           <div className="text-current font-bold text-xl">

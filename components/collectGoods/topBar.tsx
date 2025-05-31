@@ -14,6 +14,7 @@ import {
 } from "../ui/drawer";
 import { Button } from "../ui/button";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 const collectTimeTtems = [
   { title: "7天内", value: 7 },
@@ -54,6 +55,7 @@ const CollectGoodsTopBar = (props: {
       collectTime ?? undefined
     );
   };
+  const router = useRouter();
   return (
     <div>
       <div className="fixed top-0 left-0 w-full py-5 px-2">
@@ -62,7 +64,7 @@ const CollectGoodsTopBar = (props: {
             <Icon
               icon={"ep:back"}
               fontSize={"1rem"}
-              onClick={() => window.history.back()}
+              onClick={() => router.back()}
             />
             <p className="font-bold text-xl">
               我的收藏

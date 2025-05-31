@@ -3,9 +3,11 @@
 import { cn } from "@/lib/utils";
 import useSelectedGoodsStore from "@/stores/CartSelectedGoods";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useRouter } from "next/navigation";
 
 const GoodsDetailTopBar = (props: { showButton: boolean }) => {
   const { selectedGoods } = useSelectedGoodsStore();
+  const router = useRouter();
   return (
     <div
       className={cn(
@@ -21,7 +23,7 @@ const GoodsDetailTopBar = (props: { showButton: boolean }) => {
         )}
         onClick={() => {
           // 返回上一页
-          window.history.back();
+          router.back();
         }}
       >
         <Icon icon={"mdi:keyboard-arrow-left"} fontSize={"1.6rem"} />
@@ -42,7 +44,7 @@ const GoodsDetailTopBar = (props: { showButton: boolean }) => {
             "relative p-1 rounded-sm",
             props.showButton ? "bg-white text-black" : "bg-black/40 text-white"
           )}
-          onClick={() => (window.location.href = "/cart")}
+          onClick={() => router.push("/cart")}
         >
           <Icon icon={"lucide:shopping-cart"} fontSize={"1.6rem"} />
           {selectedGoods.length > 0 && (

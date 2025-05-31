@@ -1,6 +1,7 @@
 "use client";
 
 import { CouponItem } from "@/types/coupon";
+import { usePathname } from "next/navigation";
 
 const GetCouponContent = (props: {
   couponList: CouponItem[];
@@ -11,6 +12,7 @@ const GetCouponContent = (props: {
   const handleGetCoupon = (couponId: number, storeId?: number) => {
     props.handleGetCoupon(couponId, storeId);
   };
+  const pathname = usePathname();
   return (
     <div>
       {props.couponList.map((couponItem) => {
@@ -36,7 +38,7 @@ const GetCouponContent = (props: {
                   className="rounded-2xl bg-orange-600 text-white p-2"
                   onClick={() => handleGetCoupon(couponItem.id, props.storeId)}
                 >
-                  {window.location.pathname === "/couponCenter"
+                  {pathname === "/couponCenter"
                     ? "抢购"
                     : props.isFollow
                     ? "领取"

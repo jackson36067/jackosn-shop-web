@@ -1,6 +1,7 @@
 "use client";
 
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useRouter } from "next/navigation";
 import { forwardRef, useImperativeHandle, useState } from "react";
 
 const BrowseHistoryTopBar = forwardRef(
@@ -21,6 +22,7 @@ const BrowseHistoryTopBar = forwardRef(
     }));
     // 操作按钮状态
     const [showOperateButton, setShowOperateButton] = useState<boolean>(false);
+    const router = useRouter();
     return (
       <div>
         <div className="fixed top-0 left-0 w-full py-5 px-3 z-1 bg-[#f4f4f4]">
@@ -29,7 +31,7 @@ const BrowseHistoryTopBar = forwardRef(
               <Icon
                 icon={"ep:back"}
                 fontSize={"1rem"}
-                onClick={() => window.history.back()}
+                onClick={() => router.back()}
               />
               <p className="font-bold text-xl">
                 我的足迹
@@ -40,7 +42,7 @@ const BrowseHistoryTopBar = forwardRef(
               <Icon
                 icon={"tdesign:search"}
                 fontSize={"1rem"}
-                onClick={() => (window.location.href = "/browseSearch")}
+                onClick={() => router.push("/browseSearch")}
               />
               {/* 点击管理执行函数将是否展示操作按钮值传递给父组件 */}
               <p

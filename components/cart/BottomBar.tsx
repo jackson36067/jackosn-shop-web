@@ -3,12 +3,14 @@ import { Checkbox } from "../ui/checkbox";
 import useSelectedGoodsStore from "@/stores/CartSelectedGoods";
 import { SetGoodsCheckedAPI } from "@/apis/cart";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const BottomBar = (props: {
   cartGoodsItems: CartGoodItem[];
   getCartGoodsItems: () => void;
 }) => {
   const { selectedGoods, setSelectedGoods } = useSelectedGoodsStore();
+  const router = useRouter();
   const totalPrice = selectedGoods.reduce((prev, current) => {
     return prev + current.price * current.number;
   }, 0);
@@ -41,7 +43,7 @@ const BottomBar = (props: {
       toast.info("请选择商品");
       return;
     }
-    window.location.href = "/settlement";
+    router.push("/settlement");
   };
   return (
     <div className="fixed bottom-20 w-full flex items-center justify-between p-4 bg-white border-t border-gray-200">

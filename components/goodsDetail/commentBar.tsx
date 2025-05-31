@@ -2,6 +2,7 @@
 
 import { cn } from "@/lib/utils";
 import { CommentCategoryItem } from "@/types/comment";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const CommentBar = (props: {
@@ -11,11 +12,12 @@ const CommentBar = (props: {
   changeCommentType?: (type: number) => void;
 }) => {
   const [type, setType] = useState<number>(0);
+  const pathname = usePathname();
   useEffect(() => {
     setType(type);
   }, [type]);
   const handleSelectCommentType = (type: number) => {
-    if (window.location.pathname.startsWith("/goodsDetail")) {
+    if (pathname.startsWith("/goodsDetail")) {
       return;
     }
     setType(type);
@@ -34,7 +36,7 @@ const CommentBar = (props: {
             key={index}
             className={cn(
               "bg-[#f8e3e0]/90 p-1 rounded-md",
-              window.location.pathname.startsWith("/comment") &&
+              pathname.startsWith("/comment") &&
                 type === item.value &&
                 "border-[1px] border-orange-600"
             )}

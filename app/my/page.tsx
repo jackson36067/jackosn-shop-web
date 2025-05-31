@@ -153,7 +153,7 @@ export default function My() {
               <div
                 key={index}
                 className="flex items-center gap-1"
-                onClick={() => (window.location.href = item.path)}
+                onClick={() => router.push(item.path)}
               >
                 <Icon icon={item.icon} fontSize={"1.4rem"} />
                 <div>{item.title}</div>
@@ -166,7 +166,7 @@ export default function My() {
             <div className="font-bold">我的订单</div>
             <div
               className="flex items-center gap-1"
-              onClick={() => (window.location.href = "/order?type=0")}
+              onClick={() => router.push("/order?type=0")}
             >
               <p className="text-sm">全部订单</p>
               <IconRight className="w-3 h-3" />
@@ -178,7 +178,7 @@ export default function My() {
                 <div
                   key={index}
                   className="relative flex flex-col justify-center items-center"
-                  onClick={() => (window.location.href = item.path)}
+                  onClick={() => router.push(item.path)}
                 >
                   <div>
                     <Icon
@@ -201,7 +201,7 @@ export default function My() {
         </div>
         <div
           className="flex justify-between items-center py-3 border-b-[1px] border-gray-300"
-          onClick={() => (window.location.href = "/address")}
+          onClick={() => router.push("/address")}
         >
           <p>收货地址管理</p>
           <Icon icon="weui:arrow-outlined" className="w-8 h-8"></Icon>
@@ -209,14 +209,14 @@ export default function My() {
         <div>
           <div
             className="flex justify-between items-center py-3 border-b-[1px] border-gray-300"
-            onClick={() => (window.location.href = "/coupon")}
+            onClick={() => router.push("/coupon")}
           >
             <p>优惠卷管理</p>
             <Icon icon="weui:arrow-outlined" className="w-8 h-8"></Icon>
           </div>
           <div
             className="flex justify-between items-center py-3 bg-white border-b-[1px] border-gray-300"
-            onClick={() => (window.location.href = "/couponCenter")}
+            onClick={() => router.push("/couponCenter")}
           >
             <p>领卷中心</p>
             <Icon icon="weui:arrow-outlined" className="w-8 h-8"></Icon>
@@ -235,7 +235,7 @@ export default function My() {
         {/* 进入修改手机号以及邮箱页 */}
         <div
           className="flex justify-between items-center py-3 mb-8"
-          onClick={() => (window.location.href = "/account")}
+          onClick={() => router.push("/account")}
         >
           <p>账号安全</p>
           <Icon icon="weui:arrow-outlined" className="w-8 h-8"></Icon>

@@ -13,11 +13,13 @@ import {
 import { SearchHisotorItem } from "@/types/search";
 import { HotwordItem } from "@/types/keyword";
 import { toast } from "sonner";
+import { useRouter } from "next/navigation";
 
 const SearchBox: React.FC = () => {
   const [recentSearches, setRecentSearches] = useState<SearchHisotorItem[]>([]);
   const [hotSearches, setHotSearches] = useState<HotwordItem[]>([]);
   const isFectehing = useRef(false);
+  const router = useRouter();
 
   // 获取搜索历史和热门关键词
   const getHistoryAndHotKeywords = async () => {
@@ -43,7 +45,7 @@ const SearchBox: React.FC = () => {
   // 处理点击最近搜索或者热门搜索
   const handleSearch = async (item: SearchHisotorItem | HotwordItem) => {
     // 跳转至搜索详情页
-    window.location.href = `/searchDetail?name=${item.keyword}`;
+    router.push(`/searchDetail?name=${item.keyword}`);
     // 保存搜索历史
     await addSearchHistoryAPI(item.keyword);
     localStorage.setItem("searchTerm", item.keyword);

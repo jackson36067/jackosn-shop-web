@@ -1,6 +1,8 @@
 import { GoodsMessage } from "@/types/goods";
+import { useRouter } from "next/navigation";
 
 const CategoryGoods = (props: { goodItems: GoodsMessage[] }) => {
+  const router = useRouter();
   return (
     <div>
       {props.goodItems.map((item) => {
@@ -8,9 +10,7 @@ const CategoryGoods = (props: { goodItems: GoodsMessage[] }) => {
           <div
             className="flex w-full mt-3 first:mt-3 p-2 bg-[#fff]"
             key={item.id}
-            onClick={() =>
-              (window.location.href = `/goodsDetail?id=${item.id}`)
-            }
+            onClick={() => router.push(`/goodsDetail?id=${item.id}`)}
           >
             <div>
               <img

@@ -12,6 +12,7 @@ import {
 } from "../ui/drawer";
 import AddressDrawerContent from "./AddressDrawerContent";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 const AddressTopBar = (props: {
   getNewMemberAddress: () => void;
@@ -24,6 +25,7 @@ const AddressTopBar = (props: {
   const handleChangeOperateStatus = () => {
     props.changeOperateStatus();
   };
+  const router = useRouter();
   return (
     <div className="px-3">
       <div className="flex justify-between items-center">
@@ -35,7 +37,7 @@ const AddressTopBar = (props: {
               <Icon
                 icon={"stash:arrow-left-light"}
                 fontSize={"1.6rem"}
-                onClick={() => window.history.back()}
+                onClick={() => router.back()}
               />
               <p className="font-bold text-xl">收货地址</p>
             </div>

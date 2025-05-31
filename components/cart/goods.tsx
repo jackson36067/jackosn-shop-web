@@ -27,6 +27,7 @@ import { CouponItem } from "@/types/coupon";
 import { toast } from "sonner";
 import { doCollectOrCancelCollectGoodsAPI } from "@/apis/goods";
 import GetCouponContent from "../coupon/getCouponItem";
+import { useRouter } from "next/navigation";
 
 // 购物车有数据时
 const CartContent = ({
@@ -146,6 +147,7 @@ const CartContent = ({
     // 重新获取购物车商品数据
     getCartGoodsItems();
   };
+  const router = useRouter();
   return (
     <div className="pb-60 overflow-auto">
       {items.map((item) => {
@@ -157,9 +159,7 @@ const CartContent = ({
             <div className="flex justify-between items-center pl-10 pr-4">
               <div
                 className="flex gap-2 items-center"
-                onClick={() =>
-                  (window.location.href = `/store?id=${item.storeId}`)
-                }
+                onClick={() => router.push(`/store?id=${item.storeId}`)}
               >
                 <div>
                   <span className="text-[#d4392b] text-xl mr-2 font-mono">

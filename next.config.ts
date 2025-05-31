@@ -3,6 +3,7 @@ import type { NextConfig } from "next";
 const nextConfig: NextConfig = {
   /* config options here */
   images: {
+    unoptimized: true,
     remotePatterns: [
       {
         protocol: "http",
@@ -10,6 +11,7 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  output: "export",
 };
 
 export default nextConfig;

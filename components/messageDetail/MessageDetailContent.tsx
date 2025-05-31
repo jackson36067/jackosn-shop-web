@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import useMemberStore from "@/stores/MemberStore";
 import { MessageItem } from "@/types/message";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { forwardRef } from "react";
 
 // Define the Props type
@@ -16,6 +17,7 @@ type Props = {
 export const MessageDetailContent = forwardRef<HTMLDivElement, Props>(
   (props, ref) => {
     const { memberInfo } = useMemberStore();
+    const router = useRouter();
     return (
       <div className={cn("px-3", props.className)} ref={ref}>
         <div className="flex flex-col gap-2 w-full">
@@ -38,7 +40,7 @@ export const MessageDetailContent = forwardRef<HTMLDivElement, Props>(
                   <div
                     onClick={() => {
                       if (props.storeId)
-                        window.location.href = `/store?id=${props.storeId}`;
+                        router.push(`/store?id=${props.storeId}`);
                     }}
                   >
                     <Image

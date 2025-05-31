@@ -15,6 +15,7 @@ import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { getDateMonthsAgo } from "@/utils/dateUtils";
 import { formatDateForLocalDateTime } from "@/utils/dateFormat";
+import { useRouter } from "next/navigation";
 
 const OrderPlaceTimeButtonItems: { title: string; value: number }[] = [
   {
@@ -45,6 +46,7 @@ const OrderTopBar = (props: {
   // 选择的时间范围, 数据代表x个月前
   const [selectPlaceOrderTimeRangeButton, setPlaceOrderTimeRangeButton] =
     useState<number>(0);
+  const router = useRouter();
   // 选择好时间范围后改变值
   const handleSelectPlaceOrderTimeRange = (value: number) => {
     setPlaceOrderTimeRangeButton(value);
@@ -71,7 +73,7 @@ const OrderTopBar = (props: {
       <Icon
         icon={"material-symbols:keyboard-arrow-left"}
         fontSize={"1.6rem"}
-        onClick={() => (window.location.href = "/my")}
+        onClick={() => router.push("my")}
       />
       {/* 搜索框 */}
       <div className="flex-1 relative">

@@ -7,6 +7,7 @@ import { Checkbox } from "../ui/checkbox";
 import { useRef, useState } from "react";
 import Image from "next/image";
 import { IconRight } from "react-day-picker";
+import { useRouter } from "next/navigation";
 
 const CouponContent = (props: {
   userCouponItems: memberCouponMemberType[];
@@ -16,6 +17,7 @@ const CouponContent = (props: {
   // 用于接收被选中的优惠卷的id
   const selectedCouponId = useRef<number[]>([]);
   const [SelectedCouponId, setSelectedCouponId] = useState<number[]>([]);
+  const router = useRouter();
   // 监听checkbox更改
   const handleCheckCoupon = (idList: number[], isCheck: boolean) => {
     // 判断是否选中 ->
@@ -95,9 +97,7 @@ const CouponContent = (props: {
                     <div className="flex flex-col gap-2">
                       <div
                         className="flex gap-2 items-center"
-                        onClick={() =>
-                          (window.location.href = `/store?id=${item.storeId}`)
-                        }
+                        onClick={() => router.push(`/store/${item.storeId}`)}
                       >
                         {props.deleteState && (
                           <div className="flex items-center pr-2">

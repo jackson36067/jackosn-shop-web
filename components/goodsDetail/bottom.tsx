@@ -18,6 +18,7 @@ import { toast } from "sonner";
 import { AddressSelectedType } from "@/types/address";
 import { CouponItem } from "@/types/coupon";
 import GoodsConsigneeInfo from "../common/goodsConsigneeInfo";
+import { useRouter } from "next/navigation";
 
 const GoodsDetailBottomBar = (props: {
   storeId: number;
@@ -95,12 +96,14 @@ const GoodsDetailBottomBar = (props: {
     setPurchaseDrawer(false);
     props.purchaseGoos();
   };
+
+  const router = useRouter();
   return (
     <div className="fixed bottom-0 left-0 right-0 z-99 flex items-center justify-between bg-white p-3 border-t-[1px] border-t-gray-400">
       <div className="flex items-center gap-4">
         <div
           className="flex flex-col gap-1 items-center"
-          onClick={() => (window.location.href = `/store?id=${props.storeId}`)}
+          onClick={() => router.push(`/store?id=${props.storeId}`)}
         >
           <Icon icon={"clarity:store-line"} fontSize={"1.4rem"} />
           <p className="text-[0.8rem] text-gray-500">店铺</p>

@@ -2,6 +2,7 @@
 
 import { memberCouponMemberType } from "@/types/coupon";
 import { Icon } from "@iconify/react/dist/iconify.js";
+import { useRouter } from "next/navigation";
 import { useRef } from "react";
 
 const CouponTopBar = (props: {
@@ -10,6 +11,7 @@ const CouponTopBar = (props: {
 }) => {
   // TODO: 点击删除调用父组件的函数将state传递过去
   const state = useRef(false);
+  const router = useRouter();
   // 点击更新删除状态
   const handleChangeDeleteState = () => {
     // 更新删除状态的值
@@ -23,7 +25,7 @@ const CouponTopBar = (props: {
         <Icon
           icon="fluent-mdl2:back"
           className="w-4 h-4"
-          onClick={() => window.history.back()}
+          onClick={() => router.back()}
         />
         <div className="font-bold">我的权益</div>
       </div>

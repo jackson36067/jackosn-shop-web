@@ -2,24 +2,25 @@
 
 import { addSearchHistoryAPI } from "@/apis/searchHistory";
 import { Icon } from "@iconify/react/dist/iconify.js";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
 const SearchTopBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const pathname = usePathname();
+  const router = useRouter();
   const handleSearch = async (term: string) => {
     if (!term) return;
     localStorage.setItem("searchTerm", term);
-    window.location.href = `/searchDetail?name=${term}`;
+    router.push(`/searchDetail?name=${term}`);
     setSearchTerm(term);
     await addSearchHistoryAPI(searchTerm);
   };
   const handlerBack = () => {
     if (pathname === "/search") {
-      window.location.href = "/";
+      router.push("/");
     } else {
-      window.location.href = "/search";
+      router.push("/search");
       // 页面返回到搜索页时，清空搜索框内容
       localStorage.setItem("searchTerm", "");
     }

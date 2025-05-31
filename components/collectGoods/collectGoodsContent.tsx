@@ -4,6 +4,7 @@ import { IconRight } from "react-day-picker";
 import { Button } from "../ui/button";
 import { Checkbox } from "../ui/checkbox";
 import { forwardRef, useImperativeHandle, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const CollectGoodsContent = forwardRef(
   (
@@ -24,6 +25,7 @@ const CollectGoodsContent = forwardRef(
     // 被选中商品
     const [allSelectedGoods, setAllSelectedGoods] = useState<number[]>([]);
     const allSelectedGoodsRef = useRef<number[]>([]);
+    const router = useRouter();
 
     const handleSelectGoods = (checked: boolean, id: number) => {
       if (!checked) {
@@ -85,9 +87,7 @@ const CollectGoodsContent = forwardRef(
                     {/* 商品店铺名称 */}
                     <div
                       className="flex items-center gap-1 text-[#73828f] text-[1.1rem]"
-                      onClick={() =>
-                        (window.location.href = `/store?id=${item.storeId}`)
-                      }
+                      onClick={() => router.push(`/store?id=${item.storeId}`)}
                     >
                       <p>{item.storeName}</p>
                       <IconRight className="w-3 h-3" />

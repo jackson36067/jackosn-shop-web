@@ -12,6 +12,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { browseHistoryItem, goodsHistory } from "@/types/browseHistory";
 import { Icon } from "@iconify/react/dist/iconify.js";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { toast } from "sonner";
 
@@ -52,6 +53,7 @@ export default function BrowseSearchPage() {
   const [selectedBrowseGoodsList, setSelectedBrowseGoodsList] = useState<
     number[]
   >([]);
+  const router = useRouter();
 
   // 获取用户历史浏览搜索记录
   const getBrowseSearchList = async () => {
@@ -166,7 +168,7 @@ export default function BrowseSearchPage() {
           <Icon
             icon={"ep:back"}
             fontSize={"1.2rem"}
-            onClick={() => window.history.back()}
+            onClick={() => router.back()}
           />
         )}
         <div className="flex-1 relative">
@@ -216,7 +218,7 @@ export default function BrowseSearchPage() {
             {operateStatus ? "完成" : "管理"}
           </p>
         )}
-        <p onClick={() => window.history.back()}>取消</p>
+        <p onClick={() => router.back()}>取消</p>
       </div>
       {/* 历史搜索记录 */}
       {!state && (

@@ -3,8 +3,10 @@
 import { OrderItem } from "@/types/order";
 import { orderStatusMap } from "@/data/orderStatus";
 import OrderGoodsContent from "./OrderGoods";
+import { useRouter } from "next/navigation";
 
 const OrderContent = (props: { orderItems: OrderItem[] }) => {
+  const router = useRouter();
   return (
     <div className="mt-30">
       {props.orderItems.map((item) => {
@@ -12,9 +14,7 @@ const OrderContent = (props: { orderItems: OrderItem[] }) => {
           <div
             key={item.id}
             className="p-3 bg-white mt-2 first:mt-0 rounded-md"
-            onClick={() =>
-              (window.location.href = `/orderDetail?id=${item.id}`)
-            }
+            onClick={() => router.push(`/orderDetail?id=${item.id}`)}
           >
             {/* 订单信息 */}
             <div className="flex items-center justify-between">

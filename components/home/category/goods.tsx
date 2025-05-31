@@ -1,11 +1,13 @@
 import { cn } from "@/lib/utils";
 import { GoodsMessage } from "@/types/goods";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 const HomeCategoryGoods = (props: {
   className?: string;
   goodItems: GoodsMessage[];
 }) => {
+  const router = useRouter();
   return (
     <div className={cn("flex flex-wrap bg-[#fff] w-full", props.className)}>
       {!props.goodItems.length ? (
@@ -16,9 +18,7 @@ const HomeCategoryGoods = (props: {
             <div
               key={item.id}
               className="flex flex-col gap-2 w-[50%] mt-3"
-              onClick={() =>
-                (window.location.href = `/goodsDetail?id=${item.id}`)
-              }
+              onClick={() => router.push(`/goodsDetail?id=${item.id}`)}
             >
               <div>
                 <Image

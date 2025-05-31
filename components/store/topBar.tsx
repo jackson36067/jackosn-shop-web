@@ -5,6 +5,7 @@ import { Icon } from "@iconify/react/dist/iconify.js";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import { useRef } from "react";
+import { useRouter } from "next/navigation";
 
 const StoreTopBar = (props: {
   storeInfo: StoreInfo;
@@ -12,6 +13,7 @@ const StoreTopBar = (props: {
   handleFollowStore: (id: number, isFollow: boolean) => void;
 }) => {
   const nameRef = useRef<string>("");
+  const router = useRouter();
   // 当input值发生改变时触发
   const handleChangeInputValue = (name: string) => {
     nameRef.current = name;
@@ -28,7 +30,7 @@ const StoreTopBar = (props: {
           <Icon
             icon={"ep:back"}
             fontSize={"1rem"}
-            onClick={() => window.history.back()}
+            onClick={() => router.back()}
           />
           <div className="relative bg-[#fff0f5]">
             <svg

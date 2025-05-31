@@ -11,6 +11,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { forwardRef, useImperativeHandle, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 const BrowseHistoryContent = forwardRef(
   (
@@ -66,6 +67,8 @@ const BrowseHistoryContent = forwardRef(
       // 调用父组件的函数同步被选中浏览记录信息
       props.handleSelectBrowse(allSelectBrowseIdListRef.current);
     };
+
+    const router = useRouter();
 
     return (
       <div className={cn("px-3 mt-50 pb-5", props.operateStatus && "pb-28")}>
@@ -186,7 +189,7 @@ const BrowseHistoryContent = forwardRef(
                                 <div
                                   className="flex-1 flex justify-between"
                                   onClick={() =>
-                                    (window.location.href = `/store?id=${storeItem.id}`)
+                                    router.push(`/store?id=${storeItem.id}`)
                                   }
                                 >
                                   <div className="flex flex-col gap-1">

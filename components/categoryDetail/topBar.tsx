@@ -2,8 +2,8 @@
 
 import useSelectedGoodsStore from "@/stores/CartSelectedGoods";
 import { Icon } from "@iconify/react/dist/iconify.js";
-
 import { useRouter } from "next/navigation";
+
 const TopBar = (props: { title: string }) => {
   const { selectedGoods } = useSelectedGoodsStore();
   const router = useRouter();
