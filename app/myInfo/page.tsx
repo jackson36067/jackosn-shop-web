@@ -7,7 +7,7 @@ import {
 } from "@/apis/member";
 import TopBar from "@/components/myInfo/TopBar";
 import { MemberUpdateInfo, UpdateMemberInfo } from "@/types/member";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
   Form,
   FormControl,
@@ -35,6 +35,7 @@ import { formatToLocalDate } from "@/utils/dateFormat";
 import useMemberStore from "@/stores/MemberStore";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@radix-ui/react-label";
+import Image from "next/image";
 
 // 没有登录时默认的头像j
 const defaultAvatar = "/image/user_avator_default@2x.png";
@@ -42,7 +43,7 @@ const defaultAvatar = "/image/user_avator_default@2x.png";
 // 校验表单标准
 const formSchema = z.object({
   nickname: z.string().min(1, { message: "用户名不能为空" }),
-  gender: z.enum(["male", "female"], { required_error: "请选择你的性别" }),
+  gender: z.enum(["male", "female", ""], { required_error: "请选择你的性别" }),
   birthday: z.date({
     required_error: "请选择你的生日",
   }),
@@ -69,27 +70,34 @@ const MyInfo = () => {
   });
 
   // 获取个人信息
-  const getMemberInfo = async () => {
+  const getMemberInfo = useCallback(async () => {
     try {
       const res = await getMemberInfoAPI();
       const data: MemberUpdateInfo = res.data;
       setMembersInfo(data);
       setAvatar(data.avatar);
       form.setValue("nickname", data.nickname);
-      form.setValue("gender", data.gender === 0 ? "male" : "female");
-      form.setValue("birthday", new Date(data.birthday));
+      form.setValue(
+        "gender",
+        data.gender === null ? "" : data.gender === 0 ? "male" : "female"
+      );
+      form.setValue(
+        "birthday",
+        data.birthday ? new Date(data.birthday) : new Date()
+      );
     } catch (error) {
       console.error("获取用户信息失败:", error);
     } finally {
       setLoading(false); // 数据加载完成，解除 loading
     }
-  };
+  }, [form]);
+
   const hasFetched = useRef(false); // 追踪是否已经发送请求
   useEffect(() => {
     if (hasFetched.current) return; // 如果已经请求过，则不再执行
     hasFetched.current = true;
     getMemberInfo();
-  }, []);
+  }, [getMemberInfo]);
 
   // 上传头像
   const handleFileChange = async (
@@ -138,7 +146,7 @@ const MyInfo = () => {
         <div className="flex flex-col items-center gap-2 mt-10 w-full">
           {/* 点击头像上传 */}
           <label htmlFor="avatarUpload" className="cursor-pointer">
-            <img
+            <Image
               src={avatar || defaultAvatar}
               alt="头像"
               className="w-20 h-20 rounded-full border-white border-2 hover:opacity-80 transition"

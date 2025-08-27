@@ -123,3 +123,22 @@ export const updateMemberEmailAPI = (emailObject: updateEmailObject) => {
     data: emailObject,
   });
 };
+
+/**
+ * 用户注册接口
+ * @param params 注册参数
+ * @returns
+ */
+export const doRegisterAPi = (data: {
+  username: string;
+  email: string;
+  emailCode: string;
+  phone: string;
+  password: string;
+}) => {
+  return httpInstance({
+    method: "POST",
+    url: "/member/register",
+    data,
+  });
+};

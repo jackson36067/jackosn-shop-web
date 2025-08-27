@@ -19,6 +19,7 @@ import { AddressSelectedType } from "@/types/address";
 import { CouponItem } from "@/types/coupon";
 import GoodsConsigneeInfo from "../common/goodsConsigneeInfo";
 import { useRouter } from "next/navigation";
+import usememberStore from "@/stores/MemberStore";
 
 const GoodsDetailBottomBar = (props: {
   storeId: number;
@@ -80,6 +81,10 @@ const GoodsDetailBottomBar = (props: {
       toast.info("请选择规格");
       return;
     }
+    if (!memberInfo.token) {
+      toast.info("请先登录");
+      return;
+    }
     props.handleCheckSKuInfo(
       selectedSkuGroup || {},
       selectedSkuCount,
@@ -88,11 +93,27 @@ const GoodsDetailBottomBar = (props: {
     setCartDrawer(false);
   };
 
+  const { memberInfo } = usememberStore();
+
+  // 打开选择地址弹窗
   const handleOpenAddressDrawer = () => {
+    if (!memberInfo.token) {
+      toast.info("请先登录");
+      return;
+    }
     props.openAddressDrawer();
   };
-  // TODO:实现支付完成订单
+
+  // 实现支付完成订单
   const handlePurchase = () => {
+    if (!selectedSkuGroup) {
+      toast.info("请选择规格");
+      return;
+    }
+    if (!props.selecteAddress) {
+      toast.info("请选择收货地址");
+      return;
+    }
     setPurchaseDrawer(false);
     props.purchaseGoos();
   };

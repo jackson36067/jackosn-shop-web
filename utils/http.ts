@@ -3,7 +3,7 @@ import axios from "axios";
 import { toast } from "sonner";
 
 const httpInstance = axios.create({
-  baseURL: "http://localhost:8080/api",
+  baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
   timeout: 5000,
 });
 
